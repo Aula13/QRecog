@@ -11,3 +11,6 @@
 *.lai
 *.la
 *.a
+
+# Autoasve files
+*.autosave
