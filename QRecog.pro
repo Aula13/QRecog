@@ -18,3 +18,8 @@ SOURCES += main.cpp\
 HEADERS  += mainwindow.h
 
 FORMS    += mainwindow.ui
+
+macx {
+    INCLUDEPATH += /usr/local/include/pcl-1.6\
+                   /usr/local/bin/niReg
+}

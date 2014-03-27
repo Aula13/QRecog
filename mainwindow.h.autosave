@@ -2,7 +2,6 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include <pcl/io/pcd_io.h>
 
 namespace Ui {
 class MainWindow;
