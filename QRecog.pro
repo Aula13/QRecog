@@ -15,11 +15,11 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp
 
-HEADERS  += mainwindow.h
+HEADERS  += mainwindow.h \
+    defines.h
 
 FORMS    += mainwindow.ui
 
-macx {
-    INCLUDEPATH += /usr/local/include/pcl-1.6\
-                   /usr/local/bin/niReg
-}
+
+INCLUDEPATH += /Applications/ni/Include
+

@@ -1,4 +1,4 @@
 QRecog
 ======
 
-Object Recognition Using OpenNi, Qt, PCL
+3D OBject Recognition project
