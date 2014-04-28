@@ -1,6 +1,6 @@
 #include "mainwindow.h"
 #include <QApplication>
-#include "OpenNI.h"
+#include <pcl/common/angles.h>
 
 int main(int argc, char *argv[])
 {

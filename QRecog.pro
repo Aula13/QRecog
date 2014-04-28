@@ -20,6 +20,10 @@ HEADERS  += mainwindow.h \
 
 FORMS    += mainwindow.ui
 
+unix:!macx {
+    INCLUDEPATH += /usr/include/pcl-1.7
+}
 
-INCLUDEPATH += /Applications/ni/Include
-
+macx {
+    INCLUDEPATH += /
+}
