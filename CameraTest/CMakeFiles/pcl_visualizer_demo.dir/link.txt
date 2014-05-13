@@ -1,0 +1,1 @@
+/usr/bin/c++     -Wl,-search_paths_first -Wl,-headerpad_max_install_names    CMakeFiles/pcl_visualizer_demo.dir/main.cpp.o  -o pcl_visualizer_demo  -L/usr/local/Cellar/libusb/1.0.18/lib  /usr/lib/libOpenNI.dylib -Wl,-rpath,/usr/local/Cellar/libusb/1.0.18/lib 
