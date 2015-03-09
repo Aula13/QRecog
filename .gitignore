@@ -1,7 +1,10 @@
+*.DS_Store
+
 # Compiled Object files
 *.slo
 *.lo
 *.o
+
 
 # Compiled Dynamic libraries
 *.so
@@ -17,3 +20,6 @@
 
 #cmakefiles
 */CMakeFiles/*
+
+#build dirs
+*/build/*
