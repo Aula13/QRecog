@@ -1,4 +1,6 @@
 QRecog
 ======
 
-Questa repo racchiude diversi progetti di prova, all'interno della cartella project si può trovare il progetto finale, che ha lo scopo di riconoscere oggetti nello spazio grazie alle librerie PCL e OpenNI.
+# Lo scopo di questo progetto è quello di riconoscere oggetti nello spazio tridimensionale grazie alle librerie PCL e OpenNI.
+
+Questa repo contiene il progetto di sistemi meccatronici, all'interno della cartella project si può il codice sorgente.
