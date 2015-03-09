@@ -1,4 +1,0 @@
-PCLVisualizer
-=============
-
-PointCloud Visualizer
