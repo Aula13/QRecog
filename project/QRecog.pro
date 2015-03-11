@@ -13,15 +13,42 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp
+        mainwindow.cpp \
+    plcviewer.cpp \
+    viewermodel.cpp \
+    cameramodel.cpp
 
 HEADERS  += mainwindow.h \
-    defines.h
+    defines.h \
+    plcviewer.h \
+    viewermodel.h \
+    cameramodel.h
 
-FORMS    += mainwindow.ui
+FORMS    += mainwindow.ui \
+    plcviewer.ui
 
 unix:!macx {
-    INCLUDEPATH += /usr/include/pcl-1.7
+    INCLUDEPATH += /usr/include/pcl-1.7 \
+                   /usr/include/eigen3 \
+                   /usr/include/openni2 \
+                   /usr/include/vtk-5.8 \
+                   /usr/include/boost \
+                   /usr/include/flann
+
+
+    LIBS += "-L/usr/lib"
+
+    LIBS += -lboost_system
+    LIBS += -lpcl_apps
+    LIBS += -lpcl_common
+    LIBS += -lpcl_filters
+    LIBS += -lpcl_keypoints
+    LIBS += -lpcl_kdtree
+    LIBS += -lpcl_search
+    LIBS += -lpcl_features
+    LIBS += -lpcl_io
+    LIBS += -lpcl_io_ply
+    LIBS += -lpcl_visualization
 }
 
 macx {
