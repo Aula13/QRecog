@@ -14,18 +14,25 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    plcviewer.cpp \
     viewermodel.cpp \
-    cameramodel.cpp
+    cameramodel.cpp \
+    observer.cpp \
+    observable.cpp \
+    pclviewer.cpp \
+    acquisitionview.cpp
 
 HEADERS  += mainwindow.h \
     defines.h \
-    plcviewer.h \
     viewermodel.h \
-    cameramodel.h
+    cameramodel.h \
+    observer.h \
+    observable.h \
+    pclviewer.h \
+    acquisitionview.h
 
 FORMS    += mainwindow.ui \
-    plcviewer.ui
+    pclviewer.ui \
+    acquisitionview.ui
 
 unix:!macx {
     INCLUDEPATH += /usr/include/pcl-1.7 \
@@ -39,6 +46,7 @@ unix:!macx {
     LIBS += "-L/usr/lib"
 
     LIBS += -lboost_system
+
     LIBS += -lpcl_apps
     LIBS += -lpcl_common
     LIBS += -lpcl_filters
@@ -49,6 +57,14 @@ unix:!macx {
     LIBS += -lpcl_io
     LIBS += -lpcl_io_ply
     LIBS += -lpcl_visualization
+
+    LIBS += -lvtkCommon \
+            -lvtkGraphics \
+            -lvtkFiltering \
+            -lvtkIO \
+            -lvtkImaging \
+            -lvtkRendering \
+            -lQVTK
 }
 
 macx {
