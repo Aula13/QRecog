@@ -2,14 +2,13 @@
 #define CAMERAMODEL_H
 
 #include <pcl/io/openni2_grabber.h>
-#include <pcl/io/pcd_io.h>
 #include <pcl/common/transforms.h>
 #include <pcl/filters/filter.h>
 
-#include "observable.h"
+#include "pcsource.h"
 #include "logger.h"
 
-class CameraModel : public Observable
+class CameraModel : public PCSource
 {
 public:
     static CameraModel* getInstance();

@@ -12,7 +12,7 @@
 #include <vtkRenderWindow.h>
 
 #include "observer.h"
-#include "cameramodel.h"
+#include "pcsource.h"
 
 #include "logger.h"
 
@@ -27,6 +27,8 @@ class PCLViewer : public QWidget, Observer
 public:
     explicit PCLViewer(QWidget *parent = 0);
     ~PCLViewer();
+
+    void setModelReference(PCSource* pcs);
 
     void update(Observable *obs);
 
