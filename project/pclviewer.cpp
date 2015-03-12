@@ -22,6 +22,8 @@ void PCLViewer::update(Observable *obs)
     viewer->addPointCloud (model->getLastAcquisition(), "cloud");
     viewer->resetCamera ();
     ui->qvtkWidget->update ();
+
+    Logger::logInfo("PCLViewer update");
 }
 
 PCLViewer::~PCLViewer()

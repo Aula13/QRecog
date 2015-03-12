@@ -12,3 +12,15 @@ CameraCtrlView::~CameraCtrlView()
 {
     delete ui;
 }
+
+void CameraCtrlView::on_btnStartCamera_clicked()
+{
+    CameraModel::getInstance()->run();
+    Logger::logInfo("CameraCtrlView btnStartCamera pressed");
+}
+
+void CameraCtrlView::on_btnStopCamera_clicked()
+{
+    CameraModel::getInstance()->stop();
+    Logger::logInfo("CameraCtrlView btnStopCamera pressed");
+}

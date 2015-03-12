@@ -3,6 +3,8 @@
 
 #include <QWidget>
 
+#include "cameramodel.h"
+
 namespace Ui {
 class CameraCtrlView;
 }
@@ -14,6 +16,11 @@ class CameraCtrlView : public QWidget
 public:
     explicit CameraCtrlView(QWidget *parent = 0);
     ~CameraCtrlView();
+
+private slots:
+    void on_btnStartCamera_clicked();
+
+    void on_btnStopCamera_clicked();
 
 private:
     Ui::CameraCtrlView *ui;

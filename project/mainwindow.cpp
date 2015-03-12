@@ -17,7 +17,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_actionExit_triggered()
 {
-    
+    Logger::logInfo("Close application requested");
 }
 
 void MainWindow::on_actionError_triggered()

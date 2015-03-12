@@ -14,6 +14,8 @@
 #include "observer.h"
 #include "cameramodel.h"
 
+#include "logger.h"
+
 namespace Ui {
 class PCLViewer;
 }
