@@ -6,11 +6,14 @@ CameraCtrlView::CameraCtrlView(QWidget *parent) :
     ui(new Ui::CameraCtrlView)
 {
     ui->setupUi(this);
+
+    Logger::logInfo("CameraCtrlView initialized");
 }
 
 CameraCtrlView::~CameraCtrlView()
 {
     delete ui;
+    Logger::logInfo("CameraCtrlView deleted");
 }
 
 void CameraCtrlView::on_btnStartCamera_clicked()

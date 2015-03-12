@@ -24,7 +24,8 @@ SOURCES += main.cpp\
     logger.cpp \
     pcsource.cpp \
     simcameramodel.cpp \
-    models.cpp
+    models.cpp \
+    filechooser.cpp
 
 HEADERS  += mainwindow.h \
     defines.h \
@@ -38,12 +39,14 @@ HEADERS  += mainwindow.h \
     logger.h \
     pcsource.h \
     simcameramodel.h \
-    models.h
+    models.h \
+    filechooser.h
 
 FORMS    += mainwindow.ui \
     pclviewer.ui \
     acquisitionview.ui \
-    cameractrlview.ui
+    cameractrlview.ui \
+    filechooser.ui
 
 unix:!macx {
     INCLUDEPATH += /usr/include/pcl-1.7 \
