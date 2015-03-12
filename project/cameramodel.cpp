@@ -9,10 +9,12 @@ CameraModel* CameraModel::getInstance()
     {
         single = new CameraModel();
         instanceFlag = true;
+        Logger::logInfo("Request CameraModel instance (new one builded)");
         return single;
     }
     else
     {
+        Logger::logInfo("Request CameraModel instance (already existent)");
         return single;
     }
 }
@@ -54,6 +56,8 @@ void CameraModel::cloud_cb_ (const pcl::PointCloud<pcl::PointXYZRGBA>::ConstPtr 
 
     pcl::transformPointCloud(*trasformedpcd,*trasformedpcd,TransMat);
 
+    Logger::logInfo("Update cloud is coming");
+
     setChanged();
     notifyObservers();
 }
@@ -64,18 +68,29 @@ void CameraModel::run()
     {
         interface = new pcl::io::OpenNI2Grabber();
         interface->start ();
-    }
+        Logger::logInfo("Camera interface is started");
+    } else
+        Logger::logError("CameraModel is not instanced");
 }
 
 void CameraModel::stop()
 {
     if(instanceFlag)
+    {
         if(interface->isRunning())
+        {
             interface->stop();
+            Logger::logInfo("Camera interface is stopped");
+        } else
+            Logger::logWarning("Camera inteface is already stopped");
+    } else
+        Logger::logError("CameraModel is not instanced");
+
 }
 
 pcl::PointCloud<pcl::PointXYZRGBA>::Ptr CameraModel::getLastAcquisition()
 {
+    Logger::logInfo("Last acquisition requested from CameraModel");
     return trasformedpcd;
 }
 
@@ -94,4 +109,5 @@ CameraModel::~CameraModel()
         instanceFlag=false;
     }
     delete interface;
+    Logger::logInfo("CameraModel was deleted");
 }

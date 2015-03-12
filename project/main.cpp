@@ -5,7 +5,7 @@
 
 int main(int argc, char *argv[])
 {
-    Logger::configLoggerLevel(ERROR);
+    Logger::configLoggerLevel(DEBUG);
 
     QApplication a(argc, argv);
     a.setApplicationName("QRecog");

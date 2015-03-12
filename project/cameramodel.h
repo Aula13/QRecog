@@ -7,6 +7,7 @@
 #include <pcl/filters/filter.h>
 
 #include "observable.h"
+#include "logger.h"
 
 class CameraModel : public Observable
 {
