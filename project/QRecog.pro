@@ -20,7 +20,8 @@ SOURCES += main.cpp\
     observable.cpp \
     pclviewer.cpp \
     acquisitionview.cpp \
-    cameractrlview.cpp
+    cameractrlview.cpp \
+    logger.cpp
 
 HEADERS  += mainwindow.h \
     defines.h \
@@ -30,7 +31,8 @@ HEADERS  += mainwindow.h \
     observable.h \
     pclviewer.h \
     acquisitionview.h \
-    cameractrlview.h
+    cameractrlview.h \
+    logger.h
 
 FORMS    += mainwindow.ui \
     pclviewer.ui \

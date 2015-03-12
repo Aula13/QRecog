@@ -16,9 +16,15 @@ public:
     ~MainWindow();
 
 private slots:
-    void on_actionAcquisition_triggered();
-
     void on_actionExit_triggered();
+
+    void on_actionError_triggered();
+
+    void on_actionWarning_triggered();
+
+    void on_actionInfo_triggered();
+
+    void on_actionDebug_triggered();
 
 private:
     Ui::MainWindow *ui;

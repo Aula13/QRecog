@@ -1,11 +1,12 @@
 #include "mainwindow.h"
 #include <QApplication>
 
-#define LOG_LEVEL 0
-#define DEBUG 0
+#include "logger.h"
 
 int main(int argc, char *argv[])
 {
+    Logger::configLoggerLevel(ERROR);
+
     QApplication a(argc, argv);
     a.setApplicationName("QRecog");
     MainWindow w;

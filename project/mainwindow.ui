@@ -67,21 +67,41 @@
     </property>
     <addaction name="actionExit"/>
    </widget>
+   <widget class="QMenu" name="menuLogger">
+    <property name="title">
+     <string>Logger</string>
+    </property>
+    <addaction name="actionError"/>
+    <addaction name="actionWarning"/>
+    <addaction name="actionInfo"/>
+    <addaction name="actionDebug"/>
+   </widget>
    <addaction name="menu3D_Camera"/>
+   <addaction name="menuLogger"/>
   </widget>
   <action name="actionExit">
    <property name="text">
     <string>Exit</string>
    </property>
   </action>
-  <action name="actionAcquisition">
+  <action name="actionError">
    <property name="text">
-    <string>Acquisition</string>
+    <string>Error</string>
    </property>
   </action>
-  <action name="actionRecognition">
+  <action name="actionWarning">
    <property name="text">
-    <string>Recognition</string>
+    <string>Warning</string>
+   </property>
+  </action>
+  <action name="actionInfo">
+   <property name="text">
+    <string>Info</string>
+   </property>
+  </action>
+  <action name="actionDebug">
+   <property name="text">
+    <string>Debug</string>
    </property>
   </action>
  </widget>
