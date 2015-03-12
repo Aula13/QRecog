@@ -7,7 +7,7 @@ class Observer
 {
 public:
     Observer();
-    void update(Observable* obs);
+    virtual void update(Observable* obs) = 0;
 };
 
 #endif // OBSERVER_H

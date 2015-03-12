@@ -8,7 +8,7 @@
 
 #include "observable.h"
 
-class CameraModel : Observable
+class CameraModel : public Observable
 {
 public:
     static CameraModel* getInstance();

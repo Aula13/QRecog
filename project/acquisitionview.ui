@@ -23,64 +23,6 @@
     </rect>
    </property>
   </widget>
-  <widget class="QFrame" name="frmCameraCmd">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>10</y>
-     <width>241</width>
-     <height>141</height>
-    </rect>
-   </property>
-   <property name="frameShape">
-    <enum>QFrame::StyledPanel</enum>
-   </property>
-   <property name="frameShadow">
-    <enum>QFrame::Sunken</enum>
-   </property>
-   <widget class="QPushButton" name="btnStartCamera">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>40</y>
-      <width>221</width>
-      <height>41</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Start</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="btnStopCamera">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>90</y>
-      <width>221</width>
-      <height>41</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Stop</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="title">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>0</y>
-      <width>221</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>3D Camera control</string>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignCenter</set>
-    </property>
-   </widget>
-  </widget>
   <widget class="QFrame" name="frmAcquisition">
    <property name="geometry">
     <rect>
@@ -161,12 +103,28 @@
     </property>
    </widget>
   </widget>
+  <widget class="CameraCtrlView" name="widget_2" native="true">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>10</y>
+     <width>241</width>
+     <height>141</height>
+    </rect>
+   </property>
+  </widget>
  </widget>
  <customwidgets>
   <customwidget>
    <class>PCLViewer</class>
    <extends>QWidget</extends>
    <header location="global">pclviewer.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>CameraCtrlView</class>
+   <extends>QWidget</extends>
+   <header location="global">cameractrlview.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

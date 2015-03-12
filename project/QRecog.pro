@@ -19,7 +19,8 @@ SOURCES += main.cpp\
     observer.cpp \
     observable.cpp \
     pclviewer.cpp \
-    acquisitionview.cpp
+    acquisitionview.cpp \
+    cameractrlview.cpp
 
 HEADERS  += mainwindow.h \
     defines.h \
@@ -28,11 +29,13 @@ HEADERS  += mainwindow.h \
     observer.h \
     observable.h \
     pclviewer.h \
-    acquisitionview.h
+    acquisitionview.h \
+    cameractrlview.h
 
 FORMS    += mainwindow.ui \
     pclviewer.ui \
-    acquisitionview.ui
+    acquisitionview.ui \
+    cameractrlview.ui
 
 unix:!macx {
     INCLUDEPATH += /usr/include/pcl-1.7 \

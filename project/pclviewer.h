@@ -11,17 +11,22 @@
 // Visualization Toolkit (VTK)
 #include <vtkRenderWindow.h>
 
+#include "observer.h"
+#include "cameramodel.h"
+
 namespace Ui {
 class PCLViewer;
 }
 
-class PCLViewer : public QWidget
+class PCLViewer : public QWidget, Observer
 {
     Q_OBJECT
 
 public:
     explicit PCLViewer(QWidget *parent = 0);
     ~PCLViewer();
+
+    void update(Observable *obs);
 
 protected:
   boost::shared_ptr<pcl::visualization::PCLVisualizer> viewer;

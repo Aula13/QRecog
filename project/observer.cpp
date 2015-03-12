@@ -3,8 +3,3 @@
 Observer::Observer()
 {
 }
-
-void Observer::update(Observable *obs)
-{
-
-}

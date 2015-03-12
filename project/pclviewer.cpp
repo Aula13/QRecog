@@ -12,6 +12,16 @@ PCLViewer::PCLViewer(QWidget *parent) :
     ui->qvtkWidget->SetRenderWindow (viewer->getRenderWindow ());
     viewer->setupInteractor (ui->qvtkWidget->GetInteractor (), ui->qvtkWidget->GetRenderWindow ());
     ui->qvtkWidget->update ();
+
+    CameraModel::getInstance()->attachObserver(this);
+}
+
+void PCLViewer::update(Observable *obs)
+{
+    CameraModel* model = (CameraModel*) obs;
+    viewer->addPointCloud (model->getLastAcquisition(), "cloud");
+    viewer->resetCamera ();
+    ui->qvtkWidget->update ();
 }
 
 PCLViewer::~PCLViewer()

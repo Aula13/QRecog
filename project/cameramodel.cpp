@@ -19,7 +19,6 @@ CameraModel* CameraModel::getInstance()
 
 CameraModel::CameraModel()
 {
-    interface = new pcl::io::OpenNI2Grabber();
 }
 
 void CameraModel::registerCallback(boost::function<void (const pcl::PointCloud<pcl::PointXYZRGBA>::ConstPtr&)> f)
@@ -62,7 +61,10 @@ void CameraModel::cloud_cb_ (const pcl::PointCloud<pcl::PointXYZRGBA>::ConstPtr 
 void CameraModel::run()
 {
     if(instanceFlag)
+    {
+        interface = new pcl::io::OpenNI2Grabber();
         interface->start ();
+    }
 }
 
 void CameraModel::stop()
