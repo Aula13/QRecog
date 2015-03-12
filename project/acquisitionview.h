@@ -3,6 +3,8 @@
 
 #include <QWidget>
 
+#include "models.h"
+
 namespace Ui {
 class AcquisitionView;
 }

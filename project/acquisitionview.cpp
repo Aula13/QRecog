@@ -7,7 +7,7 @@ AcquisitionView::AcquisitionView(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    ui->widget->setModelReference(CameraModel::getInstance());
+    ui->widget->setModelReference(Models::pcs);
 }
 
 AcquisitionView::~AcquisitionView()

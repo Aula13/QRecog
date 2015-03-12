@@ -15,12 +15,12 @@ CameraCtrlView::~CameraCtrlView()
 
 void CameraCtrlView::on_btnStartCamera_clicked()
 {
-    CameraModel::getInstance()->run();
+    Models::pcs->run();
     Logger::logInfo("CameraCtrlView btnStartCamera pressed");
 }
 
 void CameraCtrlView::on_btnStopCamera_clicked()
 {
-    CameraModel::getInstance()->stop();
+    Models::pcs->stop();
     Logger::logInfo("CameraCtrlView btnStopCamera pressed");
 }

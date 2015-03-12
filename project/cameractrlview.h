@@ -3,7 +3,7 @@
 
 #include <QWidget>
 
-#include "cameramodel.h"
+#include "models.h"
 
 namespace Ui {
 class CameraCtrlView;

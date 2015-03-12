@@ -22,7 +22,9 @@ SOURCES += main.cpp\
     acquisitionview.cpp \
     cameractrlview.cpp \
     logger.cpp \
-    pcsource.cpp
+    pcsource.cpp \
+    simcameramodel.cpp \
+    models.cpp
 
 HEADERS  += mainwindow.h \
     defines.h \
@@ -34,7 +36,9 @@ HEADERS  += mainwindow.h \
     acquisitionview.h \
     cameractrlview.h \
     logger.h \
-    pcsource.h
+    pcsource.h \
+    simcameramodel.h \
+    models.h
 
 FORMS    += mainwindow.ui \
     pclviewer.ui \
