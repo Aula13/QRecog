@@ -20,22 +20,17 @@
       <item>
        <widget class="QTabWidget" name="maintab">
         <property name="currentIndex">
-         <number>0</number>
+         <number>1</number>
         </property>
-        <widget class="QWidget" name="acquisition">
+        <widget class="AcquisitionView" name="acquisition">
          <attribute name="title">
           <string>Acquisition</string>
          </attribute>
-         <widget class="AcquisitionView" name="widget" native="true">
-          <property name="geometry">
-           <rect>
-            <x>0</x>
-            <y>0</y>
-            <width>981</width>
-            <height>651</height>
-           </rect>
-          </property>
-         </widget>
+        </widget>
+        <widget class="ClusteringView" name="Clustering">
+         <attribute name="title">
+          <string>Clustering</string>
+         </attribute>
         </widget>
         <widget class="QWidget" name="recognition">
          <property name="contextMenuPolicy">
@@ -51,7 +46,6 @@
     </item>
    </layout>
   </widget>
-  <widget class="QStatusBar" name="statusBar"/>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
     <rect>
@@ -111,6 +105,12 @@
    <class>AcquisitionView</class>
    <extends>QWidget</extends>
    <header location="global">acquisitionview.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>ClusteringView</class>
+   <extends>QWidget</extends>
+   <header location="global">clusteringview.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

@@ -35,6 +35,7 @@ public:
     void disableUpdates();
     void enableUpdates();
 
+    void updateView(pcl::PointCloud<pcl::PointXYZRGBA>::Ptr cloud);
 protected:
   boost::shared_ptr<pcl::visualization::PCLVisualizer> viewer;
   pcl::PointCloud<pcl::PointXYZRGBA>::Ptr cloud;

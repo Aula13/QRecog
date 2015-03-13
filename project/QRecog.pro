@@ -25,7 +25,13 @@ SOURCES += main.cpp\
     pcsource.cpp \
     simcameramodel.cpp \
     models.cpp \
-    filechooser.cpp
+    filechooser.cpp \
+    pclfunction.cpp \
+    pclfilterfunction.cpp \
+    clusteringview.cpp \
+    filteroptionview.cpp \
+    clusteringoptionview.cpp \
+    segmentationoptionview.cpp
 
 HEADERS  += mainwindow.h \
     defines.h \
@@ -40,13 +46,23 @@ HEADERS  += mainwindow.h \
     pcsource.h \
     simcameramodel.h \
     models.h \
-    filechooser.h
+    filechooser.h \
+    pclfunction.h \
+    pclfilterfunction.h \
+    clusteringview.h \
+    filteroptionview.h \
+    clusteringoptionview.h \
+    segmentationoptionview.h
 
 FORMS    += mainwindow.ui \
     pclviewer.ui \
     acquisitionview.ui \
     cameractrlview.ui \
-    filechooser.ui
+    filechooser.ui \
+    clusteringview.ui \
+    filteroptionview.ui \
+    clusteringoptionview.ui \
+    segmentationoptionview.ui
 
 unix:!macx {
     INCLUDEPATH += /usr/include/pcl-1.7 \

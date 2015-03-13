@@ -34,15 +34,20 @@ void PCLViewer::update(Observable *obs)
 {
     if(!disableUpdate) {
         PCSource* model = (PCSource*) obs;
-        viewer->removeAllPointClouds();
-        viewer->addPointCloud (model->getLastAcquisition(), "cloud");
-        viewer->resetCamera ();
-        ui->qvtkWidget->update ();
-        Logger::logInfo("PCLViewer update");
+        updateView(model->getLastAcquisition());
     } else {
         Logger::logInfo("PCLViewer update received but disabled");
     }
 
+}
+
+void PCLViewer::updateView(pcl::PointCloud<pcl::PointXYZRGBA>::Ptr cloud)
+{
+    viewer->removeAllPointClouds();
+    viewer->addPointCloud (cloud);
+    viewer->resetCamera ();
+    ui->qvtkWidget->update ();
+    Logger::logInfo("PCLViewer update");
 }
 
 PCLViewer::~PCLViewer()
