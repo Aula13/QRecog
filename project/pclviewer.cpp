@@ -20,15 +20,29 @@ void PCLViewer::setModelReference(PCSource *pcs)
     Logger::logInfo("Observed model attached to PCLViewer");
 }
 
+void PCLViewer::disableUpdates()
+{
+    disableUpdate=true;
+}
+
+void PCLViewer::enableUpdates()
+{
+    disableUpdate=false;
+}
+
 void PCLViewer::update(Observable *obs)
 {
-    PCSource* model = (PCSource*) obs;
-    viewer->removeAllPointClouds();
-    viewer->addPointCloud (model->getLastAcquisition(), "cloud");
-    viewer->resetCamera ();
-    ui->qvtkWidget->update ();
+    if(!disableUpdate) {
+        PCSource* model = (PCSource*) obs;
+        viewer->removeAllPointClouds();
+        viewer->addPointCloud (model->getLastAcquisition(), "cloud");
+        viewer->resetCamera ();
+        ui->qvtkWidget->update ();
+        Logger::logInfo("PCLViewer update");
+    } else {
+        Logger::logInfo("PCLViewer update received but disabled");
+    }
 
-    Logger::logInfo("PCLViewer update");
 }
 
 PCLViewer::~PCLViewer()

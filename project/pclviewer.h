@@ -32,12 +32,17 @@ public:
 
     void update(Observable *obs);
 
+    void disableUpdates();
+    void enableUpdates();
+
 protected:
   boost::shared_ptr<pcl::visualization::PCLVisualizer> viewer;
   pcl::PointCloud<pcl::PointXYZRGBA>::Ptr cloud;
 
 private:
     Ui::PCLViewer *ui;
+
+    bool disableUpdate;
 };
 
 #endif // PCLVIEWER_H

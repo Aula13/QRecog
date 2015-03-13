@@ -37,3 +37,11 @@ void AcquisitionView::on_btnCapture_clicked()
         Logger::logWarning("Acquisition PCD try capture, filename is empty");
     }
 }
+
+void AcquisitionView::on_checkBox_stateChanged(int arg1)
+{
+    if(arg1==0)
+        ui->wgtPCLViewer->enableUpdates();
+    else
+        ui->wgtPCLViewer->disableUpdates();
+}

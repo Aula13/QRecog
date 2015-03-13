@@ -27,7 +27,7 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>160</y>
+     <y>190</y>
      <width>241</width>
      <height>141</height>
     </rect>
@@ -102,6 +102,19 @@
      <width>241</width>
      <height>141</height>
     </rect>
+   </property>
+  </widget>
+  <widget class="QCheckBox" name="checkBox">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>160</y>
+     <width>221</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Disable view updates</string>
    </property>
   </widget>
  </widget>
