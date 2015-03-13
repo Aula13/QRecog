@@ -23,6 +23,7 @@ void PCLViewer::setModelReference(PCSource *pcs)
 void PCLViewer::update(Observable *obs)
 {
     PCSource* model = (PCSource*) obs;
+    viewer->removeAllPointClouds();
     viewer->addPointCloud (model->getLastAcquisition(), "cloud");
     viewer->resetCamera ();
     ui->qvtkWidget->update ();
