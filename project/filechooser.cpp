@@ -18,9 +18,9 @@ void FileChooser::asFileOpener()
     saver=false;
 }
 
-const string FileChooser::getSelectedFile()
+const std::string FileChooser::getSelectedFile()
 {
-    return ui->txtPath->text();
+    return ui->txtPath->text().toStdString();
 }
 
 FileChooser::~FileChooser()
@@ -46,4 +46,5 @@ void FileChooser::on_btnChoose_clicked()
                 "PCD files (*.pcd)"
                 );
     ui->txtPath->setText(filename);
+    Logger::logInfo("File choosed: " + filename.toStdString());
 }

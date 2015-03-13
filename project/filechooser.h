@@ -7,6 +7,8 @@
 
 #include <string>
 
+#include "logger.h"
+
 namespace Ui {
 class FileChooser;
 }
@@ -21,7 +23,7 @@ public:
     void asFileSaver();
     void asFileOpener();
 
-    const string getSelectedFile();
+    const std::string getSelectedFile();
 
     ~FileChooser();
 
