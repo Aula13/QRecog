@@ -15,24 +15,23 @@ void Logger::configLoggerLevel(int level)
 void Logger::logError(string text)
 {
     if(level>=ERROR)
-        cout<<text<<endl;
+        cout<<"ERROR - "<<text<<endl;
 }
 
 void Logger::logWarning(string text)
 {
     if(level>=WARNING)
-        cout<<text<<endl;
+        cout<<"WARN - "<<text<<endl;
 }
 
 void Logger::logInfo(string text)
 {
     if(level>=INFO)
-        cout<<text<<endl;
+        cout<<"INFO - "<<text<<endl;
 }
 
 void Logger::logDebug(string text)
 {
     if(level>=DEBUG)
-        cout<<text<<endl;
+        cout<<"DEBUG - "<<text<<endl;
 }
-
