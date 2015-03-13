@@ -13,7 +13,7 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <widget class="PCLViewer" name="widget" native="true">
+  <widget class="PCLViewer" name="wgtPCLViewer" native="true">
    <property name="geometry">
     <rect>
      <x>260</x>
@@ -38,7 +38,7 @@
    <property name="frameShadow">
     <enum>QFrame::Sunken</enum>
    </property>
-   <widget class="QPushButton" name="pushButton_3">
+   <widget class="QPushButton" name="btnCapture">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -51,7 +51,7 @@
      <string>Capture</string>
     </property>
    </widget>
-   <widget class="QLabel" name="Acquisition">
+   <widget class="QLabel" name="lblAcquisition">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -67,26 +67,7 @@
      <set>Qt::AlignCenter</set>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>50</y>
-      <width>221</width>
-      <height>27</height>
-     </rect>
-    </property>
-    <property name="inputMask">
-     <string/>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-    <property name="placeholderText">
-     <string>file.pcd</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="Acquisition_2">
+   <widget class="QLabel" name="lblOutputFile">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -96,14 +77,24 @@
      </rect>
     </property>
     <property name="text">
-     <string>Output file prefix</string>
+     <string>Output file</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
     </property>
    </widget>
+   <widget class="FileChooser" name="wgtFIleChooser" native="true">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>50</y>
+      <width>221</width>
+      <height>31</height>
+     </rect>
+    </property>
+   </widget>
   </widget>
-  <widget class="CameraCtrlView" name="widget_2" native="true">
+  <widget class="CameraCtrlView" name="wgtCameraCtrl" native="true">
    <property name="geometry">
     <rect>
      <x>10</x>
@@ -125,6 +116,12 @@
    <class>CameraCtrlView</class>
    <extends>QWidget</extends>
    <header location="global">cameractrlview.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>FileChooser</class>
+   <extends>QWidget</extends>
+   <header location="global">filechooser.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
