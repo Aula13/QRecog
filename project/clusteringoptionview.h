@@ -13,6 +13,13 @@ class ClusteringOptionView : public QWidget
 
 public:
     explicit ClusteringOptionView(QWidget *parent = 0);
+
+    bool isClusteringEnabled();
+
+    float getClusterTolerance();
+    int getMinClusterSize();
+    int getMaxClusterSize();
+
     ~ClusteringOptionView();
 
 private:

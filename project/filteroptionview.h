@@ -16,6 +16,8 @@ public:
 
     float getLeafSize();
 
+    bool isFilteringEnabled();
+
     ~FilterOptionView();
 
 private:

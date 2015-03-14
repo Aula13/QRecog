@@ -35,6 +35,11 @@ SegmentationOptionView::SegmentationOptionView(QWidget *parent) :
     ui->cmbModelType->addItem("SACMODEL_STICK");
 }
 
+bool SegmentationOptionView::isSegmentationEnabled()
+{
+    return ui->chkEnableSegmentation->isChecked();
+}
+
 bool SegmentationOptionView::getOptimizeCoeff()
 {
     return ui->chkOptimazeCoef->isChecked();

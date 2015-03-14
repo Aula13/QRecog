@@ -20,7 +20,7 @@
       <item>
        <widget class="QTabWidget" name="maintab">
         <property name="currentIndex">
-         <number>1</number>
+         <number>0</number>
         </property>
         <widget class="AcquisitionView" name="acquisition">
          <attribute name="title">
