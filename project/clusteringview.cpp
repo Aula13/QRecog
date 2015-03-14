@@ -54,15 +54,45 @@ void ClusteringView::on_btnSegment_clicked()
 
     if(ui->wgtClusterOptionView->isClusteringEnabled())
     {
+        PCLClusteringFunction* clusterf = new PCLClusteringFunction();
 
+        clusterf->clusterTolerance = ui->wgtClusterOptionView->getClusterTolerance();
+        clusterf->minClusterSize = ui->wgtClusterOptionView->getMinClusterSize();
+        clusterf->maxClusterSize = ui->wgtClusterOptionView->getMaxClusterSize();
+
+        if(computedModels.size()==1)
+        {
+            cloud_f=computedModels[0];
+            computedModels.pop_back();
+            computedModels = clusterf->clustering(cloud_f);
+        } else
+            computedModels = clusterf->clustering(cloud);
     }
-
+    actualModelViewer=0;
     changePClViewerModel(0);
 }
 
 void ClusteringView::changePClViewerModel(int index)
 {
-    ui->wgtPCLViewer->updateView(computedModels[0]);
+    if(computedModels.size()!=0)
+    {
+        if(index<0)
+            index=0;
+        if(index>=computedModels.size())
+            index=computedModels.size()-1;
+
+        ui->wgtPCLViewer->updateView(computedModels[index]);
+
+        if(actualModelViewer<=0)
+            ui->btnPrevModel->setEnabled(false);
+        else
+            ui->btnPrevModel->setEnabled(true);
+
+        if(actualModelViewer>=computedModels.size()-1)
+            ui->btnNextModel->setEnabled(false);
+        else
+            ui->btnNextModel->setEnabled(true);
+    }
 }
 
 ClusteringView::~ClusteringView()
@@ -71,3 +101,27 @@ ClusteringView::~ClusteringView()
 }
 
 
+
+void ClusteringView::on_btnPrevModel_clicked()
+{
+    if(computedModels.size()!=0)
+    {
+        actualModelViewer--;
+        if(actualModelViewer<=0)
+            actualModelViewer=0;
+
+        changePClViewerModel(actualModelViewer);
+    }
+}
+
+void ClusteringView::on_btnNextModel_clicked()
+{
+    if(computedModels.size()!=0)
+    {
+        actualModelViewer++;
+        if(actualModelViewer>=computedModels.size()-1)
+            actualModelViewer=computedModels.size()-1;
+
+        changePClViewerModel(actualModelViewer);
+    }
+}
