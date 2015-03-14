@@ -125,3 +125,23 @@ void ClusteringView::on_btnNextModel_clicked()
         changePClViewerModel(actualModelViewer);
     }
 }
+
+void ClusteringView::on_btnSaveModel_clicked()
+{
+    std::string filename = ui->wgtOutFileChooser->getSelectedFile();
+    if(!filename.empty())
+    {
+        if(!computedModels.empty())
+        {
+            pcl::io::savePCDFileASCII(filename, *computedModels[actualModelViewer]);
+            Logger::logWarning("Clustered PCD saved");
+            QMessageBox::warning(this, "Error", "Clustered PCD saved!", QMessageBox::Ok);
+        } else {
+            QMessageBox::warning(this, "Error", "Nothing to save!", QMessageBox::Ok);
+            Logger::logWarning("Try save Clustered PCD, but array is empty");
+        }
+    } else {
+        QMessageBox::warning(this, "Error", "Filename is empty!", QMessageBox::Ok);
+        Logger::logWarning("Try save Clustered PCD, filename is empty");
+    }
+}

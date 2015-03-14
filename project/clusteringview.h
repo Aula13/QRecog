@@ -32,6 +32,8 @@ private slots:
 
     void on_btnNextModel_clicked();
 
+    void on_btnSaveModel_clicked();
+
 private:
     Ui::ClusteringView *ui;
 
