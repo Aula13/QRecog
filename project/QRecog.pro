@@ -77,18 +77,23 @@ unix:!macx {
 
     LIBS += "-L/usr/lib"
 
-    LIBS += -lboost_system
+    LIBS += -lboost_system \
 
-    LIBS += -lpcl_apps
-    LIBS += -lpcl_common
-    LIBS += -lpcl_filters
-    LIBS += -lpcl_keypoints
-    LIBS += -lpcl_kdtree
-    LIBS += -lpcl_search
-    LIBS += -lpcl_features
-    LIBS += -lpcl_io
-    LIBS += -lpcl_io_ply
-    LIBS += -lpcl_visualization
+    LIBS += -lpcl_apps \
+            -lpcl_common \
+            -lpcl_filters \
+            -lpcl_keypoints \
+            -lpcl_kdtree \
+            -lpcl_search \
+            -lpcl_features \
+            -lpcl_io \
+            -lpcl_io_ply \
+            -lpcl_visualization \
+            -lpcl_sample_consensus \
+            -lpcl_segmentation \
+            -lpcl_recognition \
+            -lpcl_registration
+
 
     LIBS += -lvtkCommon \
             -lvtkGraphics \
