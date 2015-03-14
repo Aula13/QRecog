@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>QRecog</string>
   </property>
   <widget class="QWidget" name="tabMain">
    <layout class="QHBoxLayout" name="horizontalLayout_2">
@@ -32,7 +32,7 @@
           <string>Clustering</string>
          </attribute>
         </widget>
-        <widget class="QWidget" name="recognition">
+        <widget class="CorrespondenceView" name="recognition">
          <property name="contextMenuPolicy">
           <enum>Qt::NoContextMenu</enum>
          </property>
@@ -111,6 +111,12 @@
    <class>ClusteringView</class>
    <extends>QWidget</extends>
    <header location="global">clusteringview.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>CorrespondenceView</class>
+   <extends>QWidget</extends>
+   <header location="global">correspondenceview.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

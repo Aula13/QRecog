@@ -33,7 +33,8 @@ SOURCES += main.cpp\
     clusteringoptionview.cpp \
     segmentationoptionview.cpp \
     pclsegmentationfunction.cpp \
-    pclclusteringfunction.cpp
+    pclclusteringfunction.cpp \
+    correspondenceview.cpp
 
 HEADERS  += mainwindow.h \
     defines.h \
@@ -56,7 +57,8 @@ HEADERS  += mainwindow.h \
     clusteringoptionview.h \
     segmentationoptionview.h \
     pclsegmentationfunction.h \
-    pclclusteringfunction.h
+    pclclusteringfunction.h \
+    correspondenceview.h
 
 FORMS    += mainwindow.ui \
     pclviewer.ui \
@@ -66,7 +68,8 @@ FORMS    += mainwindow.ui \
     clusteringview.ui \
     filteroptionview.ui \
     clusteringoptionview.ui \
-    segmentationoptionview.ui
+    segmentationoptionview.ui \
+    correspondenceview.ui
 
 unix:!macx {
     INCLUDEPATH += /usr/include/pcl-1.7 \
