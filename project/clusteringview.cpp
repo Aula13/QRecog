@@ -10,11 +10,6 @@ ClusteringView::ClusteringView(QWidget *parent) :
     ui->wgtSegFileChooser->asFileOpener();
 }
 
-ClusteringView::~ClusteringView()
-{
-    delete ui;
-}
-
 void ClusteringView::on_btnSegment_clicked()
 {
     std::string filename = ui->wgtSegFileChooser->getSelectedFile();
@@ -27,17 +22,52 @@ void ClusteringView::on_btnSegment_clicked()
     pcl::PointCloud<pcl::PointXYZRGBA>::Ptr cloud (new pcl::PointCloud<pcl::PointXYZRGBA>), cloud_f (new pcl::PointCloud<pcl::PointXYZRGBA>);
     pcl::io::loadPCDFile(filename, *cloud);
 
-    PCLFilterFunction* filterf = new PCLFilterFunction();
+    computedModels.clear();
 
-    filterf->leafSize=ui->wgtFilterOptionView->getLeafSize();
+    if(ui->wgtFilterOptionView->isFilteringEnabled())
+    {
+        PCLFilterFunction* filterf = new PCLFilterFunction();
 
-    PCLSegmentationFunction* segf = new PCLSegmentationFunction();
+        filterf->leafSize=ui->wgtFilterOptionView->getLeafSize();
 
-    segf->optimazeCoeff = ui->wgtSegOptionView->getOptimizeCoeff();
-    segf->modelType = ui->wgtSegOptionView->getModelType();
-    segf->methodType = ui->wgtSegOptionView->getMethodType();
-    segf->maxIterations = ui->wgtSegOptionView->getMaxIterations();
-    segf->distanceThreashold = ui->wgtSegOptionView->getDistanceThreshold();
+        computedModels.push_back(filterf->filter(cloud));
+    }
 
-    ui->wgtPCLViewer->updateView(segf->segment(filterf->filter(cloud)));
+    if(ui->wgtSegOptionView->isSegmentationEnabled())
+    {
+        PCLSegmentationFunction* segf = new PCLSegmentationFunction();
+
+        segf->optimazeCoeff = ui->wgtSegOptionView->getOptimizeCoeff();
+        segf->modelType = ui->wgtSegOptionView->getModelType();
+        segf->methodType = ui->wgtSegOptionView->getMethodType();
+        segf->maxIterations = ui->wgtSegOptionView->getMaxIterations();
+        segf->distanceThreashold = ui->wgtSegOptionView->getDistanceThreshold();
+
+        if(computedModels.size()==1)
+        {
+            cloud_f=computedModels[0];
+            computedModels.pop_back();
+            computedModels.push_back(segf->segment(cloud_f));
+        } else
+            computedModels.push_back(segf->segment(cloud));
+    }
+
+    if(ui->wgtClusterOptionView->isClusteringEnabled())
+    {
+
+    }
+
+    changePClViewerModel(0);
 }
+
+void ClusteringView::changePClViewerModel(int index)
+{
+    ui->wgtPCLViewer->updateView(computedModels[0]);
+}
+
+ClusteringView::~ClusteringView()
+{
+    delete ui;
+}
+
+

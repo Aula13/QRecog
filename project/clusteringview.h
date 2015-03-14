@@ -9,6 +9,8 @@
 #include "pclfilterfunction.h"
 #include "pclsegmentationfunction.h"
 
+#include <pcl/point_types.h>
+
 namespace Ui {
 class ClusteringView;
 }
@@ -26,6 +28,12 @@ private slots:
 
 private:
     Ui::ClusteringView *ui;
+
+    std::vector<pcl::PointCloud<pcl::PointXYZRGBA>::Ptr> computedModels;
+
+    void changePClViewerModel(int index);
+
+
 };
 
 #endif // SEGMENTATIONVIEW_H
