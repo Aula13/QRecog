@@ -31,5 +31,13 @@ void ClusteringView::on_btnSegment_clicked()
 
     filterf->leafSize=ui->wgtFilterOptionView->getLeafSize();
 
-    ui->wgtPCLViewer->updateView(filterf->filter(cloud));
+    PCLSegmentationFunction* segf = new PCLSegmentationFunction();
+
+    segf->optimazeCoeff = ui->wgtSegOptionView->getOptimizeCoeff();
+    segf->modelType = ui->wgtSegOptionView->getModelType();
+    segf->methodType = ui->wgtSegOptionView->getMethodType();
+    segf->maxIterations = ui->wgtSegOptionView->getMaxIterations();
+    segf->distanceThreashold = ui->wgtSegOptionView->getDistanceThreshold();
+
+    ui->wgtPCLViewer->updateView(segf->segment(filterf->filter(cloud)));
 }

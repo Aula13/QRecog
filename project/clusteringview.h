@@ -7,6 +7,7 @@
 #include <QMessageBox>
 
 #include "pclfilterfunction.h"
+#include "pclsegmentationfunction.h"
 
 namespace Ui {
 class ClusteringView;

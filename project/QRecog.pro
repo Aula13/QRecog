@@ -31,7 +31,8 @@ SOURCES += main.cpp\
     clusteringview.cpp \
     filteroptionview.cpp \
     clusteringoptionview.cpp \
-    segmentationoptionview.cpp
+    segmentationoptionview.cpp \
+    pclsegmentationfunction.cpp
 
 HEADERS  += mainwindow.h \
     defines.h \
@@ -52,7 +53,8 @@ HEADERS  += mainwindow.h \
     clusteringview.h \
     filteroptionview.h \
     clusteringoptionview.h \
-    segmentationoptionview.h
+    segmentationoptionview.h \
+    pclsegmentationfunction.h
 
 FORMS    += mainwindow.ui \
     pclviewer.ui \
