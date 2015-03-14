@@ -14,6 +14,8 @@
 #include <pcl/segmentation/sac_segmentation.h>
 #include <pcl/segmentation/extract_clusters.h>
 
+#include "logger.h"
+
 class PCLSegmentationFunction
 {
 public:

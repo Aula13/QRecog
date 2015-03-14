@@ -28,7 +28,7 @@ pcl::PointCloud<pcl::PointXYZRGBA>::Ptr PCLSegmentationFunction::segment(pcl::Po
         seg.segment (*inliers, *coefficients); //TODO
         if (inliers->indices.size () == 0)
         {
-            std::cout << "Could not estimate a planar model for the given dataset." << std::endl;
+            Logger::logInfo("Could not estimate a planar model for the given dataset.");
             break;
         }
 
@@ -40,7 +40,6 @@ pcl::PointCloud<pcl::PointXYZRGBA>::Ptr PCLSegmentationFunction::segment(pcl::Po
 
         // Get the points associated with the planar surface
         extract.filter (*cloud_plane);
-        std::cout << "PointCloud representing the planar component: " << cloud_plane->points.size () << " data points." << std::endl;
 
         // Remove the planar inliers, extract the rest
         extract.setNegative (true);
