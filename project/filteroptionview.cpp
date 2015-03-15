@@ -13,6 +13,11 @@ float FilterOptionView::getLeafSize()
     return ui->spnLeafSize->value();
 }
 
+bool FilterOptionView::isFilteringEnabled()
+{
+    return ui->chkEnableFiltering->isChecked();
+}
+
 FilterOptionView::~FilterOptionView()
 {
     delete ui;

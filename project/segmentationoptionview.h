@@ -13,6 +13,15 @@ class SegmentationOptionView : public QWidget
 
 public:
     explicit SegmentationOptionView(QWidget *parent = 0);
+
+    bool isSegmentationEnabled();
+
+    bool getOptimizeCoeff();
+    int getModelType();
+    int getMethodType();
+    int getMaxIterations();
+    float getDistanceThreshold();
+
     ~SegmentationOptionView();
 
 private:

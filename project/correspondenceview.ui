@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>CorrespondenceView</class>
+ <widget class="QWidget" name="CorrespondenceView">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>981</width>
+    <height>651</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <widget class="CameraCtrlView" name="wgtCameraCtrl" native="true">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>10</y>
+     <width>241</width>
+     <height>141</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="PCLViewer" name="wgtPCLViewer" native="true">
+   <property name="geometry">
+    <rect>
+     <x>260</x>
+     <y>9</y>
+     <width>711</width>
+     <height>631</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QCheckBox" name="chkDisableUpdate">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>160</y>
+     <width>221</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Disable view updates</string>
+   </property>
+  </widget>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>PCLViewer</class>
+   <extends>QWidget</extends>
+   <header location="global">pclviewer.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>CameraCtrlView</class>
+   <extends>QWidget</extends>
+   <header location="global">cameractrlview.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

@@ -47,11 +47,14 @@
    <widget class="QComboBox" name="cmbModelType">
     <property name="geometry">
      <rect>
-      <x>14</x>
-      <y>70</y>
-      <width>211</width>
+      <x>124</x>
+      <y>90</y>
+      <width>101</width>
       <height>27</height>
      </rect>
+    </property>
+    <property name="editable">
+     <bool>false</bool>
     </property>
    </widget>
    <widget class="QSpinBox" name="spnMaxIterations">
@@ -62,6 +65,12 @@
       <width>71</width>
       <height>31</height>
      </rect>
+    </property>
+    <property name="maximum">
+     <number>999</number>
+    </property>
+    <property name="value">
+     <number>100</number>
     </property>
    </widget>
    <widget class="QLabel" name="lblMaxIterations">
@@ -84,8 +93,8 @@
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>50</y>
-      <width>201</width>
+      <y>90</y>
+      <width>101</width>
       <height>21</height>
      </rect>
     </property>
@@ -105,12 +114,15 @@
       <height>31</height>
      </rect>
     </property>
+    <property name="value">
+     <double>0.020000000000000</double>
+    </property>
    </widget>
    <widget class="QCheckBox" name="chkOptimazeCoef">
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>30</y>
+      <y>60</y>
       <width>221</width>
       <height>22</height>
      </rect>
@@ -118,13 +130,16 @@
     <property name="text">
      <string>Optimaze coefficients</string>
     </property>
+    <property name="checked">
+     <bool>true</bool>
+    </property>
    </widget>
    <widget class="QLabel" name="lblMethodType">
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>100</y>
-      <width>201</width>
+      <y>120</y>
+      <width>101</width>
       <height>21</height>
      </rect>
     </property>
@@ -138,9 +153,9 @@
    <widget class="QComboBox" name="cmbMethodType">
     <property name="geometry">
      <rect>
-      <x>14</x>
+      <x>124</x>
       <y>120</y>
-      <width>211</width>
+      <width>101</width>
       <height>27</height>
      </rect>
     </property>
@@ -159,6 +174,22 @@
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="chkEnableSegmentation">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>20</y>
+      <width>221</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Enable segmentation</string>
+    </property>
+    <property name="checked">
+     <bool>true</bool>
     </property>
    </widget>
   </widget>

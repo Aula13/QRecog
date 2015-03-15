@@ -11,26 +11,29 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = QRecog
 TEMPLATE = app
 
-SOURCES +=  main.cpp\
-            mainwindow.cpp \
-            viewermodel.cpp \
-            cameramodel.cpp \
-            observer.cpp \
-            observable.cpp \
-            pclviewer.cpp \
-            acquisitionview.cpp \
-            cameractrlview.cpp \
-            logger.cpp \
-            pcsource.cpp \
-            simcameramodel.cpp \
-            models.cpp \
-            filechooser.cpp \
-            pclfunction.cpp \
-            pclfilterfunction.cpp \
-            clusteringview.cpp \
-            filteroptionview.cpp \
-            clusteringoptionview.cpp \
-            segmentationoptionview.cpp
+SOURCES += main.cpp\
+        mainwindow.cpp \
+        viewermodel.cpp \
+        cameramodel.cpp \
+        observer.cpp \
+        observable.cpp \
+        pclviewer.cpp \
+        acquisitionview.cpp \
+        cameractrlview.cpp \
+        logger.cpp \
+        pcsource.cpp \
+        simcameramodel.cpp \
+        models.cpp \
+        filechooser.cpp \
+        pclfunction.cpp \
+        pclfilterfunction.cpp \
+        clusteringview.cpp \
+        filteroptionview.cpp \
+        clusteringoptionview.cpp \
+        segmentationoptionview.cpp \
+        pclsegmentationfunction.cpp \
+        pclclusteringfunction.cpp \
+        correspondenceview.cpp
 
 HEADERS  += mainwindow.h \
             defines.h \
@@ -51,7 +54,10 @@ HEADERS  += mainwindow.h \
             clusteringview.h \
             filteroptionview.h \
             clusteringoptionview.h \
-            segmentationoptionview.h
+            segmentationoptionview.h \
+            pclsegmentationfunction.h \
+            pclclusteringfunction.h \
+            correspondenceview.h
 
 FORMS    += mainwindow.ui \
             pclviewer.ui \
@@ -61,19 +67,8 @@ FORMS    += mainwindow.ui \
             clusteringview.ui \
             filteroptionview.ui \
             clusteringoptionview.ui \
-            segmentationoptionview.ui
-
-unix!macx: {
-INCLUDEPATH += /usr/include/pcl-1.7 \
-               /usr/include/eigen3 \
-               /usr/include/openni2 \
-               /usr/include/vtk-5.8 \
-               /usr/include/boost \
-               /usr/include/flann
-
-
-    LIBS += "-L/usr/lib"
-}
+            segmentationoptionview.ui \
+            correspondenceview.ui
 
 macx {
     INCLUDEPATH += /usr/local/include/ \
@@ -87,18 +82,24 @@ macx {
                    /usr/local/include/ni2 \
                    /usr/local/include/ni \
 
+
     LIBS += "-L/usr/local/lib" \
             "-L/usr/local/lib/ni2" \
             "-L/usr/local/Cellar/vtk5/5.10.1_1/lib/vtk-5.10"
-
-
-    IQMAKE_CXXFLAGS_X86_64  -= -mmacosx-version-min=10.5
-    QMAKE_LFLAGS_X86_64     -= -mmacosx-version-min=10.5
-    QMAKE_CXXFLAGS_X86_64   +=  -mmacosx-version-min=10.9
-    QMAKE_LFLAGS_X86_64     += -mmacosx-version-min=10.9
 }
 
-unix: {
+unix {
+    INCLUDEPATH += /usr/include/pcl-1.7 \
+                   /usr/include/eigen3 \
+                   /usr/include/openni2 \
+                   /usr/include/vtk-5.8 \
+                   /usr/include/boost \
+                   /usr/include/flann
+
+
+
+
+    LIBS += "-L/usr/lib"
     LIBS += -lboost_system \
 
     LIBS += -lpcl_apps \
@@ -124,4 +125,12 @@ unix: {
             -lvtkImaging \
             -lvtkRendering \
             -lQVTK
+
+}
+
+macx {
+    IQMAKE_CXXFLAGS_X86_64  -= -mmacosx-version-min=10.5
+    QMAKE_LFLAGS_X86_64     -= -mmacosx-version-min=10.5
+    QMAKE_CXXFLAGS_X86_64   +=  -mmacosx-version-min=10.9
+    QMAKE_LFLAGS_X86_64     += -mmacosx-version-min=10.9
 }

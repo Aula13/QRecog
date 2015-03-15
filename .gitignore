@@ -1,4 +1,8 @@
+# Mac OSX index files
 *.DS_Store
+
+# Qt user files
+*.user
 
 # Compiled Object files
 *.slo

@@ -104,7 +104,7 @@
     </rect>
    </property>
   </widget>
-  <widget class="QCheckBox" name="checkBox">
+  <widget class="QCheckBox" name="chkDisableUpdates">
    <property name="geometry">
     <rect>
      <x>20</x>
@@ -126,15 +126,15 @@
    <container>1</container>
   </customwidget>
   <customwidget>
-   <class>CameraCtrlView</class>
-   <extends>QWidget</extends>
-   <header location="global">cameractrlview.h</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
    <class>FileChooser</class>
    <extends>QWidget</extends>
    <header location="global">filechooser.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>CameraCtrlView</class>
+   <extends>QWidget</extends>
+   <header location="global">cameractrlview.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
