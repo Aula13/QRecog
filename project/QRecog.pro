@@ -82,7 +82,6 @@ macx {
                    /usr/local/include/ni2 \
                    /usr/local/include/ni \
 
-
     LIBS += "-L/usr/local/lib" \
             "-L/usr/local/lib/ni2" \
             "-L/usr/local/Cellar/vtk5/5.10.1_1/lib/vtk-5.10"
@@ -95,9 +94,6 @@ unix {
                    /usr/include/vtk-5.8 \
                    /usr/include/boost \
                    /usr/include/flann
-
-
-
 
     LIBS += "-L/usr/lib"
     LIBS += -lboost_system \
@@ -117,7 +113,6 @@ unix {
             -lpcl_recognition \
             -lpcl_registration
 
-
     LIBS += -lvtkCommon \
             -lvtkGraphics \
             -lvtkFiltering \
@@ -125,7 +120,6 @@ unix {
             -lvtkImaging \
             -lvtkRendering \
             -lQVTK
-
 }
 
 macx {
