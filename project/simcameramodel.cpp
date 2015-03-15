@@ -18,7 +18,7 @@ void SimCameraModel::stop()
 pcl::PointCloud<pcl::PointXYZRGBA>::Ptr SimCameraModel::getLastAcquisition()
 {
     pcl::PointCloud<pcl::PointXYZRGBA>::Ptr cloud (new pcl::PointCloud<pcl::PointXYZRGBA>), cloud_f (new pcl::PointCloud<pcl::PointXYZRGBA>);
-    pcl::io::loadPCDFile("table_scene_lms400.pcd", *cloud);
+    pcl::io::loadPCDFile("new_Scene.pcd", *cloud);
     return cloud;
 }
 
