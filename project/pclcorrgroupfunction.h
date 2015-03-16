@@ -37,6 +37,8 @@ public:
     bool applyTrasformationToModel;
     bool showUsedKeypoints;
     bool showUsedCorrespondence;
+
+    bool useCloudResolution;
 };
 
 #endif // PCLCORRGROUPFUNCTION_H
