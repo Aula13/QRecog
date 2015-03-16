@@ -32,9 +32,13 @@ public:
     float cg_size;
     float cg_threshold;
 
+    bool useHough;
+
     bool applyTrasformationToModel;
     bool showUsedKeypoints;
     bool showUsedCorrespondence;
+
+    bool useCloudResolution;
 };
 
 #endif // PCLCORRGROUPFUNCTION_H
