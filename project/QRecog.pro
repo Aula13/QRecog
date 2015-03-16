@@ -33,7 +33,8 @@ SOURCES += main.cpp\
         segmentationoptionview.cpp \
         pclsegmentationfunction.cpp \
         pclclusteringfunction.cpp \
-        correspondenceview.cpp
+        correspondenceview.cpp \
+    pclcorrgroupfunction.cpp
 
 HEADERS  += mainwindow.h \
             defines.h \
@@ -57,7 +58,8 @@ HEADERS  += mainwindow.h \
             segmentationoptionview.h \
             pclsegmentationfunction.h \
             pclclusteringfunction.h \
-            correspondenceview.h
+            correspondenceview.h \
+    pclcorrgroupfunction.h
 
 FORMS    += mainwindow.ui \
             pclviewer.ui \
