@@ -46,6 +46,7 @@ void PCLViewer::updateView(pcl::PointCloud<pcl::PointXYZRGBA>::Ptr cloud)
     viewer->removeAllPointClouds();
     viewer->addPointCloud (cloud);
     viewer->resetCamera ();
+
     ui->qvtkWidget->update ();
     Logger::logInfo("PCLViewer update");
 }

@@ -122,6 +122,7 @@ unix {
             -lQVTK
 }
 
+# QMAKE FLAGS
 macx {
     IQMAKE_CXXFLAGS_X86_64  -= -mmacosx-version-min=10.5
     QMAKE_LFLAGS_X86_64     -= -mmacosx-version-min=10.5
