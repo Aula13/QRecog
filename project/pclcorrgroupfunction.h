@@ -17,6 +17,17 @@
 #include <pcl/console/parse.h>
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include <boost/thread/thread.hpp>
+#include "logger.h"
+
+
+typedef pcl::PointXYZRGB PointType;
+typedef pcl::Normal NormalType;
+typedef pcl::ReferenceFrame RFType;
+typedef pcl::SHOT352 DescriptorType;
+typedef boost::signals2::signal<void ()>  signal_t;
+typedef pcl::PointCloud<PointType>::Ptr cloudPtr;
+typedef pcl::PointCloud<NormalType>::Ptr normalsPtr;
+typedef pcl::PointCloud<DescriptorType>::Ptr descriptorsPtr;
 
 class PCLCorrGroupFunction
 {
@@ -24,21 +35,71 @@ public:
     PCLCorrGroupFunction();
 
     pcl::PointCloud<pcl::PointXYZRGBA>::Ptr getCorrespondence(pcl::PointCloud<pcl::PointXYZRGBA>::Ptr cloud);
+    void setupDefaultValues();
+    void recognize (); //TODO REMOVE THIS
+    // SETTERS LI RIMUOVIAMO E TENIAMO TUTTE LE VARIABILI PUBBLICHE
+    void setModelCloud(cloudPtr &cloud);
+    void setSceneCloud(cloudPtr &cloud);
+    void setModelFilename(std::string modelFileName);
+    void setSceneFilename(std::string sceneFileName);
+    void setSceneSampleSize(float sceneSampleSize);
+    void setModelSampleSize(float modelSampleSize);
+    void setDescriptorsRadius(float descriptorsRadius);
+    void setCGSize(float cgSize);
+    void setReferenceFrameRadius(float referenceFrameRadius);
+    void setCgThreshold(float cgThreshold);
+    void setUseHough(bool useHough);
+    void setShowUsedKeypoints(bool showUsedKeypoints);
+    void setApplyTrasformationToModel(bool applyTrasformationToModel);
+    void setShowUsedCorrespondence(bool showUsedCorrespondence);
+    void setUseCloudResolution(bool useCloudResolution);
+    void loadCloudsFromDefaultFile();
+    void loadSceneFromFile(std::string sceneFilename);
+    void loadModelFromFile(std::string modelFilename);
 
-    float model_ss;
-    float scene_ss;
-    float descr_rad;
-    float rf_rad;
-    float cg_size;
-    float cg_threshold;
-
+    //Variables
+    std::string modelFileName;
+    std::string sceneFileName;
+    cloudPtr model;
+    cloudPtr scene;
+    float modelSampleSize;
+    float sceneSampleSize;
+    float descriptorsRadius;
+    float referenceFrameRadius;
+    float cgSize;
+    float cgThreshold;
     bool useHough;
-
     bool applyTrasformationToModel;
     bool showUsedKeypoints;
     bool showUsedCorrespondence;
-
     bool useCloudResolution;
+    cloudPtr        modelKeypoints;
+    cloudPtr        sceneKeypoints;
+    normalsPtr      modelNormals;
+    normalsPtr      sceneNormals;
+    descriptorsPtr  modelDescriptors;
+    descriptorsPtr  sceneDescriptors;
+    pcl::CorrespondencesPtr modelSceneCorrs;
+    std::vector<Eigen::Matrix4f, Eigen::aligned_allocator<Eigen::Matrix4f> > rototranslations;
+    std::vector<pcl::Correspondences> clusteredCorrs;
+
+private:
+    //Functions
+    double computeCloudResolution (const pcl::PointCloud<PointType>::ConstPtr &cloud);
+    void transformCloud (pcl::PointCloud<PointType>::Ptr &cloud);
+    void setUpResolutionInvariance();
+    void computeNormals();
+    void downSampleScene();
+    void downSampleModel();
+    void downSampleCloud(cloudPtr &cloud,  float sampleSize, cloudPtr &keypoints);
+    void computeDescriptorsForKeypoints(cloudPtr &cloud,  cloudPtr &keypoints, normalsPtr &normals, descriptorsPtr &descriptors);
+    void findCorrespondences();
+    void recognizeUsingHough();
+    void recognizeUsingGeometricConsistency();
+    void printResults();
+    void resetValues ();
+
+
 };
 
 #endif // PCLCORRGROUPFUNCTION_H
