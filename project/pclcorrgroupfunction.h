@@ -36,7 +36,7 @@ public:
 
     cloudPtr getCorrespondence(cloudPtr cloud);
     void setupDefaultValues();
-    void recognize (); //TODO REMOVE THIS
+    void recognize ();
     // SETTERS LI RIMUOVIAMO E TENIAMO TUTTE LE VARIABILI PUBBLICHE
     void setModelCloud(cloudPtr &cloud);
     void setSceneCloud(cloudPtr &cloud);
