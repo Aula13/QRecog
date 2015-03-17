@@ -72,7 +72,7 @@ void ClusteringView::on_btnSegment_clicked()
     changePClViewerModel(0);
 }
 
-void ClusteringView::changePClViewerModel(int index)
+void ClusteringView::changePClViewerModel(unsigned int index)
 {
     if(computedModels.size()!=0)
     {
@@ -81,7 +81,7 @@ void ClusteringView::changePClViewerModel(int index)
         if(index>=computedModels.size())
             index=computedModels.size()-1;
 
-        ui->wgtPCLViewer->updateView(computedModels);
+        ui->wgtPCLViewer->updateView(computedModels[index]);
 
         if(actualModelViewer<=0)
             ui->btnPrevModel->setEnabled(false);

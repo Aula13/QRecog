@@ -39,9 +39,9 @@ private:
 
     std::vector<pcl::PointCloud<pcl::PointXYZRGBA>::Ptr> computedModels;
 
-    int actualModelViewer;
+    unsigned int actualModelViewer;
 
-    void changePClViewerModel(int index);
+    void changePClViewerModel(unsigned int index);
 
 };
 

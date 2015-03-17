@@ -59,6 +59,20 @@ void PCLViewer::updateView(std::vector<pcl::PointCloud<pcl::PointXYZRGBA>::Ptr> 
     Logger::logInfo("PCLViewer update");
 }
 
+void PCLViewer::updateView(pcl::PointCloud<pcl::PointXYZRGBA>::Ptr cloud)
+{
+    viewer->removeAllPointClouds();
+    Logger::logDebug("Existent point cloud removed from PLCViewer");
+
+    viewer->addPointCloud (cloud);
+    Logger::logDebug("Add cloud to PLCViewer");
+
+    viewer->resetCamera ();
+
+    ui->qvtkWidget->update ();
+    Logger::logInfo("PCLViewer update");
+}
+
 PCLViewer::~PCLViewer()
 {
     delete ui;
