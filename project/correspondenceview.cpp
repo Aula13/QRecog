@@ -76,11 +76,9 @@ void CorrespondenceView::update(Observable* obs)
 
         cff->setModelCloud(searchedModels[0]);
 
-        cff->getCorrespondence(computedModels[0]);
-
         std::vector<pcl::PointCloud<pcl::PointXYZRGBA>::Ptr> resultClouds;
 
-        resultClouds.push_back(cloud);
+        resultClouds.push_back(cff->getCorrespondence(computedModels[0]));
 
         ui->wgtPCLViewer->updateView(resultClouds);
     }
