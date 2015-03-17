@@ -317,6 +317,9 @@
     <property name="text">
      <string>Hough</string>
     </property>
+    <property name="checked">
+     <bool>true</bool>
+    </property>
    </widget>
    <widget class="QRadioButton" name="rdbGC">
     <property name="geometry">
@@ -360,7 +363,7 @@
      <string>Apply trasform to model</string>
     </property>
     <property name="checked">
-     <bool>true</bool>
+     <bool>false</bool>
     </property>
    </widget>
    <widget class="QCheckBox" name="chkShowUsedkeypoints">
@@ -408,7 +411,7 @@
      <string>Compute model resolution</string>
     </property>
     <property name="checked">
-     <bool>true</bool>
+     <bool>false</bool>
     </property>
    </widget>
    <widget class="FileChooser" name="wgtCGFileChooser" native="true">

@@ -34,7 +34,7 @@ class PCLCorrGroupFunction
 public:
     PCLCorrGroupFunction();
 
-    cloudPtr getCorrespondence(cloudPtr cloud);
+    cloudPtr getCorrespondence();
     void setupDefaultValues();
     void recognize ();
     // SETTERS LI RIMUOVIAMO E TENIAMO TUTTE LE VARIABILI PUBBLICHE

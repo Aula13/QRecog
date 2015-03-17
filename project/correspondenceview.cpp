@@ -74,13 +74,14 @@ void CorrespondenceView::update(Observable* obs)
 
         cff->useCloudResolution = ui->chkComputeModelRes->isChecked();
 
-        *cff->model = *searchedModels[0];
-        *cff->scene = *cloud;
+        cff->model = searchedModels[0];
+        cff->scene = computedModels[0];
         cff->recognize();
 
         std::vector<pcl::PointCloud<pcl::PointXYZRGBA>::Ptr> resultClouds;
 
-        resultClouds.push_back(cff->getCorrespondence(computedModels[0]));
+        resultClouds.push_back(cff->scene);
+        resultClouds.push_back(cff->getCorrespondence());
 
         ui->wgtPCLViewer->updateView(resultClouds);
     }
