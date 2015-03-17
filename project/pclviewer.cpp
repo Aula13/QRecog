@@ -34,17 +34,25 @@ void PCLViewer::update(Observable *obs)
 {
     if(!disableUpdate) {
         PCSource* model = (PCSource*) obs;
-        updateView(model->getLastAcquisition());
+
+        std::vector<pcl::PointCloud<pcl::PointXYZRGBA>::Ptr> clouds;
+        clouds.push_back(model->getLastAcquisition());
+        updateView(clouds);
     } else {
         Logger::logInfo("PCLViewer update received but disabled");
     }
-
 }
 
-void PCLViewer::updateView(pcl::PointCloud<pcl::PointXYZRGBA>::Ptr cloud)
+void PCLViewer::updateView(std::vector<pcl::PointCloud<pcl::PointXYZRGBA>::Ptr> clouds)
 {
     viewer->removeAllPointClouds();
-    viewer->addPointCloud (cloud);
+    Logger::logDebug("Existent point cloud removed from PLCViewer");
+
+    foreach (pcl::PointCloud<pcl::PointXYZRGBA>::Ptr aCloud, clouds) {
+        viewer->addPointCloud (aCloud);
+        Logger::logDebug("Add cloud to PLCViewer");
+    }
+
     viewer->resetCamera ();
 
     ui->qvtkWidget->update ();
