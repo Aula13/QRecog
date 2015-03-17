@@ -20,7 +20,7 @@
 #include "logger.h"
 
 
-typedef pcl::PointXYZRGB PointType;
+typedef pcl::PointXYZRGBA PointType;
 typedef pcl::Normal NormalType;
 typedef pcl::ReferenceFrame RFType;
 typedef pcl::SHOT352 DescriptorType;
@@ -34,7 +34,7 @@ class PCLCorrGroupFunction
 public:
     PCLCorrGroupFunction();
 
-    pcl::PointCloud<pcl::PointXYZRGBA>::Ptr getCorrespondence(pcl::PointCloud<pcl::PointXYZRGBA>::Ptr cloud);
+    cloudPtr getCorrespondence(cloudPtr cloud);
     void setupDefaultValues();
     void recognize (); //TODO REMOVE THIS
     // SETTERS LI RIMUOVIAMO E TENIAMO TUTTE LE VARIABILI PUBBLICHE

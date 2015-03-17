@@ -59,12 +59,12 @@ void CorrespondenceView::update(Observable* obs)
 
         PCLCorrGroupFunction* cff = new PCLCorrGroupFunction();
 
-        cff->model_ss = ui->spnModelss->value();
-        cff->scene_ss = ui->spnSceness->value();
-        cff->descr_rad = ui->spnDescRad->value();
-        cff->rf_rad = ui->spnRFRad->value();
-        cff->cg_size = ui->spnCGSize->value();
-        cff->cg_threshold = ui->spnCGThres->value();
+        cff->modelSampleSize = ui->spnModelss->value();
+        cff->sceneSampleSize = ui->spnSceness->value();
+        cff->descriptorsRadius = ui->spnDescRad->value();
+        cff->referenceFrameRadius = ui->spnRFRad->value();
+        cff->cgSize = ui->spnCGSize->value();
+        cff->cgThreshold = ui->spnCGThres->value();
 
         cff->useHough = ui->rdbHough->isChecked();
 
@@ -74,7 +74,7 @@ void CorrespondenceView::update(Observable* obs)
 
         cff->useCloudResolution = ui->chkComputeModelRes->isChecked();
 
-        cff->setModelCloud(searchedModels[0]);
+        *cff->model = *searchedModels[0];
 
         std::vector<pcl::PointCloud<pcl::PointXYZRGBA>::Ptr> resultClouds;
 

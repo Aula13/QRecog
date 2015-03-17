@@ -7,7 +7,7 @@ PCLCorrGroupFunction::PCLCorrGroupFunction()
     setupDefaultValues();
 }
 
-pcl::PointCloud<pcl::PointXYZRGBA>::Ptr PCLCorrGroupFunction::getCorrespondence(pcl::PointCloud<pcl::PointXYZRGBA>::Ptr cloud)
+cloudPtr PCLCorrGroupFunction::getCorrespondence(cloudPtr cloud)
 {
     return cloud;
 }
@@ -39,6 +39,107 @@ void PCLCorrGroupFunction::setSceneCloud(cloudPtr &cloud){
     this->scene = cloud;
 }
 
+void PCLCorrGroupFunction::recognize ()
+    {
+        resetValues();
+        if (!this->model)
+        {
+            std::cout << "Error model cloud is null." << std::endl << "returning." << std::endl;
+            return;
+        }
+        if (!this->scene)
+        {
+            std::cout << "Error scene cloud is null." << std::endl << "returning" << std::endl;
+            return;
+        }
+        if (applyTrasformationToModel)
+            transformCloud(model);
+
+        if (useCloudResolution)
+            setUpResolutionInvariance();
+
+        computeNormals();
+
+        // Extract keypoints
+        downSampleModel();
+        downSampleScene();
+
+        computeDescriptorsForKeypoints(model, modelKeypoints, modelNormals, modelDescriptors);
+        computeDescriptorsForKeypoints(scene, sceneKeypoints, sceneNormals, sceneDescriptors);
+
+        findCorrespondences();
+
+        //  Actual Clustering
+        if (useHough)
+            recognizeUsingHough();
+        else
+            recognizeUsingGeometricConsistency();
+
+        printResults();
+
+        //
+        //  Visualization
+        //
+//        pcl::visualization::PCLVisualizer viewer = pcl::visualization::PCLVisualizer::PCLVisualizer("Correspondence Grouping");
+//        viewer.addPointCloud (scene, "scene_cloud");
+
+//        cloudPtr off_scene_model_keypoints (new pcl::PointCloud<PointType> ());
+
+//        if (showUsedCorrespondence || showUsedKeypoints)
+//        {
+//            cloudPtr off_scene_model (new pcl::PointCloud<PointType> ());
+
+//            //  We are translating the model so that it doesn't end in the middle of the scene representation
+//            pcl::transformPointCloud (*model, *off_scene_model, Eigen::Vector3f (-1,0,0), Eigen::Quaternionf (1, 0, 0, 0));
+//            pcl::transformPointCloud (*model_keypoints, *off_scene_model_keypoints, Eigen::Vector3f (-1,0,0), Eigen::Quaternionf (1, 0, 0, 0));
+
+//            pcl::visualization::PointCloudColorHandlerCustom<PointType> off_scene_model_color_handler (off_scene_model, 255, 255, 128);
+//            viewer.addPointCloud (off_scene_model, off_scene_model_color_handler, "off_scene_model");
+//        }
+
+//        if (showUsedKeypoints)
+//        {
+//            pcl::visualization::PointCloudColorHandlerCustom<PointType> scene_keypoints_color_handler (scene_keypoints, 0, 0, 255);
+//            viewer.addPointCloud (scene_keypoints, scene_keypoints_color_handler, "scene_keypoints");
+//            viewer.setPointCloudRenderingProperties (pcl::visualization::PCL_VISUALIZER_POINT_SIZE, 5, "scene_keypoints");
+
+//            pcl::visualization::PointCloudColorHandlerCustom<PointType> off_scene_model_keypoints_color_handler (off_scene_model_keypoints, 0, 0, 255);
+//            viewer.addPointCloud (off_scene_model_keypoints, off_scene_model_keypoints_color_handler, "off_scene_model_keypoints");
+//            viewer.setPointCloudRenderingProperties (pcl::visualization::PCL_VISUALIZER_POINT_SIZE, 5, "off_scene_model_keypoints");
+//        }
+
+//        for (size_t i = 0; i < rototranslations.size (); ++i)
+//        {
+//            cloudPtr rotated_model (new pcl::PointCloud<PointType> ());
+//            pcl::transformPointCloud (*model, *rotated_model, rototranslations[i]);
+
+//            std::stringstream ss_cloud;
+//            ss_cloud << "instance" << i;
+
+//            pcl::visualization::PointCloudColorHandlerCustom<PointType> rotated_model_color_handler (rotated_model, 255, 0, 0);
+//            viewer.addPointCloud (rotated_model, rotated_model_color_handler, ss_cloud.str ());
+
+//            if (showUsedCorrespondence)
+//            {
+//                for (size_t j = 0; j < clustered_corrs[i].size (); ++j)
+//                {
+//                    std::stringstream ss_line;
+//                    ss_line << "correspondence_line" << i << "_" << j;
+//                    PointType& model_point = off_scene_model_keypoints->at (clustered_corrs[i][j].index_query);
+//                    PointType& scene_point = scene_keypoints->at (clustered_corrs[i][j].index_match);
+
+//                    //  We are drawing a line for each pair of clustered correspondences found between the model and the scene
+//                    //viewer.addLine<PointType, PointType> (model_point, scene_point, 0, 255, 0, ss_line.str ());
+//                }
+//            }
+//        }
+//        while ( !viewer.wasStopped ())
+//        {
+//            viewer.spinOnce ();
+//        }
+        //viewer.~PCLVisualizer();        //rotated_model = nullptr;
+
+}
 
 double PCLCorrGroupFunction::computeCloudResolution (const pcl::PointCloud<PointType>::ConstPtr &cloud)
     {
@@ -282,104 +383,4 @@ void PCLCorrGroupFunction::resetValues (){
     modelSceneCorrs    = (pcl::CorrespondencesPtr)new pcl::Correspondences ();
 }
 
-void PCLCorrGroupFunction::recognize ()
-    {
-        resetValues();
-        if (!this->model)
-        {
-            std::cout << "Error model cloud is null." << std::endl << "returning." << std::endl;
-            return;
-        }
-        if (!this->scene)
-        {
-            std::cout << "Error scene cloud is null." << std::endl << "returning" << std::endl;
-            return;
-        }
-        if (applyTrasformationToModel)
-            transformCloud(model);
 
-        if (useCloudResolution)
-            setUpResolutionInvariance();
-
-        computeNormals();
-
-        // Extract keypoints
-        downSampleModel();
-        downSampleScene();
-
-        computeDescriptorsForKeypoints(model, modelKeypoints, modelNormals, modelDescriptors);
-        computeDescriptorsForKeypoints(scene, sceneKeypoints, sceneNormals, sceneDescriptors);
-
-        findCorrespondences();
-
-        //  Actual Clustering
-        if (useHough)
-            recognizeUsingHough();
-        else
-            recognizeUsingGeometricConsistency();
-
-        printResults();
-
-        //
-        //  Visualization
-        //
-//        pcl::visualization::PCLVisualizer viewer = pcl::visualization::PCLVisualizer::PCLVisualizer("Correspondence Grouping");
-//        viewer.addPointCloud (scene, "scene_cloud");
-
-//        cloudPtr off_scene_model_keypoints (new pcl::PointCloud<PointType> ());
-
-//        if (showUsedCorrespondence || showUsedKeypoints)
-//        {
-//            cloudPtr off_scene_model (new pcl::PointCloud<PointType> ());
-
-//            //  We are translating the model so that it doesn't end in the middle of the scene representation
-//            pcl::transformPointCloud (*model, *off_scene_model, Eigen::Vector3f (-1,0,0), Eigen::Quaternionf (1, 0, 0, 0));
-//            pcl::transformPointCloud (*model_keypoints, *off_scene_model_keypoints, Eigen::Vector3f (-1,0,0), Eigen::Quaternionf (1, 0, 0, 0));
-
-//            pcl::visualization::PointCloudColorHandlerCustom<PointType> off_scene_model_color_handler (off_scene_model, 255, 255, 128);
-//            viewer.addPointCloud (off_scene_model, off_scene_model_color_handler, "off_scene_model");
-//        }
-
-//        if (showUsedKeypoints)
-//        {
-//            pcl::visualization::PointCloudColorHandlerCustom<PointType> scene_keypoints_color_handler (scene_keypoints, 0, 0, 255);
-//            viewer.addPointCloud (scene_keypoints, scene_keypoints_color_handler, "scene_keypoints");
-//            viewer.setPointCloudRenderingProperties (pcl::visualization::PCL_VISUALIZER_POINT_SIZE, 5, "scene_keypoints");
-
-//            pcl::visualization::PointCloudColorHandlerCustom<PointType> off_scene_model_keypoints_color_handler (off_scene_model_keypoints, 0, 0, 255);
-//            viewer.addPointCloud (off_scene_model_keypoints, off_scene_model_keypoints_color_handler, "off_scene_model_keypoints");
-//            viewer.setPointCloudRenderingProperties (pcl::visualization::PCL_VISUALIZER_POINT_SIZE, 5, "off_scene_model_keypoints");
-//        }
-
-//        for (size_t i = 0; i < rototranslations.size (); ++i)
-//        {
-//            cloudPtr rotated_model (new pcl::PointCloud<PointType> ());
-//            pcl::transformPointCloud (*model, *rotated_model, rototranslations[i]);
-
-//            std::stringstream ss_cloud;
-//            ss_cloud << "instance" << i;
-
-//            pcl::visualization::PointCloudColorHandlerCustom<PointType> rotated_model_color_handler (rotated_model, 255, 0, 0);
-//            viewer.addPointCloud (rotated_model, rotated_model_color_handler, ss_cloud.str ());
-
-//            if (showUsedCorrespondence)
-//            {
-//                for (size_t j = 0; j < clustered_corrs[i].size (); ++j)
-//                {
-//                    std::stringstream ss_line;
-//                    ss_line << "correspondence_line" << i << "_" << j;
-//                    PointType& model_point = off_scene_model_keypoints->at (clustered_corrs[i][j].index_query);
-//                    PointType& scene_point = scene_keypoints->at (clustered_corrs[i][j].index_match);
-
-//                    //  We are drawing a line for each pair of clustered correspondences found between the model and the scene
-//                    //viewer.addLine<PointType, PointType> (model_point, scene_point, 0, 255, 0, ss_line.str ());
-//                }
-//            }
-//        }
-//        while ( !viewer.wasStopped ())
-//        {
-//            viewer.spinOnce ();
-//        }
-        //viewer.~PCLVisualizer();        //rotated_model = nullptr;
-
-}
