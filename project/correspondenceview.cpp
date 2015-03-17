@@ -75,6 +75,8 @@ void CorrespondenceView::update(Observable* obs)
         cff->useCloudResolution = ui->chkComputeModelRes->isChecked();
 
         *cff->model = *searchedModels[0];
+        *cff->scene = *cloud;
+        cff->recognize();
 
         std::vector<pcl::PointCloud<pcl::PointXYZRGBA>::Ptr> resultClouds;
 
