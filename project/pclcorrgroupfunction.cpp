@@ -8,3 +8,8 @@ pcl::PointCloud<pcl::PointXYZRGBA>::Ptr PCLCorrGroupFunction::getCorrespondence(
 {
     return cloud;
 }
+
+void PCLCorrGroupFunction::setModelCloud(pcl::PointCloud<pcl::PointXYZRGBA>::Ptr point)
+{
+
+}

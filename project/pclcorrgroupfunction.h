@@ -25,6 +25,8 @@ public:
 
     pcl::PointCloud<pcl::PointXYZRGBA>::Ptr getCorrespondence(pcl::PointCloud<pcl::PointXYZRGBA>::Ptr cloud);
 
+    void setModelCloud(pcl::PointCloud<pcl::PointXYZRGBA>::Ptr point);
+
     float model_ss;
     float scene_ss;
     float descr_rad;

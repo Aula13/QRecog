@@ -19,15 +19,18 @@ class AcquisitionView : public QWidget
 
 public:
     explicit AcquisitionView(QWidget *parent = 0);
+
     ~AcquisitionView();
 
 private slots:
     void on_btnCapture_clicked();
 
-    void on_checkBox_stateChanged(int arg1);
+    void on_chkDisableUpdates_stateChanged(int arg1);
 
 private:
     Ui::AcquisitionView *ui;
+
+    bool viewEnabled;
 };
 
 #endif // AcquisitionView_H

@@ -38,7 +38,7 @@ void AcquisitionView::on_btnCapture_clicked()
     }
 }
 
-void AcquisitionView::on_checkBox_stateChanged(int arg1)
+void AcquisitionView::on_chkDisableUpdates_stateChanged(int arg1)
 {
     if(arg1==0)
         ui->wgtPCLViewer->enableUpdates();
