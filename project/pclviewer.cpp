@@ -48,9 +48,11 @@ void PCLViewer::updateView(std::vector<pcl::PointCloud<pcl::PointXYZRGBA>::Ptr> 
     viewer->removeAllPointClouds();
     Logger::logDebug("Existent point cloud removed from PLCViewer");
 
+    int i = 0;
     foreach (pcl::PointCloud<pcl::PointXYZRGBA>::Ptr aCloud, clouds) {
-        viewer->addPointCloud (aCloud);
+        viewer->addPointCloud (aCloud, "cloud" + boost::lexical_cast<std::string>(i));
         Logger::logDebug("Add cloud to PLCViewer");
+        i++;
     }
 
     viewer->resetCamera ();
