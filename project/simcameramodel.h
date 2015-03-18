@@ -2,6 +2,7 @@
 #define SIMCAMERAMODEL_H
 
 #include "pcsource.h"
+#include <QDir>
 
 class SimCameraModel : public PCSource
 {

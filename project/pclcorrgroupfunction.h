@@ -33,58 +33,42 @@ class PCLCorrGroupFunction
 {
 public:
     PCLCorrGroupFunction();
-
     cloudPtr getCorrespondence();
-    void setupDefaultValues();
     void recognize ();
-    // SETTERS LI RIMUOVIAMO E TENIAMO TUTTE LE VARIABILI PUBBLICHE
-    void setModelCloud(cloudPtr &cloud);
-    void setSceneCloud(cloudPtr &cloud);
-    void setModelFilename(std::string modelFileName);
-    void setSceneFilename(std::string sceneFileName);
-    void setSceneSampleSize(float sceneSampleSize);
-    void setModelSampleSize(float modelSampleSize);
-    void setDescriptorsRadius(float descriptorsRadius);
-    void setCGSize(float cgSize);
-    void setReferenceFrameRadius(float referenceFrameRadius);
-    void setCgThreshold(float cgThreshold);
-    void setUseHough(bool useHough);
-    void setShowUsedKeypoints(bool showUsedKeypoints);
-    void setApplyTrasformationToModel(bool applyTrasformationToModel);
-    void setShowUsedCorrespondence(bool showUsedCorrespondence);
-    void setUseCloudResolution(bool useCloudResolution);
     void loadCloudsFromDefaultFile();
     void loadSceneFromFile(std::string sceneFilename);
     void loadModelFromFile(std::string modelFilename);
+    void setUpOffSceneModel();
 
     //Variables
-    std::string modelFileName;
-    std::string sceneFileName;
-    cloudPtr model;
-    cloudPtr scene;
-    float modelSampleSize;
-    float sceneSampleSize;
-    float descriptorsRadius;
-    float referenceFrameRadius;
-    float cgSize;
-    float cgThreshold;
-    bool useHough;
-    bool applyTrasformationToModel;
-    bool showUsedKeypoints;
-    bool showUsedCorrespondence;
-    bool useCloudResolution;
+    bool            useHough;
+    bool            applyTrasformationToModel;
+    bool            useCloudResolution;
+    float           modelSampleSize;
+    float           sceneSampleSize;
+    float           descriptorsRadius;
+    float           referenceFrameRadius;
+    float           cgSize;
+    float           cgThreshold;
+    std::string     modelFileName;
+    std::string     sceneFileName;
+    cloudPtr        model;
+    cloudPtr        scene;
+    cloudPtr        offSceneModel;
+    cloudPtr        offSceneModelKeypoints;
     cloudPtr        modelKeypoints;
     cloudPtr        sceneKeypoints;
     normalsPtr      modelNormals;
     normalsPtr      sceneNormals;
     descriptorsPtr  modelDescriptors;
     descriptorsPtr  sceneDescriptors;
+
     pcl::CorrespondencesPtr modelSceneCorrs;
     std::vector<Eigen::Matrix4f, Eigen::aligned_allocator<Eigen::Matrix4f> > rototranslations;
     std::vector<pcl::Correspondences> clusteredCorrs;
 
 private:
-    //Functions
+
     double computeCloudResolution (const pcl::PointCloud<PointType>::ConstPtr &cloud);
     void transformCloud (pcl::PointCloud<PointType>::Ptr &cloud);
     void setUpResolutionInvariance();

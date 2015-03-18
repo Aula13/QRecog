@@ -33,16 +33,17 @@ public:
 
 private slots:
     void on_chkDisableUpdate_stateChanged(int arg1);
-
     void on_btnSetModel_clicked();
 
 private:
+    void launchRecognizer();
+    void visualizeRecognizerOutput();
+
     Ui::CorrespondenceView *ui;
+    PCLCorrGroupFunction* cff;
 
     std::vector<pcl::PointCloud<pcl::PointXYZRGBA>::Ptr> computedModels;
-
     std::vector<pcl::PointCloud<pcl::PointXYZRGBA>::Ptr> searchedModels;
-
 };
 
 #endif // CORRESPONDENCEVIEW_H

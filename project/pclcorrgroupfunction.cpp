@@ -1,75 +1,8 @@
 #include "pclcorrgroupfunction.h"
 
-//  TODO NON CARICARE SEMPRE LE CLOUD
-
 PCLCorrGroupFunction::PCLCorrGroupFunction()
 {
-    setupDefaultValues();
-}
-
-cloudPtr PCLCorrGroupFunction::getCorrespondence()
-{
-    cloudPtr rotated_model (new pcl::PointCloud<PointType> ());
-    for (size_t i = 0; i < rototranslations.size (); ++i)
-    {
-        pcl::transformPointCloud (*model, *rotated_model, rototranslations[i]);
-
-        std::stringstream ss_cloud;
-        ss_cloud << "instance" << i;
-
-//        pcl::visualization::PointCloudColorHandlerCustom<PointType> rotated_model_color_handler (rotated_model, 255, 0, 0);
-//        viewer.addPointCloud (rotated_model, rotated_model_color_handler, ss_cloud.str ());
-
-//        if (showUsedCorrespondence)
-//        {
-//            for (size_t j = 0; j < clustered_corrs[i].size (); ++j)
-//            {
-//                std::stringstream ss_line;
-//                ss_line << "correspondence_line" << i << "_" << j;
-//                PointType& model_point = off_scene_model_keypoints->at (clustered_corrs[i][j].index_query);
-//                PointType& scene_point = scene_keypoints->at (clustered_corrs[i][j].index_match);
-
-//                //  We are drawing a line for each pair of clustered correspondences found between the model and the scene
-//                //viewer.addLine<PointType, PointType> (model_point, scene_point, 0, 255, 0, ss_line.str ());
-//            }
-//        }
-    }
-
-    for (size_t i = 0; i< rotated_model->points.size(); i++) {
-        rotated_model->points[i].r = 255;
-        rotated_model->points[i].b = 0;
-        rotated_model->points[i].g = 0;
-
-    }
-
-    return rotated_model;
-}
-
-void PCLCorrGroupFunction::setupDefaultValues(){
-    // put files in a qrecog folder in your home directory
-    modelFileName = "~/Qrecog/milk.pcd";
-    sceneFileName = "~/Qrecog/milk_cartoon_all_small_clorox.pcd";
-    //Algorithm params
-    showUsedKeypoints = false;
-    showUsedCorrespondence = false;
-    useCloudResolution = false;
-    useHough = true ;
-    applyTrasformationToModel = false;
-    modelSampleSize = 0.01f;
-    sceneSampleSize = 0.03f;
-    descriptorsRadius = 0.02f;
-    referenceFrameRadius = 0.015f;
-    cgSize = 0.01f;
-    cgThreshold = 5.0f;
-}
-
-
-void PCLCorrGroupFunction::setModelCloud(cloudPtr &cloud){
-    this->model = cloud;
-}
-
-void PCLCorrGroupFunction::setSceneCloud(cloudPtr &cloud){
-    this->scene = cloud;
+    //setupDefaultValues();
 }
 
 void PCLCorrGroupFunction::recognize ()
@@ -97,81 +30,21 @@ void PCLCorrGroupFunction::recognize ()
         downSampleModel();
         downSampleScene();
 
+        // Compute Descriptors
         computeDescriptorsForKeypoints(model, modelKeypoints, modelNormals, modelDescriptors);
         computeDescriptorsForKeypoints(scene, sceneKeypoints, sceneNormals, sceneDescriptors);
 
+        // For each scene keypoint descriptor,find nearest neighbor into the model
+        // keypoints descriptor cloud and add it to the correspondences vector.
         findCorrespondences();
 
-        //  Actual Clustering
+        //  Clustering
         if (useHough)
             recognizeUsingHough();
         else
             recognizeUsingGeometricConsistency();
 
         printResults();
-
-        //
-        //  Visualization
-        //
-//        pcl::visualization::PCLVisualizer viewer = pcl::visualization::PCLVisualizer::PCLVisualizer("Correspondence Grouping");
-//        viewer.addPointCloud (scene, "scene_cloud");
-
-//        cloudPtr off_scene_model_keypoints (new pcl::PointCloud<PointType> ());
-
-//        if (showUsedCorrespondence || showUsedKeypoints)
-//        {
-//            cloudPtr off_scene_model (new pcl::PointCloud<PointType> ());
-
-//            //  We are translating the model so that it doesn't end in the middle of the scene representation
-//            pcl::transformPointCloud (*model, *off_scene_model, Eigen::Vector3f (-1,0,0), Eigen::Quaternionf (1, 0, 0, 0));
-//            pcl::transformPointCloud (*model_keypoints, *off_scene_model_keypoints, Eigen::Vector3f (-1,0,0), Eigen::Quaternionf (1, 0, 0, 0));
-
-//            pcl::visualization::PointCloudColorHandlerCustom<PointType> off_scene_model_color_handler (off_scene_model, 255, 255, 128);
-//            viewer.addPointCloud (off_scene_model, off_scene_model_color_handler, "off_scene_model");
-//        }
-
-//        if (showUsedKeypoints)
-//        {
-//            pcl::visualization::PointCloudColorHandlerCustom<PointType> scene_keypoints_color_handler (scene_keypoints, 0, 0, 255);
-//            viewer.addPointCloud (scene_keypoints, scene_keypoints_color_handler, "scene_keypoints");
-//            viewer.setPointCloudRenderingProperties (pcl::visualization::PCL_VISUALIZER_POINT_SIZE, 5, "scene_keypoints");
-
-//            pcl::visualization::PointCloudColorHandlerCustom<PointType> off_scene_model_keypoints_color_handler (off_scene_model_keypoints, 0, 0, 255);
-//            viewer.addPointCloud (off_scene_model_keypoints, off_scene_model_keypoints_color_handler, "off_scene_model_keypoints");
-//            viewer.setPointCloudRenderingProperties (pcl::visualization::PCL_VISUALIZER_POINT_SIZE, 5, "off_scene_model_keypoints");
-//        }
-
-//        for (size_t i = 0; i < rototranslations.size (); ++i)
-//        {
-//            cloudPtr rotated_model (new pcl::PointCloud<PointType> ());
-//            pcl::transformPointCloud (*model, *rotated_model, rototranslations[i]);
-
-//            std::stringstream ss_cloud;
-//            ss_cloud << "instance" << i;
-
-//            pcl::visualization::PointCloudColorHandlerCustom<PointType> rotated_model_color_handler (rotated_model, 255, 0, 0);
-//            viewer.addPointCloud (rotated_model, rotated_model_color_handler, ss_cloud.str ());
-
-//            if (showUsedCorrespondence)
-//            {
-//                for (size_t j = 0; j < clustered_corrs[i].size (); ++j)
-//                {
-//                    std::stringstream ss_line;
-//                    ss_line << "correspondence_line" << i << "_" << j;
-//                    PointType& model_point = off_scene_model_keypoints->at (clustered_corrs[i][j].index_query);
-//                    PointType& scene_point = scene_keypoints->at (clustered_corrs[i][j].index_match);
-
-//                    //  We are drawing a line for each pair of clustered correspondences found between the model and the scene
-//                    //viewer.addLine<PointType, PointType> (model_point, scene_point, 0, 255, 0, ss_line.str ());
-//                }
-//            }
-//        }
-//        while ( !viewer.wasStopped ())
-//        {
-//            viewer.spinOnce ();
-//        }
-        //viewer.~PCLVisualizer();        //rotated_model = nullptr;
-
 }
 
 double PCLCorrGroupFunction::computeCloudResolution (const pcl::PointCloud<PointType>::ConstPtr &cloud)
@@ -201,8 +74,6 @@ double PCLCorrGroupFunction::computeCloudResolution (const pcl::PointCloud<Point
         return res;
     }
 
-
-
 void PCLCorrGroupFunction::transformCloud(cloudPtr &cloud){
     /*  METHOD #2: Using a Affine3f
      This method is easier and less error prone
@@ -221,7 +92,6 @@ void PCLCorrGroupFunction::transformCloud(cloudPtr &cloud){
     std::cout << transform.matrix() << std::endl;
 
     pcl::transformPointCloud (*cloud, *cloud, transform);
-
 }
 
 //void PCLCorrGroupFunction::loadClouds{
@@ -314,7 +184,6 @@ void PCLCorrGroupFunction::findCorrespondences(){
     pcl::KdTreeFLANN<DescriptorType> matchSearch;
     matchSearch.setInputCloud (modelDescriptors);
 
-    //  For each scene keypoint descriptor, find nearest neighbor into the model keypoints descriptor cloud and add it to the correspondences vector.
     for (size_t i = 0; i < sceneDescriptors->size (); ++i)
     {
         std::vector<int> neighIndices (1);
@@ -407,6 +276,7 @@ void PCLCorrGroupFunction::printResults(){
 }
 
 void PCLCorrGroupFunction::resetValues (){
+
     modelKeypoints     = (cloudPtr)new pcl::PointCloud<PointType>();
     sceneKeypoints     = (cloudPtr)new pcl::PointCloud<PointType> ();
     modelNormals       = (normalsPtr)new pcl::PointCloud<NormalType> ();
@@ -416,4 +286,43 @@ void PCLCorrGroupFunction::resetValues (){
     modelSceneCorrs    = (pcl::CorrespondencesPtr)new pcl::Correspondences ();
 }
 
+void PCLCorrGroupFunction::setUpOffSceneModel()
+{
+    offSceneModelKeypoints  = (cloudPtr)new pcl::PointCloud<PointType> ();
+    offSceneModel           = (cloudPtr)new pcl::PointCloud<PointType> ();
+    //  We are translating the model so that it doesn't end in the middle of the scene representation
+    pcl::transformPointCloud (*model, *offSceneModel, Eigen::Vector3f (-1,0,0), Eigen::Quaternionf (1, 0, 0, 0));
+    pcl::transformPointCloud (*modelKeypoints, *offSceneModelKeypoints, Eigen::Vector3f (-1,0,0), Eigen::Quaternionf (1, 0, 0, 0));
 
+}
+
+cloudPtr PCLCorrGroupFunction::getCorrespondence()
+{
+    cloudPtr rotated_model (new pcl::PointCloud<PointType> ());
+    for (size_t i = 0; i < rototranslations.size (); ++i)
+        pcl::transformPointCloud (*model, *rotated_model, rototranslations[i]);
+
+    for (size_t i = 0; i< rotated_model->points.size(); i++) {
+        rotated_model->points[i].r = 255;
+        rotated_model->points[i].b = 0;
+        rotated_model->points[i].g = 0;
+    }
+    return rotated_model;
+}
+
+
+//void PCLCorrGroupFunction::setupDefaultValues(){
+//    // put files in a qrecog folder in your home directory
+//    modelFileName = "~/Qrecog/milk.pcd";
+//    sceneFileName = "~/Qrecog/milk_cartoon_all_small_clorox.pcd";
+//    //Algorithm params
+//    useCloudResolution = false;
+//    useHough = true ;
+//    applyTrasformationToModel = false;
+//    modelSampleSize = 0.01f;
+//    sceneSampleSize = 0.03f;
+//    descriptorsRadius = 0.02f;
+//    referenceFrameRadius = 0.015f;
+//    cgSize = 0.01f;
+//    cgThreshold = 5.0f;
+//}

@@ -23,6 +23,11 @@ const std::string FileChooser::getSelectedFile()
     return ui->txtPath->text().toStdString();
 }
 
+void FileChooser::setSelectedFile(const std::string &s)
+{
+    ui->txtPath->setText(QString::fromStdString(s));
+}
+
 FileChooser::~FileChooser()
 {
     delete ui;

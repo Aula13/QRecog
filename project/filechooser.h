@@ -22,7 +22,7 @@ public:
 
     void asFileSaver();
     void asFileOpener();
-
+    void setSelectedFile(const std::string &s);
     const std::string getSelectedFile();
 
     ~FileChooser();

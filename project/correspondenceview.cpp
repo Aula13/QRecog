@@ -6,9 +6,10 @@ CorrespondenceView::CorrespondenceView(QWidget *parent) :
     ui(new Ui::CorrespondenceView)
 {
     ui->setupUi(this);
-
     Models::pcs->attachObserver(this);
+    cff = new PCLCorrGroupFunction();
     ui->wgtCGFileChooser->asFileOpener();
+    ui->wgtCGFileChooser->setSelectedFile(QDir::homePath().toStdString() + "/QRecog/working(old)/cloud_cluster_1.pcd");
     Logger::logInfo("Correspondence view initialized");
 }
 
@@ -17,11 +18,11 @@ void CorrespondenceView::update(Observable* obs)
     if (searchedModels.size()!=0)
     {
         PCSource* model = (PCSource*) obs;
-        pcl::PointCloud<pcl::PointXYZRGBA>::Ptr cloud = model->getLastAcquisition();
-        pcl::PointCloud<pcl::PointXYZRGBA>::Ptr cloud_f (new pcl::PointCloud<pcl::PointXYZRGBA>);
+        pcl::PointCloud<pcl::PointXYZRGBA>::Ptr sceneCloud = model->getLastAcquisition();
+        pcl::PointCloud<pcl::PointXYZRGBA>::Ptr sceneCloudFilter (new pcl::PointCloud<pcl::PointXYZRGBA>);
 
         computedModels.clear();
-        computedModels.push_back(cloud);
+        computedModels.push_back(sceneCloud);
 
         if(ui->wgtFilterOptionView->isFilteringEnabled())
         {
@@ -31,11 +32,11 @@ void CorrespondenceView::update(Observable* obs)
 
             if(computedModels.size()==1)
             {
-                cloud_f=computedModels[0];
+                sceneCloudFilter=computedModels[0];
                 computedModels.pop_back();
-                computedModels.push_back(filterf->filter(cloud_f));
+                computedModels.push_back(filterf->filter(sceneCloudFilter));
             } else
-                computedModels.push_back(filterf->filter(cloud));
+                computedModels.push_back(filterf->filter(sceneCloud));
         }
 
         if(ui->wgtSegOptionView->isSegmentationEnabled())
@@ -50,46 +51,92 @@ void CorrespondenceView::update(Observable* obs)
 
             if(computedModels.size()==1)
             {
-                cloud_f=computedModels[0];
+                sceneCloudFilter=computedModels[0];
                 computedModels.pop_back();
-                computedModels.push_back(segf->segment(cloud_f));
+                computedModels.push_back(segf->segment(sceneCloudFilter));
             } else
-                computedModels.push_back(segf->segment(cloud));
+                computedModels.push_back(segf->segment(sceneCloud));
         }
 
-        PCLCorrGroupFunction* cff = new PCLCorrGroupFunction();
+        ui->wgtPCLViewer->viewer->addPointCloud(sceneCloud);
+        launchRecognizer();
+        visualizeRecognizerOutput();
 
-        cff->modelSampleSize = ui->spnModelss->value();
-        cff->sceneSampleSize = ui->spnSceness->value();
-        cff->descriptorsRadius = ui->spnDescRad->value();
-        cff->referenceFrameRadius = ui->spnRFRad->value();
-        cff->cgSize = ui->spnCGSize->value();
-        cff->cgThreshold = ui->spnCGThres->value();
 
-        cff->useHough = ui->rdbHough->isChecked();
+        //ui->wgtPCLViewer->updateView();
+        //resultClouds.push_back(cff->scene);
+        //resultClouds.push_back(cff->getCorrespondence());
+        //ui->wgtPCLViewer->updateView(resultClouds);
+    }
+}
 
-        cff->applyTrasformationToModel = ui->chkApplyTrasformModel->isChecked();
-        cff->showUsedKeypoints = ui->chkShowUsedkeypoints->isChecked();
-        cff->showUsedCorrespondence = ui->chkShowCorr->isChecked();
+void CorrespondenceView::launchRecognizer(){
+    cff->modelSampleSize            = ui->spnModelss->value();
+    cff->sceneSampleSize            = ui->spnSceness->value();
+    cff->descriptorsRadius          = ui->spnDescRad->value();
+    cff->referenceFrameRadius       = ui->spnRFRad->value();
+    cff->cgSize                     = ui->spnCGSize->value();
+    cff->cgThreshold                = ui->spnCGThres->value();
+    cff->useHough                   = ui->rdbHough->isChecked();
+    cff->applyTrasformationToModel  = ui->chkApplyTrasformModel->isChecked();
+    cff->useCloudResolution         = ui->chkComputeModelRes->isChecked();
+    cff->model                      = searchedModels[0];
+    cff->scene                      = computedModels[0];
+    cff->recognize();
+}
 
-        cff->useCloudResolution = ui->chkComputeModelRes->isChecked();
+void CorrespondenceView::visualizeRecognizerOutput(){
 
-        cff->model = searchedModels[0];
-        cff->scene = computedModels[0];
-        cff->recognize();
+    // Set up and show offset model
+    if ( ui->chkShowUsedkeypoints->isChecked() || ui->chkShowCorr->isChecked()){
+        cff->setUpOffSceneModel();
+        pcl::visualization::PointCloudColorHandlerCustom<PointType> offSceneModelColorHandler (cff->offSceneModel, 255, 255, 128);
+        ui->wgtPCLViewer->viewer->addPointCloud (cff->offSceneModel, offSceneModelColorHandler, "off_scene_model");
+    }
+    // show keypoints
+    if ( ui->chkShowUsedkeypoints->isChecked()){
+        pcl::visualization::PointCloudColorHandlerCustom<PointType> sceneKeypointsColorHandler (cff->sceneKeypoints, 0, 0, 255);
+        ui->wgtPCLViewer->viewer->addPointCloud (cff->sceneKeypoints, sceneKeypointsColorHandler, "scene_keypoints");
+        ui->wgtPCLViewer->viewer->setPointCloudRenderingProperties (pcl::visualization::PCL_VISUALIZER_POINT_SIZE, 5, "scene_keypoints");
 
-        std::vector<pcl::PointCloud<pcl::PointXYZRGBA>::Ptr> resultClouds;
+        pcl::visualization::PointCloudColorHandlerCustom<PointType> offSceneModelKeypointsColorHandler (cff->offSceneModelKeypoints, 0, 0, 255);
+        ui->wgtPCLViewer->viewer->addPointCloud (cff->offSceneModelKeypoints, offSceneModelKeypointsColorHandler, "off_scene_model_keypoints");
+        ui->wgtPCLViewer->viewer->setPointCloudRenderingProperties (pcl::visualization::PCL_VISUALIZER_POINT_SIZE, 5, "off_scene_model_keypoints");
+    }
+    // show models correspondences
+    for (size_t i = 0; i < cff->rototranslations.size (); ++i)
+    {
+        cloudPtr rotatedModel (new pcl::PointCloud<PointType> ());
+        pcl::transformPointCloud(*cff->model, *rotatedModel, cff->rototranslations[i]);
 
-        resultClouds.push_back(cff->scene);
-        resultClouds.push_back(cff->getCorrespondence());
 
-        ui->wgtPCLViewer->updateView(resultClouds);
+        std::stringstream ssCloud;
+        ssCloud << "instance" << i;
+
+        pcl::visualization::PointCloudColorHandlerCustom<PointType> rotatedModelColorHandler (rotatedModel, 255, 0, 0);
+        ui->wgtPCLViewer->viewer->addPointCloud (rotatedModel, rotatedModelColorHandler, ssCloud.str ());
+
+        // show point to point correspondences
+        if (ui->chkShowCorr->isChecked())
+        {
+            for (size_t j = 0; j < cff->clusteredCorrs[i].size (); ++j)
+            {
+                std::stringstream ssLine;
+                ssLine << "correspondence_line" << i << "_" << j;
+                PointType& modelPoint = cff->offSceneModelKeypoints->at (cff->clusteredCorrs[i][j].index_query);
+                PointType& scenePoint = cff->sceneKeypoints->at (cff->clusteredCorrs[i][j].index_match);
+
+                //  We are drawing a line for each pair of clustered correspondences found between the model and the scene
+                ui->wgtPCLViewer->viewer->addLine<PointType, PointType> (modelPoint, scenePoint, 0, 255, 0, ssLine.str ());
+            }
+        }
     }
 }
 
 CorrespondenceView::~CorrespondenceView()
 {
     delete ui;
+    delete cff;
 }
 
 void CorrespondenceView::on_chkDisableUpdate_stateChanged(int arg1)
@@ -114,10 +161,9 @@ void CorrespondenceView::on_btnSetModel_clicked()
     pcl::PointCloud<pcl::PointXYZRGBA>::Ptr cloud (new pcl::PointCloud<pcl::PointXYZRGBA>);
     pcl::io::loadPCDFile(filename, *cloud);
 
-
     searchedModels.clear();
     searchedModels.push_back(cloud);
 
-    QMessageBox::information(this, "Information", "Model is setted for correspondence", QMessageBox::Ok);
+    QMessageBox::information(this, "Information", "Model set correctly", QMessageBox::Ok);
     Logger::logInfo("Model for correspondence grouping loaded");
 }

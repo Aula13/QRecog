@@ -75,6 +75,10 @@ void PCLViewer::updateView(pcl::PointCloud<pcl::PointXYZRGBA>::Ptr cloud)
     Logger::logInfo("PCLViewer update");
 }
 
+void PCLViewer::updateView(){
+    ui->qvtkWidget->update ();
+}
+
 PCLViewer::~PCLViewer()
 {
     delete ui;
