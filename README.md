@@ -81,11 +81,13 @@ Below are the instructions on how to install all the requirements on your OS X 1
 - Check the presence of pcl/io/openni2 and pcl/io/openni_camera directories for OpenNI and OpenNI2.
 - Install Qt + Qt Creator: http://stanford.edu/~rawatson/qt/mac_install_gifs/ .
 - Set the qt4 located in usr/local/Cellar (the one installed by brew) as default Qt kit.
-- If qt raise this error: Parse error at “BOOST_JOIN” apply this quick workaround (found here: http://stackoverflow.com/questions/15455178/qt4-cgal-parse-error-at-boost-join): edit the problematic boost header files, and add to the top:
+- If qt raise this error: Parse error at “BOOST_JOIN” apply this quick workaround (found here: http://stackoverflow.com/questions/15455178/qt4-cgal-parse-error-at-boost-join): edit the problematic boost header files:
+
+    - Add to the top:
 
             #ifndef Q_MOC_RUN
 
-add to the bottom:
+    - Add to the bottom:
 
             #endif
 
