@@ -11,65 +11,78 @@ CorrespondenceView::CorrespondenceView(QWidget *parent) :
     ui->wgtCGFileChooser->asFileOpener();
     ui->wgtCGFileChooser->setSelectedFile(QDir::homePath().toStdString() + "/QRecog/working(old)/cloud_cluster_1.pcd");
     Logger::logInfo("Correspondence view initialized");
+
+    computationTimer = new QElapsedTimer();
+}
+
+void CorrespondenceView::viewOnFocus(bool focus)
+{
+    viewHasFocus = focus;
 }
 
 void CorrespondenceView::update(Observable* obs)
 {
-    if (searchedModels.size()!=0)
+    if(viewHasFocus)
     {
-        PCSource* model = (PCSource*) obs;
-        pcl::PointCloud<pcl::PointXYZRGBA>::Ptr sceneCloud = model->getLastAcquisition();
-        pcl::PointCloud<pcl::PointXYZRGBA>::Ptr sceneCloudFilter (new pcl::PointCloud<pcl::PointXYZRGBA>);
-
-        computedModels.clear();
-        computedModels.push_back(sceneCloud);
-
-        if(ui->wgtFilterOptionView->isFilteringEnabled())
+        computationTimer->restart();
+        if (searchedModels.size()!=0)
         {
-            PCLFilterFunction* filterf = new PCLFilterFunction();
+            PCSource* model = (PCSource*) obs;
+            pcl::PointCloud<pcl::PointXYZRGBA>::Ptr sceneCloud = model->getLastAcquisition();
+            pcl::PointCloud<pcl::PointXYZRGBA>::Ptr sceneCloudFilter (new pcl::PointCloud<pcl::PointXYZRGBA>);
 
-            filterf->leafSize=ui->wgtFilterOptionView->getLeafSize();
+            computedModels.clear();
+            computedModels.push_back(sceneCloud);
 
-            if(computedModels.size()==1)
+            if(ui->wgtFilterOptionView->isFilteringEnabled())
             {
-                sceneCloudFilter=computedModels[0];
-                computedModels.pop_back();
-                computedModels.push_back(filterf->filter(sceneCloudFilter));
-            } else
-                computedModels.push_back(filterf->filter(sceneCloud));
-        }
+                PCLFilterFunction* filterf = new PCLFilterFunction();
 
-        if(ui->wgtSegOptionView->isSegmentationEnabled())
-        {
-            PCLSegmentationFunction* segf = new PCLSegmentationFunction();
+                filterf->leafSize=ui->wgtFilterOptionView->getLeafSize();
 
-            segf->optimazeCoeff = ui->wgtSegOptionView->getOptimizeCoeff();
-            segf->modelType = ui->wgtSegOptionView->getModelType();
-            segf->methodType = ui->wgtSegOptionView->getMethodType();
-            segf->maxIterations = ui->wgtSegOptionView->getMaxIterations();
-            segf->distanceThreashold = ui->wgtSegOptionView->getDistanceThreshold();
+                if(computedModels.size()==1)
+                {
+                    sceneCloudFilter=computedModels[0];
+                    computedModels.pop_back();
+                    computedModels.push_back(filterf->filter(sceneCloudFilter));
+                } else
+                    computedModels.push_back(filterf->filter(sceneCloud));
+            }
 
-            if(computedModels.size()==1)
+            if(ui->wgtSegOptionView->isSegmentationEnabled())
             {
-                sceneCloudFilter=computedModels[0];
-                computedModels.pop_back();
-                computedModels.push_back(segf->segment(sceneCloudFilter));
-            } else
-                computedModels.push_back(segf->segment(sceneCloud));
-        }
+                PCLSegmentationFunction* segf = new PCLSegmentationFunction();
 
-        ui->wgtPCLViewer->updateView(sceneCloud);
+                segf->optimazeCoeff = ui->wgtSegOptionView->getOptimizeCoeff();
+                segf->modelType = ui->wgtSegOptionView->getModelType();
+                segf->methodType = ui->wgtSegOptionView->getMethodType();
+                segf->maxIterations = ui->wgtSegOptionView->getMaxIterations();
+                segf->distanceThreashold = ui->wgtSegOptionView->getDistanceThreshold();
 
-        PCLCorrGroupFunction* cff  = new PCLCorrGroupFunction();;
+                if(computedModels.size()==1)
+                {
+                    sceneCloudFilter=computedModels[0];
+                    computedModels.pop_back();
+                    computedModels.push_back(segf->segment(sceneCloudFilter));
+                } else
+                    computedModels.push_back(segf->segment(sceneCloud));
+            }
 
-        launchRecognizer(cff);
-        visualizeRecognizerOutput(cff);
 
+            PCLCorrGroupFunction* cff  = new PCLCorrGroupFunction();;
 
-        //ui->wgtPCLViewer->updateView();
-        //resultClouds.push_back(cff->scene);
-        //resultClouds.push_back(cff->getCorrespondence());
-        //ui->wgtPCLViewer->updateView(resultClouds);
+            launchRecognizer(cff);
+
+            if(!ui->chkDisableUpdate->isChecked())
+            {
+                ui->wgtPCLViewer->updateView(sceneCloud);
+                visualizeRecognizerOutput(cff);
+            }
+
+            ui->lcdNrModelRec->display(cff->getNrModelFounded());
+        } else
+            ui->lcdNrModelRec->display(0);
+        ui->lcdCompTime->display((int)computationTimer->elapsed());
     }
 }
 

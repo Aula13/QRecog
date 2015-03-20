@@ -8,6 +8,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
+    ui->acquisition->viewOnFocus(true);
+    ui->recognition->viewOnFocus(false);
 }
 
 MainWindow::~MainWindow()
@@ -38,4 +41,24 @@ void MainWindow::on_actionInfo_triggered()
 void MainWindow::on_actionDebug_triggered()
 {
     Logger::configLoggerLevel(DEBUG);
+}
+
+void MainWindow::on_maintab_currentChanged(int index)
+{
+    switch (index) {
+    case 0:
+        ui->acquisition->viewOnFocus(true);
+        ui->recognition->viewOnFocus(false);
+        break;
+    case 1:
+        ui->acquisition->viewOnFocus(false);
+        ui->recognition->viewOnFocus(false);
+        break;
+    case 2:
+        ui->acquisition->viewOnFocus(false);
+        ui->recognition->viewOnFocus(true);
+        break;
+    default:
+        break;
+    }
 }

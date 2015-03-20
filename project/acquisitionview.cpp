@@ -12,6 +12,19 @@ AcquisitionView::AcquisitionView(QWidget *parent) :
     Logger::logInfo("Acquisition view initialized");
 }
 
+void AcquisitionView::viewOnFocus(bool focus)
+{
+    if(focus)
+    {
+        if(ui->chkDisableUpdates->isChecked())
+            ui->wgtPCLViewer->disableUpdates();
+        else
+            ui->wgtPCLViewer->enableUpdates();
+    } else {
+        ui->wgtPCLViewer->disableUpdates();
+    }
+}
+
 AcquisitionView::~AcquisitionView()
 {
     delete ui;

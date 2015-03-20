@@ -3,10 +3,14 @@
 PCLCorrGroupFunction::PCLCorrGroupFunction()
 {
     //setupDefaultValues();
+
+    computationTime = new QElapsedTimer();
 }
 
 void PCLCorrGroupFunction::recognize ()
     {
+        computationTime->start();
+
         resetValues();
         if (!this->model)
         {
@@ -294,6 +298,16 @@ void PCLCorrGroupFunction::setUpOffSceneModel()
     pcl::transformPointCloud (*model, *offSceneModel, Eigen::Vector3f (-1,0,0), Eigen::Quaternionf (1, 0, 0, 0));
     pcl::transformPointCloud (*modelKeypoints, *offSceneModelKeypoints, Eigen::Vector3f (-1,0,0), Eigen::Quaternionf (1, 0, 0, 0));
 
+}
+
+int PCLCorrGroupFunction::getNrModelFounded()
+{
+    return rototranslations.size();
+}
+
+int PCLCorrGroupFunction::getComputationTimems()
+{
+    return computationTime->elapsed();
 }
 
 cloudPtr PCLCorrGroupFunction::getCorrespondence()

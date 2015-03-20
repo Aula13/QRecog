@@ -19,6 +19,8 @@
 #include <boost/thread/thread.hpp>
 #include "logger.h"
 
+#include <QElapsedTimer>
+
 
 typedef pcl::PointXYZRGBA PointType;
 typedef pcl::Normal NormalType;
@@ -39,6 +41,10 @@ public:
     void loadSceneFromFile(std::string sceneFilename);
     void loadModelFromFile(std::string modelFilename);
     void setUpOffSceneModel();
+
+    int getNrModelFounded();
+
+    int getComputationTimems();
 
     //Variables
     bool            useHough;
@@ -83,6 +89,7 @@ private:
     void printResults();
     void resetValues ();
 
+    QElapsedTimer* computationTime;
 
 };
 

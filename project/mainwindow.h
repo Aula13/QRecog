@@ -26,6 +26,8 @@ private slots:
 
     void on_actionDebug_triggered();
 
+    void on_maintab_currentChanged(int index);
+
 private:
     Ui::MainWindow *ui;
 };

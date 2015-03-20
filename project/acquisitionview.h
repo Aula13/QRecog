@@ -20,6 +20,8 @@ class AcquisitionView : public QWidget
 public:
     explicit AcquisitionView(QWidget *parent = 0);
 
+    void viewOnFocus(bool focus);
+
     ~AcquisitionView();
 
 private slots:
@@ -30,7 +32,6 @@ private slots:
 private:
     Ui::AcquisitionView *ui;
 
-    bool viewEnabled;
 };
 
 #endif // AcquisitionView_H

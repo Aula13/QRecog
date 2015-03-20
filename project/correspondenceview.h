@@ -8,6 +8,7 @@
 #include "logger.h"
 
 #include <QMessageBox>
+#include <QElapsedTimer>
 
 #include "pclfilterfunction.h"
 #include "pclsegmentationfunction.h"
@@ -27,6 +28,8 @@ class CorrespondenceView : public QWidget, Observer
 public:
     explicit CorrespondenceView(QWidget *parent = 0);
 
+    void viewOnFocus(bool focus);
+
     void update(Observable* obs);
 
     ~CorrespondenceView();
@@ -43,6 +46,10 @@ private:
 
     std::vector<pcl::PointCloud<pcl::PointXYZRGBA>::Ptr> computedModels;
     std::vector<pcl::PointCloud<pcl::PointXYZRGBA>::Ptr> searchedModels;
+
+    bool viewHasFocus;
+
+    QElapsedTimer* computationTimer;
 };
 
 #endif // CORRESPONDENCEVIEW_H
