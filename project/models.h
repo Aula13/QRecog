@@ -10,7 +10,13 @@ class Models
 public:
     Models();
 
+    static void initSimulation();
+
+    static void initRealCamera();
+
     static PCSource* pcs;
+
+    static bool isSimulation;
 
 };
 

@@ -70,8 +70,15 @@
     <addaction name="actionInfo"/>
     <addaction name="actionDebug"/>
    </widget>
+   <widget class="QMenu" name="menuCamera_settings">
+    <property name="title">
+     <string>Camera settings</string>
+    </property>
+    <addaction name="actionUse_simulation"/>
+   </widget>
    <addaction name="menu3D_Camera"/>
    <addaction name="menuLogger"/>
+   <addaction name="menuCamera_settings"/>
   </widget>
   <action name="actionExit">
    <property name="text">
@@ -96,6 +103,17 @@
   <action name="actionDebug">
    <property name="text">
     <string>Debug</string>
+   </property>
+  </action>
+  <action name="actionUse_simulation">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Use simulation</string>
    </property>
   </action>
  </widget>

@@ -1,8 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
-#include "logger.h"
-
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -11,6 +9,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->acquisition->viewOnFocus(true);
     ui->recognition->viewOnFocus(false);
+
+    ui->actionUse_simulation->setChecked(Models::isSimulation);
 }
 
 MainWindow::~MainWindow()
@@ -61,4 +61,12 @@ void MainWindow::on_maintab_currentChanged(int index)
     default:
         break;
     }
+}
+
+void MainWindow::on_actionUse_simulation_triggered(bool checked)
+{
+    if(checked)
+        Models::initSimulation();
+    if(checked)
+        Models::initRealCamera();
 }

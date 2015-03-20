@@ -3,6 +3,9 @@
 
 #include <QMainWindow>
 
+#include "logger.h"
+#include "models.h"
+
 namespace Ui {
 class MainWindow;
 }
@@ -27,6 +30,8 @@ private slots:
     void on_actionDebug_triggered();
 
     void on_maintab_currentChanged(int index);
+
+    void on_actionUse_simulation_triggered(bool checked);
 
 private:
     Ui::MainWindow *ui;

@@ -9,7 +9,7 @@ Logger::Logger()
 void Logger::configLoggerLevel(int level)
 {
     Logger::level=level;
-    cout<<"Set logger level to "<<level<<endl;
+    cout<<"LOGGER SETUP - Set logger level to "<<level<<endl;
 }
 
 void Logger::logError(string text)
