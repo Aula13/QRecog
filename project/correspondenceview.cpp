@@ -7,7 +7,7 @@ CorrespondenceView::CorrespondenceView(QWidget *parent) :
 {
     ui->setupUi(this);
     Models::pcs->attachObserver(this);
-    cff = new PCLCorrGroupFunction();
+
     ui->wgtCGFileChooser->asFileOpener();
     ui->wgtCGFileChooser->setSelectedFile(QDir::homePath().toStdString() + "/QRecog/working(old)/cloud_cluster_1.pcd");
     Logger::logInfo("Correspondence view initialized");
@@ -58,9 +58,12 @@ void CorrespondenceView::update(Observable* obs)
                 computedModels.push_back(segf->segment(sceneCloud));
         }
 
-        ui->wgtPCLViewer->viewer->addPointCloud(sceneCloud);
-        launchRecognizer();
-        visualizeRecognizerOutput();
+        ui->wgtPCLViewer->updateView(sceneCloud);
+
+        PCLCorrGroupFunction* cff  = new PCLCorrGroupFunction();;
+
+        launchRecognizer(cff);
+        visualizeRecognizerOutput(cff);
 
 
         //ui->wgtPCLViewer->updateView();
@@ -70,7 +73,7 @@ void CorrespondenceView::update(Observable* obs)
     }
 }
 
-void CorrespondenceView::launchRecognizer(){
+void CorrespondenceView::launchRecognizer(PCLCorrGroupFunction *cff){
     cff->modelSampleSize            = ui->spnModelss->value();
     cff->sceneSampleSize            = ui->spnSceness->value();
     cff->descriptorsRadius          = ui->spnDescRad->value();
@@ -85,7 +88,7 @@ void CorrespondenceView::launchRecognizer(){
     cff->recognize();
 }
 
-void CorrespondenceView::visualizeRecognizerOutput(){
+void CorrespondenceView::visualizeRecognizerOutput(PCLCorrGroupFunction* cff){
 
     // Set up and show offset model
     if ( ui->chkShowUsedkeypoints->isChecked() || ui->chkShowCorr->isChecked()){
@@ -136,7 +139,6 @@ void CorrespondenceView::visualizeRecognizerOutput(){
 CorrespondenceView::~CorrespondenceView()
 {
     delete ui;
-    delete cff;
 }
 
 void CorrespondenceView::on_chkDisableUpdate_stateChanged(int arg1)

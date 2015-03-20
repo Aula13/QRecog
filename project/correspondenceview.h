@@ -36,11 +36,10 @@ private slots:
     void on_btnSetModel_clicked();
 
 private:
-    void launchRecognizer();
-    void visualizeRecognizerOutput();
+    void launchRecognizer(PCLCorrGroupFunction* cff);
+    void visualizeRecognizerOutput(PCLCorrGroupFunction *cff);
 
     Ui::CorrespondenceView *ui;
-    PCLCorrGroupFunction* cff;
 
     std::vector<pcl::PointCloud<pcl::PointXYZRGBA>::Ptr> computedModels;
     std::vector<pcl::PointCloud<pcl::PointXYZRGBA>::Ptr> searchedModels;
