@@ -122,6 +122,8 @@ unix {
             -lvtkImaging \
             -lvtkRendering \
             -lQVTK
+
+    QMAKE_CXXFLAGS+= -std=c++11
 }
 
 # QMAKE FLAGS

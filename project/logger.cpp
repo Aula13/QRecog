@@ -35,3 +35,4 @@ void Logger::logDebug(string text)
     if(level>=DEBUG)
         cout<<"DEBUG - "<<text<<endl;
 }
+
