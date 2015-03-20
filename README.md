@@ -1,5 +1,10 @@
 QRecog
 ======
+![Acquisition View](https://raw.githubusercontent.com/danieleciriello/QRecog/master/documentation/acquisition.png)
+
+![Clustering View](https://raw.githubusercontent.com/danieleciriello/QRecog/master/documentation/clustering.png)
+
+![Correspondence Grouping View](https://raw.githubusercontent.com/danieleciriello/QRecog/master/documentation/recognition.png)
 
 THIS IS A WORKING PROGRESS, STAY TUNED
 
