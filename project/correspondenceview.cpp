@@ -64,12 +64,6 @@ void CorrespondenceView::update(Observable* obs)
 
         launchRecognizer(cff);
         visualizeRecognizerOutput(cff);
-
-
-        //ui->wgtPCLViewer->updateView();
-        //resultClouds.push_back(cff->scene);
-        //resultClouds.push_back(cff->getCorrespondence());
-        //ui->wgtPCLViewer->updateView(resultClouds);
     }
 }
 

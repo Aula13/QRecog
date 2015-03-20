@@ -3,6 +3,7 @@
 PCLCorrGroupFunction::PCLCorrGroupFunction()
 {
     //setupDefaultValues();
+    //timer = new QTimer(this);
 }
 
 void PCLCorrGroupFunction::recognize ()
@@ -10,12 +11,12 @@ void PCLCorrGroupFunction::recognize ()
         resetValues();
         if (!this->model)
         {
-            std::cout << "Error model cloud is null." << std::endl << "returning." << std::endl;
+            Logger::logInfo("Error model cloud is null.");
             return;
         }
         if (!this->scene)
         {
-            std::cout << "Error scene cloud is null." << std::endl << "returning" << std::endl;
+            Logger::logInfo("Error scene cloud is null.");
             return;
         }
         if (applyTrasformationToModel)
@@ -75,9 +76,7 @@ double PCLCorrGroupFunction::computeCloudResolution (const pcl::PointCloud<Point
     }
 
 void PCLCorrGroupFunction::transformCloud(cloudPtr &cloud){
-    /*  METHOD #2: Using a Affine3f
-     This method is easier and less error prone
-     */
+
     Eigen::Affine3f transform = Eigen::Affine3f::Identity();
     float theta = M_PI/4; // The angle of rotation in radians
 
@@ -93,11 +92,6 @@ void PCLCorrGroupFunction::transformCloud(cloudPtr &cloud){
 
     pcl::transformPointCloud (*cloud, *cloud, transform);
 }
-
-//void PCLCorrGroupFunction::loadClouds{
-//    this->loadSceneFromFile();
-//    this->loadSceneFromFile();
-//}
 
 void PCLCorrGroupFunction::loadCloudsFromDefaultFile(){
     this->loadSceneFromFile("~/Qrecog/milk.pcd");
@@ -127,13 +121,12 @@ void PCLCorrGroupFunction::setUpResolutionInvariance(){
         descriptorsRadius        *= resolution;
         cgSize                   *= resolution;
     }
-
-    std::cout << "Model resolution:       " << resolution           << std::endl;
-    std::cout << "Model sampling size:    " << modelSampleSize      << std::endl;
-    std::cout << "Scene sampling size:    " << sceneSampleSize      << std::endl;
-    std::cout << "LRF support radius:     " << referenceFrameRadius << std::endl;
-    std::cout << "SHOT descriptor radius: " << descriptorsRadius    << std::endl;
-    std::cout << "Clustering bin size:    " << cgSize               << std::endl << std::endl;
+    Logger::logInfo("Model resolution:       "  + std::to_string(resolution));
+    Logger::logInfo("Model sampling size:    "  + std::to_string(modelSampleSize));
+    Logger::logInfo("Scene sampling size:    "  + std::to_string(sceneSampleSize));
+    Logger::logInfo("LRF support radius:     "  + std::to_string(referenceFrameRadius));
+    Logger::logInfo("SHOT descriptor radius: "  + std::to_string(descriptorsRadius));
+    Logger::logInfo("Clustering bin size:    "  + std::to_string(cgSize));
 }
 
 void PCLCorrGroupFunction::computeNormals(){
@@ -148,14 +141,14 @@ void PCLCorrGroupFunction::computeNormals(){
 
 void PCLCorrGroupFunction::downSampleScene(){
     downSampleCloud(scene, sceneSampleSize, sceneKeypoints);
-    std::cout << "TotalScenePoints: "   << scene->size();
-    std::cout << "SceneKeypoints: "     << sceneKeypoints->size();
+    Logger::logInfo("TotalScenePoints: "    + std::to_string(scene->size()));
+    Logger::logInfo("SceneKeypoints: "      + std::to_string(sceneKeypoints->size()));
 }
 
 void PCLCorrGroupFunction::downSampleModel(){
     downSampleCloud(model, modelSampleSize, modelKeypoints);
-    std::cout << "TotalModelPoints: "   << model->size();
-    std::cout << "ModelKeypoints: "     << modelKeypoints->size();
+    Logger::logInfo("TotalModelPoints: "    + std::to_string(model->size()));
+    Logger::logInfo("ModelKeypoints: "    + std::to_string(modelKeypoints->size()));
 }
 
 void PCLCorrGroupFunction::downSampleCloud(cloudPtr &cloud,  float sampleSize, cloudPtr &keypoints){
@@ -189,9 +182,7 @@ void PCLCorrGroupFunction::findCorrespondences(){
         std::vector<int> neighIndices (1);
         std::vector<float> neighSqrDists (1);
         if (!pcl_isfinite (sceneDescriptors->at (i).descriptor[0])) //skipping NaNs
-        {
             continue;
-        }
         int foundNeighs = matchSearch.nearestKSearch (sceneDescriptors->at (i), 1, neighIndices, neighSqrDists);
         //  add match only if the squared descriptor distance is less than 0.25 (SHOT descriptor distances are between 0 and 1 by design)
         if(foundNeighs == 1 && neighSqrDists[0] < 0.25f)
@@ -200,7 +191,7 @@ void PCLCorrGroupFunction::findCorrespondences(){
             modelSceneCorrs->push_back (corr);
         }
     }
-    std::cout << "Correspondences found: " << modelSceneCorrs->size () << std::endl;
+    Logger::logInfo("Correspondences found: " + std::to_string(modelSceneCorrs->size ()));
 }
 
 void PCLCorrGroupFunction::recognizeUsingHough(){
@@ -258,25 +249,24 @@ void PCLCorrGroupFunction::printResults(){
     std::cout << "Model instances found: " << rototranslations.size () << std::endl;
     for (size_t i = 0; i < rototranslations.size (); ++i)
     {
-        std::cout << "\n    Instance " << i + 1 << ":" << std::endl;
-        std::cout << "        Correspondences belonging to this instance: " << clusteredCorrs[i].size () << std::endl;
+        Logger::logInfo("\n    Instance " + std::to_string(i + 1) + ":");
+        Logger::logInfo("        Correspondences belonging to this instance: " + std::to_string(clusteredCorrs[i].size ()));
 
         // Print the rotation matrix and translation vector
         Eigen::Matrix3f rotation = rototranslations[i].block<3,3>(0, 0);
         Eigen::Vector3f translation = rototranslations[i].block<3,1>(0, 3);
 
-        printf ("\n");
-        printf ("            | %6.3f %6.3f %6.3f | \n", rotation (0,0), rotation (0,1), rotation (0,2));
-        printf ("        R = | %6.3f %6.3f %6.3f | \n", rotation (1,0), rotation (1,1), rotation (1,2));
-        printf ("            | %6.3f %6.3f %6.3f | \n", rotation (2,0), rotation (2,1), rotation (2,2));
-        printf ("\n");
-        printf ("        t = < %0.3f, %0.3f, %0.3f >\n", translation (0), translation (1), translation (2));
+        Logger::logInfo("\n");
+        Logger::logInfo("            | %6.3f %6.3f %6.3f | \n" + std::to_string(rotation (0,0)) + std::to_string(rotation (0,1)) + std::to_string(rotation (0,2)));
+        Logger::logInfo("        R = | %6.3f %6.3f %6.3f | \n" + std::to_string(rotation (1,0)) + std::to_string(rotation (1,1)) + std::to_string(rotation (1,2)));
+        Logger::logInfo("            | %6.3f %6.3f %6.3f | \n" + std::to_string(rotation (2,0)) + std::to_string(rotation (2,1)) + std::to_string(rotation (2,2)));
+        Logger::logInfo("\n");
+        Logger::logInfo("        t = < %0.3f, %0.3f, %0.3f >\n" + std::to_string(rotation (0)) + std::to_string(rotation (1)) + std::to_string(rotation (2)));
     }
 
 }
 
 void PCLCorrGroupFunction::resetValues (){
-
     modelKeypoints     = (cloudPtr)new pcl::PointCloud<PointType>();
     sceneKeypoints     = (cloudPtr)new pcl::PointCloud<PointType> ();
     modelNormals       = (normalsPtr)new pcl::PointCloud<NormalType> ();
@@ -309,20 +299,3 @@ cloudPtr PCLCorrGroupFunction::getCorrespondence()
     }
     return rotated_model;
 }
-
-
-//void PCLCorrGroupFunction::setupDefaultValues(){
-//    // put files in a qrecog folder in your home directory
-//    modelFileName = "~/Qrecog/milk.pcd";
-//    sceneFileName = "~/Qrecog/milk_cartoon_all_small_clorox.pcd";
-//    //Algorithm params
-//    useCloudResolution = false;
-//    useHough = true ;
-//    applyTrasformationToModel = false;
-//    modelSampleSize = 0.01f;
-//    sceneSampleSize = 0.03f;
-//    descriptorsRadius = 0.02f;
-//    referenceFrameRadius = 0.015f;
-//    cgSize = 0.01f;
-//    cgThreshold = 5.0f;
-//}

@@ -17,6 +17,7 @@
 #include <pcl/console/parse.h>
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include <boost/thread/thread.hpp>
+#include <Qtimer>
 #include "logger.h"
 
 
@@ -41,6 +42,8 @@ public:
     void setUpOffSceneModel();
 
     //Variables
+    QTimer timer;
+
     bool            useHough;
     bool            applyTrasformationToModel;
     bool            useCloudResolution;
