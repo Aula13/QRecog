@@ -24,8 +24,7 @@ PCL dependencies:
 - Flann 
 - Cminpack 
 - Chull 
-- Libusb 
-- Libusbx (only for OSX)
+- Libusb
 - Sip
 
 # Requirements Installation
@@ -80,6 +79,12 @@ Below are the instructions on how to install all the requirements on your OS X 1
 - Install PCL with OpenNI and OpenNI2:
 
         $ brew install pcl --with-openni --with-openni2
+        
+- Install LibUSB:
+
+        $ brew install libusb
+        
+        
 
 
 - Check the presence of the pcl/visualization directory for VTK.
