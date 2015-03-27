@@ -13,6 +13,8 @@ class CameraModel : public PCSource
 public:
     static CameraModel* getInstance();
 
+    void cloud_cb_ (const pcl::PointCloud<pcl::PointXYZRGBA>::ConstPtr &cloud);
+
     void registerCallback(boost::function<void (const pcl::PointCloud<pcl::PointXYZRGBA>::ConstPtr&)> f);
 
     void run();
@@ -29,8 +31,6 @@ public:
 
 private:
     CameraModel();
-
-    void cloud_cb_ (const pcl::PointCloud<pcl::PointXYZRGBA>::ConstPtr &cloud);
 
     pcl::PointCloud<pcl::PointXYZRGBA>::Ptr trasformedpcd;
 

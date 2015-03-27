@@ -43,6 +43,8 @@ void CameraModel::cloud_cb_ (const pcl::PointCloud<pcl::PointXYZRGBA>::ConstPtr 
     pcl::PointCloud<pcl::PointXYZRGBA>::Ptr cloud1(new pcl::PointCloud<pcl::PointXYZRGBA> (*cloud));
     trasformedpcd = cloud1;
 
+    //trasformedpcd = new pcl::PointCloud<pcl::PointXYZRGBA> (*cloud);
+
     pcl::transformPointCloud(*trasformedpcd,*trasformedpcd,TransMat);
 
     //Rotazione della point cloud attorno all'asse Y di 180 gradi
@@ -68,6 +70,8 @@ void CameraModel::run()
     {
         interface = new pcl::io::OpenNI2Grabber();
         interface->start ();
+        boost::function<void (const pcl::PointCloud<pcl::PointXYZRGBA>::ConstPtr&)> f = boost::bind (&CameraModel::cloud_cb_, this, _1);
+        interface->registerCallback(f);
         Logger::logInfo("Camera interface is started");
     } else
         Logger::logError("CameraModel is not instanced");
