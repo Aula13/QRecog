@@ -31,6 +31,10 @@ void CameraModel::registerCallback(boost::function<void (const pcl::PointCloud<p
 
 void CameraModel::cloud_cb_ (const pcl::PointCloud<pcl::PointXYZRGBA>::ConstPtr &cloud)
 {
+    pcl::PointCloud<pcl::PointXYZRGBA>::Ptr cloud0(new pcl::PointCloud<pcl::PointXYZRGBA> (*cloud));
+    std::vector<int> mapping;
+    pcl::removeNaNFromPointCloud(*cloud, *cloud0, mapping);
+
     Eigen::Matrix4f TransMat=Eigen::Matrix4f::Identity();
 
     //Rotazione della point cloud attorno all'asse Z di 180 gradi
@@ -40,11 +44,10 @@ void CameraModel::cloud_cb_ (const pcl::PointCloud<pcl::PointXYZRGBA>::ConstPtr 
     TransMat(1,0) = sin(theta);
     TransMat(1,1) = cos(theta);
 
-    pcl::PointCloud<pcl::PointXYZRGBA>::Ptr cloud1(new pcl::PointCloud<pcl::PointXYZRGBA> (*cloud));
+    pcl::PointCloud<pcl::PointXYZRGBA>::Ptr cloud1(new pcl::PointCloud<pcl::PointXYZRGBA> (*cloud0));
     trasformedpcd = cloud1;
 
     //trasformedpcd = new pcl::PointCloud<pcl::PointXYZRGBA> (*cloud);
-
     pcl::transformPointCloud(*trasformedpcd,*trasformedpcd,TransMat);
 
     //Rotazione della point cloud attorno all'asse Y di 180 gradi
