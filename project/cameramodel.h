@@ -25,8 +25,10 @@ public:
 
     bool isRunning();
 
-    ~CameraModel();
+    void setDepthImageMode(pcl::io::OpenNI2Grabber::Mode mode);
+    void setImageMode(pcl::io::OpenNI2Grabber::Mode mode);
 
+    ~CameraModel();
 
 
 private:
@@ -37,6 +39,8 @@ private:
     bool connected;
     pcl::Grabber* interface;
 
+    pcl::io::OpenNI2Grabber::Mode depthImgMode = pcl::io::OpenNI2Grabber::OpenNI_Default_Mode;
+    pcl::io::OpenNI2Grabber::Mode imgMode = pcl::io::OpenNI2Grabber::OpenNI_Default_Mode;
 
     static bool instanceFlag;
     static CameraModel* single;

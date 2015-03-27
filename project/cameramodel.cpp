@@ -40,10 +40,9 @@ void CameraModel::cloud_cb_ (const pcl::PointCloud<pcl::PointXYZRGBA>::ConstPtr 
     TransMat(1,0) = sin(theta);
     TransMat(1,1) = cos(theta);
 
+
     pcl::PointCloud<pcl::PointXYZRGBA>::Ptr cloud1(new pcl::PointCloud<pcl::PointXYZRGBA> (*cloud));
     trasformedpcd = cloud1;
-
-    //trasformedpcd = new pcl::PointCloud<pcl::PointXYZRGBA> (*cloud);
 
     pcl::transformPointCloud(*trasformedpcd,*trasformedpcd,TransMat);
 
@@ -68,7 +67,7 @@ void CameraModel::run()
 {
     if(instanceFlag)
     {
-        interface = new pcl::io::OpenNI2Grabber();
+        interface = new pcl::io::OpenNI2Grabber("", depthImgMode, imgMode);
         interface->start ();
         boost::function<void (const pcl::PointCloud<pcl::PointXYZRGBA>::ConstPtr&)> f = boost::bind (&CameraModel::cloud_cb_, this, _1);
         interface->registerCallback(f);
@@ -102,6 +101,16 @@ bool CameraModel::isRunning() {
     if(instanceFlag)
         return interface->isRunning();
     return false;
+}
+
+void CameraModel::setDepthImageMode(pcl::io::OpenNI2Grabber::Mode mode)
+{
+    this->depthImgMode = mode;
+}
+
+void CameraModel::setImageMode(pcl::io::OpenNI2Grabber::Mode mode)
+{
+    this->imgMode = mode;
 }
 
 

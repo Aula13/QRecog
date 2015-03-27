@@ -36,7 +36,7 @@ void AcquisitionView::on_btnCapture_clicked()
     std::string filename = ui->wgtFIleChooser->getSelectedFile();
     if(!filename.empty())
     {
-        if(Models::pcs->getLastAcquisition()==NULL)
+        if(Models::pcs->getLastAcquisition())
         {
             pcl::io::savePCDFileASCII(filename, *Models::pcs->getLastAcquisition());
             Logger::logInfo("Acquisition PCD captured");

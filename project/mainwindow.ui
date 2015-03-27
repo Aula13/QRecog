@@ -74,7 +74,39 @@
     <property name="title">
      <string>Camera settings</string>
     </property>
+    <widget class="QMenu" name="menuDepthImgMode">
+     <property name="title">
+      <string>Depth image mode</string>
+     </property>
+     <addaction name="actionDepthImgDefault_mode"/>
+     <addaction name="actionDepthImgSXGA_15Hz"/>
+     <addaction name="actionDepthImgVGA_30Hz"/>
+     <addaction name="actionDepthImgVGA_25Hz"/>
+     <addaction name="actionDepthImgQVGA_25_Hz"/>
+     <addaction name="actionDepthImgQVGA_30Hz"/>
+     <addaction name="actionDepthImgQVGA_60Hz"/>
+     <addaction name="actionDepthImgQQVGA_25Hz"/>
+     <addaction name="actionDepthImgQQVGA_30Hz"/>
+     <addaction name="actionDepthImgQQVGA_60Hz"/>
+    </widget>
+    <widget class="QMenu" name="menuImage_mode">
+     <property name="title">
+      <string>Image mode</string>
+     </property>
+     <addaction name="actionImageDefault_mode"/>
+     <addaction name="actionImageSXGA_15Hz"/>
+     <addaction name="actionImageVGA_30Hz"/>
+     <addaction name="actionImageVGA_25Hz"/>
+     <addaction name="actionImageQVGA_25Hz"/>
+     <addaction name="actionImageQVGA_30Hz"/>
+     <addaction name="actionImageQVGA_60Hz"/>
+     <addaction name="actionImageQQVGA_25Hz"/>
+     <addaction name="actionImageQQVGA_30Hz"/>
+     <addaction name="actionImageQQVGA_60Hz"/>
+    </widget>
     <addaction name="actionUse_simulation"/>
+    <addaction name="menuDepthImgMode"/>
+    <addaction name="menuImage_mode"/>
    </widget>
    <addaction name="menu3D_Camera"/>
    <addaction name="menuLogger"/>
@@ -114,6 +146,172 @@
    </property>
    <property name="text">
     <string>Use simulation</string>
+   </property>
+  </action>
+  <action name="actionDepthImgDefault_mode">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Default mode</string>
+   </property>
+  </action>
+  <action name="actionDepthImgSXGA_15Hz">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>SXGA 15Hz</string>
+   </property>
+  </action>
+  <action name="actionDepthImgVGA_30Hz">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>VGA 30Hz</string>
+   </property>
+  </action>
+  <action name="actionDepthImgVGA_25Hz">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>VGA 25Hz</string>
+   </property>
+  </action>
+  <action name="actionDepthImgQVGA_25_Hz">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>QVGA 25Hz</string>
+   </property>
+  </action>
+  <action name="actionDepthImgQVGA_30Hz">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>QVGA 30Hz</string>
+   </property>
+  </action>
+  <action name="actionDepthImgQQVGA_60Hz">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>QQVGA 60Hz</string>
+   </property>
+  </action>
+  <action name="actionDepthImgQQVGA_30Hz">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>QQVGA 30Hz</string>
+   </property>
+  </action>
+  <action name="actionImageDefault_mode">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Default mode</string>
+   </property>
+  </action>
+  <action name="actionImageSXGA_15Hz">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>SXGA 15Hz</string>
+   </property>
+  </action>
+  <action name="actionImageVGA_30Hz">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>VGA 30Hz</string>
+   </property>
+  </action>
+  <action name="actionImageVGA_25Hz">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>VGA 25Hz</string>
+   </property>
+  </action>
+  <action name="actionImageQVGA_25Hz">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>QVGA 25Hz</string>
+   </property>
+  </action>
+  <action name="actionImageQVGA_30Hz">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>QVGA 30Hz</string>
+   </property>
+  </action>
+  <action name="actionImageQVGA_60Hz">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>QVGA 60Hz</string>
+   </property>
+  </action>
+  <action name="actionImageQQVGA_25Hz">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>QQVGA 25Hz</string>
+   </property>
+  </action>
+  <action name="actionImageQQVGA_30Hz">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>QQVGA 30Hz</string>
+   </property>
+  </action>
+  <action name="actionImageQQVGA_60Hz">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>QQVGA 60Hz</string>
+   </property>
+  </action>
+  <action name="actionDepthImgQVGA_60Hz">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>QVGA 60Hz</string>
+   </property>
+  </action>
+  <action name="actionDepthImgQQVGA_25Hz">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>QQVGA 25Hz</string>
    </property>
   </action>
  </widget>
