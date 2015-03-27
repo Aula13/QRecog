@@ -10,7 +10,12 @@ PCLViewer::PCLViewer(QWidget *parent) :
     // Set up the QVTK window
     viewer.reset (new pcl::visualization::PCLVisualizer ("viewer", false));
     ui->qvtkWidget->SetRenderWindow (viewer->getRenderWindow ());
-    //viewer->setupInteractor (ui->qvtkWidget->GetInteractor (), ui->qvtkWidget->GetRenderWindow ());
+    //
+    // ho commentato questa linea perchè sembra che sia la causa
+    // del problema che ho con la visualizzazione, a me così funziona molto meglio
+    // e posso comunque interagire con la pcl, se a te ora non funziona la causa è questa sicuramente.
+    //
+    // viewer->setupInteractor (ui->qvtkWidget->GetInteractor (), ui->qvtkWidget->GetRenderWindow ());
     ui->qvtkWidget->update ();
 }
 
@@ -59,7 +64,7 @@ void PCLViewer::updateView(std::vector<pcl::PointCloud<pcl::PointXYZRGBA>::Ptr> 
 
     viewer->addPointCloud(clouds[0], "c");
 
-    viewer->resetCamera ();
+    //viewer->resetCamera ();
 
     ui->qvtkWidget->update ();
     Logger::logInfo("PCLViewer update");
@@ -76,7 +81,7 @@ void PCLViewer::updateView(pcl::PointCloud<pcl::PointXYZRGBA>::Ptr cloud)
 
     Logger::logDebug("Add cloud to PLCViewer");
 
-    viewer->resetCamera ();
+    //viewer->resetCamera ();
 
     ui->qvtkWidget->update ();
     Logger::logInfo("PCLViewer update");
