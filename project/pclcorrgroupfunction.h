@@ -49,6 +49,8 @@ public:
     bool            useHough;
     bool            applyTrasformationToModel;
     bool            useCloudResolution;
+    bool            computeModelKeypoints;
+
     float           modelSampleSize;
     float           sceneSampleSize;
     float           descriptorsRadius;
@@ -77,7 +79,8 @@ private:
     double computeCloudResolution (const pcl::PointCloud<PointType>::ConstPtr &cloud);
     void transformCloud (pcl::PointCloud<PointType>::Ptr &cloud);
     void setUpResolutionInvariance();
-    void computeNormals();
+    void computeModelNormals();
+    void computeSceneNormals();
     void downSampleScene();
     void downSampleModel();
     void downSampleCloud(cloudPtr &cloud,  float sampleSize, cloudPtr &keypoints);

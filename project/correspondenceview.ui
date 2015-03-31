@@ -351,6 +351,9 @@
     </property>
    </widget>
    <widget class="QCheckBox" name="chkApplyTrasformModel">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -399,6 +402,9 @@
     </property>
    </widget>
    <widget class="QCheckBox" name="chkComputeModelRes">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -411,7 +417,7 @@
      <string>Compute model resolution</string>
     </property>
     <property name="checked">
-     <bool>false</bool>
+     <bool>true</bool>
     </property>
    </widget>
    <widget class="FileChooser" name="wgtCGFileChooser" native="true">

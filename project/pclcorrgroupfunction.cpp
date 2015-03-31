@@ -22,20 +22,23 @@ void PCLCorrGroupFunction::recognize ()
             Logger::logInfo("Error scene cloud is null.");
             return;
         }
-        if (applyTrasformationToModel)
-            transformCloud(model);
+//        if (applyTrasformationToModel)
+//            transformCloud(model);
 
         if (useCloudResolution)
             setUpResolutionInvariance();
 
-        computeNormals();
-
-        // Extract keypoints
-        downSampleModel();
-        downSampleScene();
-
         // Compute Descriptors
-        computeDescriptorsForKeypoints(model, modelKeypoints, modelNormals, modelDescriptors);
+        if(computeModelKeypoints) {
+            computeModelNormals();
+            downSampleModel();
+            computeDescriptorsForKeypoints(model, modelKeypoints, modelNormals, modelDescriptors);
+            computeModelKeypoints=false;
+        }
+
+
+        computeSceneNormals();
+        downSampleScene();
         computeDescriptorsForKeypoints(scene, sceneKeypoints, sceneNormals, sceneDescriptors);
 
         // For each scene keypoint descriptor,find nearest neighbor into the model
@@ -135,11 +138,19 @@ void PCLCorrGroupFunction::setUpResolutionInvariance(){
     Logger::logInfo("Clustering bin size:    "  + std::to_string(cgSize));
 }
 
-void PCLCorrGroupFunction::computeNormals(){
+void PCLCorrGroupFunction::computeModelNormals(){
+
     pcl::NormalEstimationOMP<PointType, NormalType> normEst;
     normEst.setKSearch (10);
+
     normEst.setInputCloud (model);
     normEst.compute (*modelNormals);
+}
+
+void PCLCorrGroupFunction::computeSceneNormals(){
+
+    pcl::NormalEstimationOMP<PointType, NormalType> normEst;
+    normEst.setKSearch (10); //TODO: Verificare se mettere a vista
 
     normEst.setInputCloud (scene);
     normEst.compute (*sceneNormals);
@@ -273,13 +284,17 @@ void PCLCorrGroupFunction::printResults(){
 }
 
 void PCLCorrGroupFunction::resetValues (){
-    modelKeypoints     = (cloudPtr)new pcl::PointCloud<PointType>();
-    sceneKeypoints     = (cloudPtr)new pcl::PointCloud<PointType> ();
-    modelNormals       = (normalsPtr)new pcl::PointCloud<NormalType> ();
-    sceneNormals       = (normalsPtr)new pcl::PointCloud<NormalType> ();
-    modelDescriptors   = (descriptorsPtr)new pcl::PointCloud<DescriptorType> ();
+
     sceneDescriptors   = (descriptorsPtr)new pcl::PointCloud<DescriptorType> ();
-    modelSceneCorrs    = (pcl::CorrespondencesPtr)new pcl::Correspondences ();
+    sceneKeypoints     = (cloudPtr)new pcl::PointCloud<PointType> ();
+    sceneNormals       = (normalsPtr)new pcl::PointCloud<NormalType> ();
+
+    if(computeModelKeypoints) {
+        modelKeypoints     = (cloudPtr)new pcl::PointCloud<PointType>();
+        modelNormals       = (normalsPtr)new pcl::PointCloud<NormalType> ();
+        modelDescriptors   = (descriptorsPtr)new pcl::PointCloud<DescriptorType> ();
+        modelSceneCorrs    = (pcl::CorrespondencesPtr)new pcl::Correspondences ();
+    }
 }
 
 void PCLCorrGroupFunction::setUpOffSceneModel()

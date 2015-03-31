@@ -38,6 +38,18 @@ private slots:
     void on_chkDisableUpdate_stateChanged(int arg1);
     void on_btnSetModel_clicked();
 
+    void on_spnModelss_valueChanged(double arg1);
+
+    void on_spnSceness_valueChanged(double arg1);
+
+    void on_spnDescRad_valueChanged(double arg1);
+
+    void on_spnRFRad_valueChanged(double arg1);
+
+    void on_spnCGSize_valueChanged(double arg1);
+
+    void on_spnCGThres_valueChanged(double arg1);
+
 private:
     void launchRecognizer(PCLCorrGroupFunction* cff);
     void visualizeRecognizerOutput(PCLCorrGroupFunction *cff);
@@ -50,6 +62,8 @@ private:
     bool viewHasFocus;
 
     QElapsedTimer* computationTimer;
+
+    PCLCorrGroupFunction* cff  = new PCLCorrGroupFunction();
 };
 
 #endif // CORRESPONDENCEVIEW_H

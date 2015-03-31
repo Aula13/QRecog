@@ -68,9 +68,6 @@ void CorrespondenceView::update(Observable* obs)
                     computedModels.push_back(segf->segment(sceneCloud));
             }
 
-
-            PCLCorrGroupFunction* cff  = new PCLCorrGroupFunction();;
-
             launchRecognizer(cff);
 
             if(!ui->chkDisableUpdate->isChecked())
@@ -181,4 +178,36 @@ void CorrespondenceView::on_btnSetModel_clicked()
 
     QMessageBox::information(this, "Information", "Model set correctly", QMessageBox::Ok);
     Logger::logInfo("Model for correspondence grouping loaded");
+
+    cff->computeModelKeypoints=true;
+}
+
+void CorrespondenceView::on_spnModelss_valueChanged(double arg1)
+{
+    cff->computeModelKeypoints=true;
+}
+
+void CorrespondenceView::on_spnSceness_valueChanged(double arg1)
+{
+    cff->computeModelKeypoints=true;
+}
+
+void CorrespondenceView::on_spnDescRad_valueChanged(double arg1)
+{
+    cff->computeModelKeypoints=true;
+}
+
+void CorrespondenceView::on_spnRFRad_valueChanged(double arg1)
+{
+    cff->computeModelKeypoints=true;
+}
+
+void CorrespondenceView::on_spnCGSize_valueChanged(double arg1)
+{
+    cff->computeModelKeypoints=true;
+}
+
+void CorrespondenceView::on_spnCGThres_valueChanged(double arg1)
+{
+    cff->computeModelKeypoints=true;
 }
