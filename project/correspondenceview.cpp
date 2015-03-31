@@ -116,8 +116,22 @@ void CorrespondenceView::visualizeRecognizerOutput(PCLCorrGroupFunction* cff){
         ui->wgtPCLViewer->viewer->addPointCloud (cff->offSceneModelKeypoints, offSceneModelKeypointsColorHandler, "off_scene_model_keypoints");
         ui->wgtPCLViewer->viewer->setPointCloudRenderingProperties (pcl::visualization::PCL_VISUALIZER_POINT_SIZE, 5, "off_scene_model_keypoints");
     }
+
+    if(cff->getNrModelFounded()>0) {
+        if(correspondenceCloud) {
+            ui->wgtPCLViewer->viewer->updatePointCloud (cff->getCorrespondence(), "correspondence");
+        } else {
+            ui->wgtPCLViewer->viewer->addPointCloud (cff->getCorrespondence(), "correspondence");
+            correspondenceCloud=true;
+        }
+    } else {
+        ui->wgtPCLViewer->viewer->removePointCloud("correspondence");
+        correspondenceCloud=false;
+    }
+
+
     // show models correspondences
-    for (size_t i = 0; i < cff->rototranslations.size (); ++i)
+    /*for (size_t i = 0; i < cff->rototranslations.size (); ++i)
     {
         cloudPtr rotatedModel (new pcl::PointCloud<PointType> ());
         pcl::transformPointCloud(*cff->model, *rotatedModel, cff->rototranslations[i]);
@@ -127,6 +141,7 @@ void CorrespondenceView::visualizeRecognizerOutput(PCLCorrGroupFunction* cff){
         ssCloud << "instance" << i;
 
         pcl::visualization::PointCloudColorHandlerCustom<PointType> rotatedModelColorHandler (rotatedModel, 255, 0, 0);
+        ui->wgtPCLViewer->viewer->removePointCloud(ssCloud.str());
         ui->wgtPCLViewer->viewer->addPointCloud (rotatedModel, rotatedModelColorHandler, ssCloud.str ());
 
         // show point to point correspondences
@@ -143,7 +158,7 @@ void CorrespondenceView::visualizeRecognizerOutput(PCLCorrGroupFunction* cff){
                 ui->wgtPCLViewer->viewer->addLine<PointType, PointType> (modelPoint, scenePoint, 0, 255, 0, ssLine.str ());
             }
         }
-    }
+    }*/
 }
 
 CorrespondenceView::~CorrespondenceView()
@@ -180,6 +195,8 @@ void CorrespondenceView::on_btnSetModel_clicked()
     Logger::logInfo("Model for correspondence grouping loaded");
 
     cff->computeModelKeypoints=true;
+    ui->wgtPCLViewer->viewer->removePointCloud("correspondence");
+    correspondenceCloud=false;
 }
 
 void CorrespondenceView::on_spnModelss_valueChanged(double arg1)

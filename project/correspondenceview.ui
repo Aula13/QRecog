@@ -150,7 +150,7 @@
      <double>0.001000000000000</double>
     </property>
     <property name="value">
-     <double>0.030000000000000</double>
+     <double>0.010000000000000</double>
     </property>
    </widget>
    <widget class="QLabel" name="lblDescrRadius">
@@ -403,7 +403,7 @@
    </widget>
    <widget class="QCheckBox" name="chkComputeModelRes">
     <property name="enabled">
-     <bool>false</bool>
+     <bool>true</bool>
     </property>
     <property name="geometry">
      <rect>
@@ -417,7 +417,7 @@
      <string>Compute model resolution</string>
     </property>
     <property name="checked">
-     <bool>true</bool>
+     <bool>false</bool>
     </property>
    </widget>
    <widget class="FileChooser" name="wgtCGFileChooser" native="true">

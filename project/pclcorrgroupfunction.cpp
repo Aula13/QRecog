@@ -293,8 +293,11 @@ void PCLCorrGroupFunction::resetValues (){
         modelKeypoints     = (cloudPtr)new pcl::PointCloud<PointType>();
         modelNormals       = (normalsPtr)new pcl::PointCloud<NormalType> ();
         modelDescriptors   = (descriptorsPtr)new pcl::PointCloud<DescriptorType> ();
-        modelSceneCorrs    = (pcl::CorrespondencesPtr)new pcl::Correspondences ();
     }
+
+    modelSceneCorrs    = (pcl::CorrespondencesPtr)new pcl::Correspondences ();
+    rototranslations.clear();
+    clusteredCorrs.clear();
 }
 
 void PCLCorrGroupFunction::setUpOffSceneModel()

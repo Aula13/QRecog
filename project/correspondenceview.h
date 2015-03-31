@@ -64,6 +64,8 @@ private:
     QElapsedTimer* computationTimer;
 
     PCLCorrGroupFunction* cff  = new PCLCorrGroupFunction();
+
+    bool correspondenceCloud;
 };
 
 #endif // CORRESPONDENCEVIEW_H
