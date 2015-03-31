@@ -15,8 +15,9 @@ PCLViewer::PCLViewer(QWidget *parent) :
     // del problema che ho con la visualizzazione, a me così funziona molto meglio
     // e posso comunque interagire con la pcl, se a te ora non funziona la causa è questa sicuramente.
     //
-    // viewer->setupInteractor (ui->qvtkWidget->GetInteractor (), ui->qvtkWidget->GetRenderWindow ());
+    viewer->setupInteractor (ui->qvtkWidget->GetInteractor (), ui->qvtkWidget->GetRenderWindow ());
     ui->qvtkWidget->update ();
+    //viewer->resetCamera ();
 }
 
 void PCLViewer::setModelReference(PCSource *pcs)
@@ -40,9 +41,7 @@ void PCLViewer::update(Observable *obs)
     if(!disableUpdate) {
         PCSource* model = (PCSource*) obs;
 
-        std::vector<pcl::PointCloud<pcl::PointXYZRGBA>::Ptr> clouds;
-        clouds.push_back(model->getLastAcquisition());
-        updateView(clouds);
+        updateView(model->getLastAcquisition());
     } else {
         Logger::logInfo("PCLViewer update received but disabled");
     }
@@ -50,41 +49,54 @@ void PCLViewer::update(Observable *obs)
 
 void PCLViewer::updateView(std::vector<pcl::PointCloud<pcl::PointXYZRGBA>::Ptr> clouds)
 {
-    viewer->removeAllPointClouds();
-    Logger::logDebug("Existent point cloud removed from PLCViewer");
-
-    /*
     int i = 0;
     foreach (pcl::PointCloud<pcl::PointXYZRGBA>::Ptr aCloud, clouds) {
-        viewer->addPointCloud (aCloud, "cloud" + boost::lexical_cast<std::string>(i));
-        Logger::logDebug("Add cloud to PLCViewer");
+
+        std::string id = "cloud" + boost::lexical_cast<std::string>(i);
+
+        addOrUpdateCloud(aCloud, id);
+
         i++;
     }
-    */
 
-    viewer->addPointCloud(clouds[0], "c");
-
-    //viewer->resetCamera ();
-
-    ui->qvtkWidget->update ();
     Logger::logInfo("PCLViewer update");
 }
 
 void PCLViewer::updateView(pcl::PointCloud<pcl::PointXYZRGBA>::Ptr cloud)
 {
-    viewer->removeAllPointClouds();
-    viewer->removeAllShapes();
 
-    Logger::logDebug("Existent point cloud removed from PLCViewer");
+    std::string id = "cloud0";
 
-    viewer->addPointCloud (cloud);
+    addOrUpdateCloud(cloud, id);
 
-    Logger::logDebug("Add cloud to PLCViewer");
-
-    //viewer->resetCamera ();
-
-    ui->qvtkWidget->update ();
     Logger::logInfo("PCLViewer update");
+}
+
+void PCLViewer::addOrUpdateCloud(pcl::PointCloud<pcl::PointXYZRGBA>::Ptr cloud, std::string cloud_id) {
+    pcl::PointCloud<pcl::PointXYZRGBA>::Ptr cloud_(new pcl::PointCloud<pcl::PointXYZRGBA> (*cloud));
+
+    bool cloudExist = false;
+    foreach (std::string id, cloud_ids) {
+        if(id.compare(cloud_id)==0)
+        {
+            cloudExist = true;
+            break;
+        }
+    }
+
+    if (cloudExist)
+    {
+        Logger::logDebug("Try update cloud to PLCViewer");
+        viewer->updatePointCloud (cloud_, cloud_id);
+        Logger::logDebug("Update cloud to PLCViewer");
+    } else {
+        Logger::logError("Try add cloud to PLCViewer");
+        viewer->addPointCloud (cloud_, cloud_id);
+        cloud_ids.push_back(cloud_id);
+        Logger::logDebug("Add cloud to PLCViewer");
+    }
+
+    ui->qvtkWidget->update();
 }
 
 void PCLViewer::updateView(){

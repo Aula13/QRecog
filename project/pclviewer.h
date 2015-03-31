@@ -48,6 +48,10 @@ private:
     Ui::PCLViewer *ui;
 
     bool disableUpdate;
+
+    std::vector<std::string> cloud_ids;
+
+    void addOrUpdateCloud(pcl::PointCloud<pcl::PointXYZRGBA>::Ptr cloud, std::string cloud_id);
 };
 
 #endif // PCLVIEWER_H

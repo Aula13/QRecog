@@ -45,10 +45,10 @@ void CameraModel::cloud_cb_ (const pcl::PointCloud<pcl::PointXYZRGBA>::ConstPtr 
     TransMat(1,1) = cos(theta);
 
     pcl::PointCloud<pcl::PointXYZRGBA>::Ptr cloud1(new pcl::PointCloud<pcl::PointXYZRGBA> (*cloud0));
-    trasformedpcd = cloud1;
+
 
     //trasformedpcd = new pcl::PointCloud<pcl::PointXYZRGBA> (*cloud);
-    pcl::transformPointCloud(*trasformedpcd,*trasformedpcd,TransMat);
+    pcl::transformPointCloud(*cloud1,*cloud1,TransMat);
 
     //Rotazione della point cloud attorno all'asse Y di 180 gradi
     TransMat=Eigen::Matrix4f::Identity();
@@ -59,12 +59,16 @@ void CameraModel::cloud_cb_ (const pcl::PointCloud<pcl::PointXYZRGBA>::ConstPtr 
     TransMat(2,0) = -sin(theta);
     TransMat(2,2) = cos(theta);
 
-    pcl::transformPointCloud(*trasformedpcd,*trasformedpcd,TransMat);
+    pcl::transformPointCloud(*cloud1,*cloud1,TransMat);
+
+    trasformedpcd = cloud1;
 
     Logger::logInfo("Update cloud is coming");
 
     setChanged();
     notifyObservers();
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(10));
 }
 
 void CameraModel::run()
@@ -72,9 +76,11 @@ void CameraModel::run()
     if(instanceFlag)
     {
         interface = new pcl::io::OpenNI2Grabber("", depthImgMode, imgMode);
-        interface->start ();
+
         boost::function<void (const pcl::PointCloud<pcl::PointXYZRGBA>::ConstPtr&)> f = boost::bind (&CameraModel::cloud_cb_, this, _1);
         interface->registerCallback(f);
+
+        interface->start ();
         Logger::logInfo("Camera interface is started");
     } else
         Logger::logError("CameraModel is not instanced");

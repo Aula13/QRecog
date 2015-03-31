@@ -1,6 +1,9 @@
 #ifndef CAMERAMODEL_H
 #define CAMERAMODEL_H
 
+#include <thread>
+#include <chrono>
+
 #include <pcl/io/openni2_grabber.h>
 #include <pcl/common/transforms.h>
 #include <pcl/filters/filter.h>
@@ -35,6 +38,7 @@ private:
     CameraModel();
 
     pcl::PointCloud<pcl::PointXYZRGBA>::Ptr trasformedpcd;
+    bool onUpdate = false;
 
     bool connected;
     pcl::Grabber* interface;

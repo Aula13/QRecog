@@ -15,8 +15,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
 pcl::io::OpenNI2Grabber::Mode MainWindow::getDepthImageMode()
 {
-    if(ui->actionDepthImgDefault_mode->isChecked())
-        return onimode::OpenNI_Default_Mode;
     if(ui->actionDepthImgSXGA_15Hz->isChecked())
         return onimode::OpenNI_SXGA_15Hz;
     if(ui->actionDepthImgVGA_25Hz->isChecked())
@@ -35,12 +33,11 @@ pcl::io::OpenNI2Grabber::Mode MainWindow::getDepthImageMode()
         return onimode::OpenNI_QQVGA_30Hz;
     if(ui->actionDepthImgQQVGA_60Hz->isChecked())
         return onimode::OpenNI_QQVGA_60Hz;
+    return onimode::OpenNI_Default_Mode;
 }
 
 pcl::io::OpenNI2Grabber::Mode MainWindow::getImageMode()
 {
-    if(ui->actionImageDefault_mode->isChecked())
-        return onimode::OpenNI_Default_Mode;
     if(ui->actionImageSXGA_15Hz->isChecked())
         return onimode::OpenNI_SXGA_15Hz;
     if(ui->actionImageVGA_25Hz->isChecked())
@@ -59,6 +56,7 @@ pcl::io::OpenNI2Grabber::Mode MainWindow::getImageMode()
         return onimode::OpenNI_QQVGA_30Hz;
     if(ui->actionImageQQVGA_60Hz->isChecked())
         return onimode::OpenNI_QQVGA_60Hz;
+    return onimode::OpenNI_Default_Mode;
 }
 
 MainWindow::~MainWindow()
