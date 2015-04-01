@@ -28,8 +28,8 @@ void CorrespondenceView::update(Observable* obs)
         if (searchedModels.size()!=0)
         {
             PCSource* model = (PCSource*) obs;
-            pcl::PointCloud<pcl::PointXYZRGBA>::Ptr sceneCloud = model->getLastAcquisition();
-            pcl::PointCloud<pcl::PointXYZRGBA>::Ptr sceneCloudFilter (new pcl::PointCloud<pcl::PointXYZRGBA>);
+            cloudPtrType sceneCloud = model->getLastAcquisition();
+            cloudPtrType sceneCloudFilter (new cloudType);
 
             computedModels.clear();
             computedModels.push_back(sceneCloud);
@@ -133,7 +133,7 @@ void CorrespondenceView::visualizeRecognizerOutput(PCLCorrGroupFunction* cff){
     // show models correspondences
     /*for (size_t i = 0; i < cff->rototranslations.size (); ++i)
     {
-        cloudPtr rotatedModel (new pcl::PointCloud<PointType> ());
+        cloudPtr rotatedModel (new cloudType ());
         pcl::transformPointCloud(*cff->model, *rotatedModel, cff->rototranslations[i]);
 
 
@@ -185,7 +185,7 @@ void CorrespondenceView::on_btnSetModel_clicked()
         return;
     }
 
-    pcl::PointCloud<pcl::PointXYZRGBA>::Ptr cloud (new pcl::PointCloud<pcl::PointXYZRGBA>);
+    cloudPtrType cloud (new cloudType);
     pcl::io::loadPCDFile(filename, *cloud);
 
     searchedModels.clear();

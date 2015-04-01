@@ -23,15 +23,15 @@ CameraModel::CameraModel()
 {
 }
 
-void CameraModel::registerCallback(boost::function<void (const pcl::PointCloud<pcl::PointXYZRGBA>::ConstPtr&)> f)
+void CameraModel::registerCallback(boost::function<void (const cloudType::ConstPtr&)> f)
 {
     if(instanceFlag)
         interface->registerCallback(f);
 }
 
-void CameraModel::cloud_cb_ (const pcl::PointCloud<pcl::PointXYZRGBA>::ConstPtr &cloud)
+void CameraModel::cloud_cb_ (const cloudType::ConstPtr &cloud)
 {
-    pcl::PointCloud<pcl::PointXYZRGBA>::Ptr cloud0(new pcl::PointCloud<pcl::PointXYZRGBA> (*cloud));
+    cloudPtrType cloud0(new cloudType (*cloud));
     std::vector<int> mapping;
     pcl::removeNaNFromPointCloud(*cloud, *cloud0, mapping);
 
@@ -44,10 +44,10 @@ void CameraModel::cloud_cb_ (const pcl::PointCloud<pcl::PointXYZRGBA>::ConstPtr 
     TransMat(1,0) = sin(theta);
     TransMat(1,1) = cos(theta);
 
-    pcl::PointCloud<pcl::PointXYZRGBA>::Ptr cloud1(new pcl::PointCloud<pcl::PointXYZRGBA> (*cloud0));
+    cloudPtrType cloud1(new cloudType (*cloud0));
 
 
-    //trasformedpcd = new pcl::PointCloud<pcl::PointXYZRGBA> (*cloud);
+    //trasformedpcd = new cloudPtr (*cloud);
     pcl::transformPointCloud(*cloud1,*cloud1,TransMat);
 
     //Rotazione della point cloud attorno all'asse Y di 180 gradi
@@ -77,7 +77,7 @@ void CameraModel::run()
     {
         interface = new pcl::io::OpenNI2Grabber("", depthImgMode, imgMode);
 
-        boost::function<void (const pcl::PointCloud<pcl::PointXYZRGBA>::ConstPtr&)> f = boost::bind (&CameraModel::cloud_cb_, this, _1);
+        boost::function<void (const cloudType::ConstPtr&)> f = boost::bind (&CameraModel::cloud_cb_, this, _1);
         interface->registerCallback(f);
 
         interface->start ();
@@ -101,7 +101,7 @@ void CameraModel::stop()
 
 }
 
-pcl::PointCloud<pcl::PointXYZRGBA>::Ptr CameraModel::getLastAcquisition()
+cloudPtrType CameraModel::getLastAcquisition()
 {
     Logger::logInfo("Last acquisition requested from CameraModel");
     return trasformedpcd;

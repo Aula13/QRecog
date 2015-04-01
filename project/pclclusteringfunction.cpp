@@ -4,13 +4,13 @@ PCLClusteringFunction::PCLClusteringFunction()
 {
 }
 
-std::vector<pcl::PointCloud<pcl::PointXYZRGBA>::Ptr> PCLClusteringFunction::clustering(pcl::PointCloud<pcl::PointXYZRGBA>::Ptr cloud)
+std::vector<cloudPtrType> PCLClusteringFunction::clustering(cloudPtrType cloud)
 {
-    pcl::search::KdTree<pcl::PointXYZRGBA>::Ptr tree (new pcl::search::KdTree<pcl::PointXYZRGBA>);
+    pcl::search::KdTree<PointType>::Ptr tree (new pcl::search::KdTree<PointType>);
     tree->setInputCloud (cloud);
 
     std::vector<pcl::PointIndices> cluster_indices;
-    pcl::EuclideanClusterExtraction<pcl::PointXYZRGBA> ec;
+    pcl::EuclideanClusterExtraction<PointType> ec;
     ec.setClusterTolerance (clusterTolerance); // 2cm
     ec.setMinClusterSize (minClusterSize);
     ec.setMaxClusterSize (maxClusterSize);
@@ -18,11 +18,11 @@ std::vector<pcl::PointCloud<pcl::PointXYZRGBA>::Ptr> PCLClusteringFunction::clus
     ec.setInputCloud (cloud);
     ec.extract (cluster_indices);
 
-    std::vector<pcl::PointCloud<pcl::PointXYZRGBA>::Ptr> cloud_clustered;
+    std::vector<cloudPtrType> cloud_clustered;
     int j = 0;
     for (std::vector<pcl::PointIndices>::const_iterator it = cluster_indices.begin (); it != cluster_indices.end (); ++it)
     {
-        pcl::PointCloud<pcl::PointXYZRGBA>::Ptr cloud_cluster (new pcl::PointCloud<pcl::PointXYZRGBA>);
+        cloudPtrType cloud_cluster (new cloudType);
         for (std::vector<int>::const_iterator pit = it->indices.begin (); pit != it->indices.end (); pit++)
             cloud_cluster->points.push_back (cloud->points[*pit]); //*
         cloud_cluster->width = cloud_cluster->points.size ();

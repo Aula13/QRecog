@@ -35,7 +35,9 @@ SOURCES += main.cpp\
         pclclusteringfunction.cpp \
         correspondenceview.cpp \
     pclcorrgroupfunction.cpp \
-    help.cpp
+    help.cpp \
+    pclmincutfunction.cpp \
+    mincutoptionview.cpp
 
 HEADERS  += mainwindow.h \
             defines.h \
@@ -61,7 +63,9 @@ HEADERS  += mainwindow.h \
             pclclusteringfunction.h \
             correspondenceview.h \
     pclcorrgroupfunction.h \
-    help.h
+    help.h \
+    pclmincutfunction.h \
+    mincutoptionview.h
 
 FORMS    += mainwindow.ui \
             pclviewer.ui \
@@ -72,7 +76,8 @@ FORMS    += mainwindow.ui \
             filteroptionview.ui \
             clusteringoptionview.ui \
             segmentationoptionview.ui \
-            correspondenceview.ui
+            correspondenceview.ui \
+    mincutoptionview.ui
 
 macx {
     INCLUDEPATH += /usr/local/include/ \

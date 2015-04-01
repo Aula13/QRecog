@@ -15,13 +15,14 @@
 #include <pcl/segmentation/extract_clusters.h>
 
 #include "logger.h"
+#include "defines.h"
 
 class PCLSegmentationFunction
 {
 public:
     PCLSegmentationFunction();
 
-    pcl::PointCloud<pcl::PointXYZRGBA>::Ptr segment(pcl::PointCloud<pcl::PointXYZRGBA>::Ptr cloud);
+    cloudPtrType segment(cloudPtrType cloud);
 
     bool optimazeCoeff;
     int modelType;

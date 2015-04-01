@@ -6,6 +6,7 @@
 #include "observer.h"
 
 #include "logger.h"
+#include "defines.h"
 
 #include <QMessageBox>
 #include <QElapsedTimer>
@@ -14,8 +15,6 @@
 #include "pclsegmentationfunction.h"
 #include "pclclusteringfunction.h"
 #include "pclcorrgroupfunction.h"
-
-#include <pcl/point_types.h>
 
 namespace Ui {
 class CorrespondenceView;
@@ -56,8 +55,8 @@ private:
 
     Ui::CorrespondenceView *ui;
 
-    std::vector<pcl::PointCloud<pcl::PointXYZRGBA>::Ptr> computedModels;
-    std::vector<pcl::PointCloud<pcl::PointXYZRGBA>::Ptr> searchedModels;
+    std::vector<cloudPtrType> computedModels;
+    std::vector<cloudPtrType> searchedModels;
 
     bool viewHasFocus;
 

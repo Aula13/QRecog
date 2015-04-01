@@ -14,9 +14,9 @@ void SimCameraModel::stop()
 {
 }
 
-pcl::PointCloud<pcl::PointXYZRGBA>::Ptr SimCameraModel::getLastAcquisition()
+cloudPtrType SimCameraModel::getLastAcquisition()
 {
-    pcl::PointCloud<pcl::PointXYZRGBA>::Ptr cloud (new pcl::PointCloud<pcl::PointXYZRGBA>), cloud_f (new pcl::PointCloud<pcl::PointXYZRGBA>);
+    cloudPtrType cloud (new cloudType), cloud_f (new cloudType);
     std::string path = QDir::homePath().toStdString() + "/QRecog/old_scene.pcd";
     pcl::io::loadPCDFile(path, *cloud);
     return cloud;

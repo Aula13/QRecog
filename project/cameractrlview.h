@@ -4,6 +4,7 @@
 #include <QWidget>
 
 #include "models.h"
+#include "defines.h"
 
 namespace Ui {
 class CameraCtrlView;

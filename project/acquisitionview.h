@@ -8,6 +8,7 @@
 
 #include "models.h"
 #include <pcl/io/pcd_io.h>
+#include "defines.h"
 
 namespace Ui {
 class AcquisitionView;

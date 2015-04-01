@@ -2,7 +2,6 @@
 #define PCLCLUSTERINGFUNCTION_H
 
 #include <pcl/ModelCoefficients.h>
-#include <pcl/point_types.h>
 #include <pcl/io/pcd_io.h>
 #include <pcl/io/file_io.h>
 #include <pcl/filters/extract_indices.h>
@@ -14,12 +13,14 @@
 #include <pcl/segmentation/sac_segmentation.h>
 #include <pcl/segmentation/extract_clusters.h>
 
+#include "defines.h"
+
 class PCLClusteringFunction
 {
 public:
     PCLClusteringFunction();
 
-    std::vector<pcl::PointCloud<pcl::PointXYZRGBA>::Ptr> clustering(pcl::PointCloud<pcl::PointXYZRGBA>::Ptr cloud);
+    std::vector<cloudPtrType> clustering(cloudPtrType cloud);
 
     float clusterTolerance;
     int minClusterSize;

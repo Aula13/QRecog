@@ -47,10 +47,10 @@ void PCLViewer::update(Observable *obs)
     }
 }
 
-void PCLViewer::updateView(std::vector<pcl::PointCloud<pcl::PointXYZRGBA>::Ptr> clouds)
+void PCLViewer::updateView(std::vector<cloudPtrType> clouds)
 {
     int i = 0;
-    foreach (pcl::PointCloud<pcl::PointXYZRGBA>::Ptr aCloud, clouds) {
+    foreach (cloudPtrType aCloud, clouds) {
 
         std::string id = "cloud" + boost::lexical_cast<std::string>(i);
 
@@ -62,7 +62,7 @@ void PCLViewer::updateView(std::vector<pcl::PointCloud<pcl::PointXYZRGBA>::Ptr> 
     Logger::logInfo("PCLViewer update");
 }
 
-void PCLViewer::updateView(pcl::PointCloud<pcl::PointXYZRGBA>::Ptr cloud)
+void PCLViewer::updateView(cloudPtrType cloud)
 {
 
     std::string id = "cloud0";
@@ -72,8 +72,8 @@ void PCLViewer::updateView(pcl::PointCloud<pcl::PointXYZRGBA>::Ptr cloud)
     Logger::logInfo("PCLViewer update");
 }
 
-void PCLViewer::addOrUpdateCloud(pcl::PointCloud<pcl::PointXYZRGBA>::Ptr cloud, std::string cloud_id) {
-    pcl::PointCloud<pcl::PointXYZRGBA>::Ptr cloud_(new pcl::PointCloud<pcl::PointXYZRGBA> (*cloud));
+void PCLViewer::addOrUpdateCloud(cloudPtrType cloud, std::string cloud_id) {
+    cloudPtrType cloud_(new cloudType (*cloud));
 
     bool cloudExist = false;
     foreach (std::string id, cloud_ids) {

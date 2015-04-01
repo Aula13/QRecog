@@ -19,7 +19,7 @@ void ClusteringView::on_btnSegment_clicked()
         Logger::logWarning("Clustering target file is empty");
     }
 
-    pcl::PointCloud<pcl::PointXYZRGBA>::Ptr cloud (new pcl::PointCloud<pcl::PointXYZRGBA>), cloud_f (new pcl::PointCloud<pcl::PointXYZRGBA>);
+    cloudPtrType cloud (new cloudType), cloud_f (new cloudType);
     pcl::io::loadPCDFile(filename, *cloud);
 
     computedModels.clear();
@@ -31,6 +31,27 @@ void ClusteringView::on_btnSegment_clicked()
         filterf->leafSize=ui->wgtFilterOptionView->getLeafSize();
 
         computedModels.push_back(filterf->filter(cloud));
+    }
+
+    if(ui->wgtMinCutOptionView->isMinCutEnabled())
+    {
+        PCLMinCutFunction* mincut = new PCLMinCutFunction();
+
+        mincut->x = ui->wgtMinCutOptionView->getx();
+        mincut->y = ui->wgtMinCutOptionView->gety();
+        mincut->z = ui->wgtMinCutOptionView->getz();
+        mincut->sigma = ui->wgtMinCutOptionView->getSigma();
+        mincut->radius = ui->wgtMinCutOptionView->getRadius();
+        mincut->numberOfNeighbours = ui->wgtMinCutOptionView->getNrNeighbours();
+        mincut->sourceWeight = ui->wgtMinCutOptionView->getSourceWeight();
+
+        if(computedModels.size()==1)
+        {
+            cloud_f=computedModels[0];
+            computedModels.pop_back();
+            computedModels.push_back(mincut->getForegroundPointCloud(cloud_f));
+        } else
+            computedModels.push_back(mincut->getForegroundPointCloud(cloud));
     }
 
     if(ui->wgtSegOptionView->isSegmentationEnabled())

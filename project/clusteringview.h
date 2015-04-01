@@ -3,10 +3,12 @@
 
 #include <QWidget>
 #include "logger.h"
+#include "defines.h"
 
 #include <QMessageBox>
 
 #include "pclfilterfunction.h"
+#include "pclmincutfunction.h"
 #include "pclsegmentationfunction.h"
 #include "pclclusteringfunction.h"
 
@@ -37,7 +39,7 @@ private slots:
 private:
     Ui::ClusteringView *ui;
 
-    std::vector<pcl::PointCloud<pcl::PointXYZRGBA>::Ptr> computedModels;
+    std::vector<cloudPtrType> computedModels;
 
     unsigned int actualModelViewer;
 

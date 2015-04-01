@@ -54,7 +54,7 @@ void PCLCorrGroupFunction::recognize ()
         printResults();
 }
 
-double PCLCorrGroupFunction::computeCloudResolution (const pcl::PointCloud<PointType>::ConstPtr &cloud)
+double PCLCorrGroupFunction::computeCloudResolution (const cloudType::ConstPtr &cloud)
     {
         double res = 0.0;
         int n_points = 0;
@@ -81,7 +81,7 @@ double PCLCorrGroupFunction::computeCloudResolution (const pcl::PointCloud<Point
         return res;
     }
 
-void PCLCorrGroupFunction::transformCloud(cloudPtr &cloud){
+void PCLCorrGroupFunction::transformCloud(cloudPtrType &cloud){
 
     /*  METHOD #2: Using a Affine3f
      This method is easier and less error prone
@@ -168,7 +168,7 @@ void PCLCorrGroupFunction::downSampleModel(){
     Logger::logInfo("ModelKeypoints: "    + std::to_string(modelKeypoints->size()));
 }
 
-void PCLCorrGroupFunction::downSampleCloud(cloudPtr &cloud,  float sampleSize, cloudPtr &keypoints){
+void PCLCorrGroupFunction::downSampleCloud(cloudPtrType &cloud,  float sampleSize, cloudPtrType &keypoints){
     pcl::PointCloud<int> sampledIndices;
     pcl::UniformSampling<PointType> uniform_sampling;
     uniform_sampling.setInputCloud (cloud);
@@ -179,7 +179,7 @@ void PCLCorrGroupFunction::downSampleCloud(cloudPtr &cloud,  float sampleSize, c
 
 }
 
-void PCLCorrGroupFunction::computeDescriptorsForKeypoints(cloudPtr &cloud,  cloudPtr &keypoints, normalsPtr &normals, descriptorsPtr &descriptors){
+void PCLCorrGroupFunction::computeDescriptorsForKeypoints(cloudPtrType &cloud,  cloudPtrType &keypoints, normalsPtr &normals, descriptorsPtr &descriptors){
     pcl::SHOTEstimationOMP<PointType, NormalType, DescriptorType> descriptorEst;
     descriptorEst.setRadiusSearch (descriptorsRadius);
 
@@ -286,11 +286,11 @@ void PCLCorrGroupFunction::printResults(){
 void PCLCorrGroupFunction::resetValues (){
 
     sceneDescriptors   = (descriptorsPtr)new pcl::PointCloud<DescriptorType> ();
-    sceneKeypoints     = (cloudPtr)new pcl::PointCloud<PointType> ();
+    sceneKeypoints     = (cloudPtrType)new cloudType ();
     sceneNormals       = (normalsPtr)new pcl::PointCloud<NormalType> ();
 
     if(computeModelKeypoints) {
-        modelKeypoints     = (cloudPtr)new pcl::PointCloud<PointType>();
+        modelKeypoints     = (cloudPtrType)new cloudType();
         modelNormals       = (normalsPtr)new pcl::PointCloud<NormalType> ();
         modelDescriptors   = (descriptorsPtr)new pcl::PointCloud<DescriptorType> ();
     }
@@ -302,8 +302,8 @@ void PCLCorrGroupFunction::resetValues (){
 
 void PCLCorrGroupFunction::setUpOffSceneModel()
 {
-    offSceneModelKeypoints  = (cloudPtr)new pcl::PointCloud<PointType> ();
-    offSceneModel           = (cloudPtr)new pcl::PointCloud<PointType> ();
+    offSceneModelKeypoints  = (cloudPtrType)new cloudType ();
+    offSceneModel           = (cloudPtrType)new cloudType ();
     //  We are translating the model so that it doesn't end in the middle of the scene representation
     pcl::transformPointCloud (*model, *offSceneModel, Eigen::Vector3f (-1,0,0), Eigen::Quaternionf (1, 0, 0, 0));
     pcl::transformPointCloud (*modelKeypoints, *offSceneModelKeypoints, Eigen::Vector3f (-1,0,0), Eigen::Quaternionf (1, 0, 0, 0));
@@ -320,9 +320,9 @@ int PCLCorrGroupFunction::getComputationTimems()
     return computationTime->elapsed();
 }
 
-cloudPtr PCLCorrGroupFunction::getCorrespondence()
+cloudPtrType PCLCorrGroupFunction::getCorrespondence()
 {
-    cloudPtr rotated_model (new pcl::PointCloud<PointType> ());
+    cloudPtrType rotated_model (new cloudType ());
     for (size_t i = 0; i < rototranslations.size (); ++i)
         pcl::transformPointCloud (*model, *rotated_model, rototranslations[i]);
 

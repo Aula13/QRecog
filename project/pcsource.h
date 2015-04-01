@@ -3,6 +3,7 @@
 
 #include "observable.h"
 #include <pcl/io/pcd_io.h>
+#include "defines.h"
 
 class PCSource : public Observable
 {
@@ -13,7 +14,7 @@ public:
 
     virtual void stop() = 0;
 
-    virtual pcl::PointCloud<pcl::PointXYZRGBA>::Ptr getLastAcquisition() = 0;
+    virtual cloudPtrType getLastAcquisition() = 0;
 
     virtual bool isRunning() = 0;
 };

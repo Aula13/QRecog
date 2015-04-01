@@ -2,6 +2,7 @@
 #define CLUSTERINGOPTION_H
 
 #include <QWidget>
+#include "defines.h"
 
 namespace Ui {
 class ClusteringOptionView;

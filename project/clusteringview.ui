@@ -57,26 +57,6 @@
      <set>Qt::AlignCenter</set>
     </property>
    </widget>
-   <widget class="FilterOptionView" name="wgtFilterOptionView" native="true">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>20</y>
-      <width>240</width>
-      <height>80</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="SegmentationOptionView" name="wgtSegOptionView" native="true">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>110</y>
-      <width>240</width>
-      <height>230</height>
-     </rect>
-    </property>
-   </widget>
    <widget class="QLabel" name="lblSegInputFile">
     <property name="geometry">
      <rect>
@@ -103,16 +83,52 @@
      </rect>
     </property>
    </widget>
-   <widget class="ClusteringOptionView" name="wgtClusterOptionView" native="true">
+   <widget class="QToolBox" name="toolBox">
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>350</y>
-      <width>240</width>
-      <height>140</height>
+      <y>20</y>
+      <width>241</width>
+      <height>471</height>
      </rect>
     </property>
+    <property name="currentIndex">
+     <number>0</number>
+    </property>
+    <widget class="FilterOptionView" name="wgtFilterOptionView">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>241</width>
+       <height>347</height>
+      </rect>
+     </property>
+     <attribute name="label">
+      <string>Filter</string>
+     </attribute>
+    </widget>
+    <widget class="MinCutOptionView" name="wgtMinCutOptionView">
+     <attribute name="label">
+      <string>Min cut segmentation</string>
+     </attribute>
+    </widget>
+    <widget class="SegmentationOptionView" name="wgtSegOptionView">
+     <attribute name="label">
+      <string>Segmentation</string>
+     </attribute>
+    </widget>
+    <widget class="ClusteringOptionView" name="wgtClusterOptionView">
+     <attribute name="label">
+      <string>Clustering</string>
+     </attribute>
+    </widget>
    </widget>
+   <zorder>toolBox</zorder>
+   <zorder>btnSegment</zorder>
+   <zorder>lblClustering</zorder>
+   <zorder>lblSegInputFile</zorder>
+   <zorder>wgtSegFileChooser</zorder>
   </widget>
   <widget class="QFrame" name="frmCtrlModel">
    <property name="geometry">
@@ -242,15 +258,21 @@
    <container>1</container>
   </customwidget>
   <customwidget>
+   <class>SegmentationOptionView</class>
+   <extends>QWidget</extends>
+   <header location="global">segmentationoptionview.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
    <class>ClusteringOptionView</class>
    <extends>QWidget</extends>
    <header location="global">clusteringoptionview.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>
-   <class>SegmentationOptionView</class>
+   <class>MinCutOptionView</class>
    <extends>QWidget</extends>
-   <header location="global">segmentationoptionview.h</header>
+   <header location="global">mincutoptionview.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

@@ -4,15 +4,15 @@ PCLSegmentationFunction::PCLSegmentationFunction()
 {
 }
 
-pcl::PointCloud<pcl::PointXYZRGBA>::Ptr PCLSegmentationFunction::segment(pcl::PointCloud<pcl::PointXYZRGBA>::Ptr cloud)
+cloudPtrType PCLSegmentationFunction::segment(cloudPtrType cloud)
 {
 
-    pcl::PointCloud<pcl::PointXYZRGBA>::Ptr cloud_f (new pcl::PointCloud<pcl::PointXYZRGBA>);
+    cloudPtrType cloud_f (new cloudType);
 
-    pcl::SACSegmentation<pcl::PointXYZRGBA> seg;
+    pcl::SACSegmentation<PointType> seg;
     pcl::PointIndices::Ptr inliers (new pcl::PointIndices);
     pcl::ModelCoefficients::Ptr coefficients (new pcl::ModelCoefficients);
-    pcl::PointCloud<pcl::PointXYZRGBA>::Ptr cloud_plane (new pcl::PointCloud<pcl::PointXYZRGBA> ());
+    cloudPtrType cloud_plane (new cloudType);
 
     seg.setOptimizeCoefficients (optimazeCoeff);
     seg.setModelType (modelType);
@@ -20,7 +20,7 @@ pcl::PointCloud<pcl::PointXYZRGBA>::Ptr PCLSegmentationFunction::segment(pcl::Po
     seg.setMaxIterations (maxIterations);
     seg.setDistanceThreshold (distanceThreashold);
 
-    int i=0, nr_points = (int) cloud->points.size ();
+    int nr_points = (int) cloud->points.size ();
     while (cloud->points.size () > 0.3 * nr_points)
     {
         // Segment the largest planar component from the remaining cloud
@@ -33,7 +33,7 @@ pcl::PointCloud<pcl::PointXYZRGBA>::Ptr PCLSegmentationFunction::segment(pcl::Po
         }
 
         // Extract the planar inliers from the input cloud
-        pcl::ExtractIndices<pcl::PointXYZRGBA> extract;
+        pcl::ExtractIndices<PointType> extract;
         extract.setInputCloud (cloud);
         extract.setIndices (inliers);
         extract.setNegative (false);

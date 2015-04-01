@@ -3,6 +3,7 @@
 
 #include "pcsource.h"
 #include <QDir>
+#include "defines.h"
 
 class SimCameraModel : public PCSource
 {
@@ -13,7 +14,7 @@ public:
 
     void stop();
 
-    pcl::PointCloud<pcl::PointXYZRGBA>::Ptr getLastAcquisition();
+    cloudPtrType getLastAcquisition();
 
     bool isRunning();
 };

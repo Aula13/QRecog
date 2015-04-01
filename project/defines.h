@@ -20,4 +20,11 @@
 //    #define GL_CLAMP_TO_EDGE      0x812F
 //#endif
 
+#include <pcl/point_types.h>
+#include <pcl/point_cloud.h>
+
+typedef pcl::PointXYZRGB PointType;
+typedef pcl::PointCloud<PointType> cloudType;
+typedef cloudType::Ptr cloudPtrType;
+
 #endif // DEFINES_H

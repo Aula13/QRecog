@@ -2,7 +2,6 @@
 #define PCLCORRGROUPFUNCTION_H
 
 #include <pcl/io/pcd_io.h>
-#include <pcl/point_cloud.h>
 #include <pcl/correspondence.h>
 #include <pcl/features/normal_3d_omp.h>
 #include <pcl/features/shot_omp.h>
@@ -17,17 +16,17 @@
 #include <pcl/console/parse.h>
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include <boost/thread/thread.hpp>
+
 #include "logger.h"
+#include "defines.h"
 
 #include <QElapsedTimer>
 
 
-typedef pcl::PointXYZRGBA PointType;
 typedef pcl::Normal NormalType;
 typedef pcl::ReferenceFrame RFType;
 typedef pcl::SHOT352 DescriptorType;
 typedef boost::signals2::signal<void ()>  signal_t;
-typedef pcl::PointCloud<PointType>::Ptr cloudPtr;
 typedef pcl::PointCloud<NormalType>::Ptr normalsPtr;
 typedef pcl::PointCloud<DescriptorType>::Ptr descriptorsPtr;
 
@@ -35,7 +34,7 @@ class PCLCorrGroupFunction
 {
 public:
     PCLCorrGroupFunction();
-    cloudPtr getCorrespondence();
+    cloudPtrType getCorrespondence();
     void recognize ();
     void loadCloudsFromDefaultFile();
     void loadSceneFromFile(std::string sceneFilename);
@@ -59,12 +58,12 @@ public:
     float           cgThreshold;
     std::string     modelFileName;
     std::string     sceneFileName;
-    cloudPtr        model;
-    cloudPtr        scene;
-    cloudPtr        offSceneModel;
-    cloudPtr        offSceneModelKeypoints;
-    cloudPtr        modelKeypoints;
-    cloudPtr        sceneKeypoints;
+    cloudPtrType        model;
+    cloudPtrType        scene;
+    cloudPtrType        offSceneModel;
+    cloudPtrType        offSceneModelKeypoints;
+    cloudPtrType        modelKeypoints;
+    cloudPtrType        sceneKeypoints;
     normalsPtr      modelNormals;
     normalsPtr      sceneNormals;
     descriptorsPtr  modelDescriptors;
@@ -76,15 +75,15 @@ public:
 
 private:
 
-    double computeCloudResolution (const pcl::PointCloud<PointType>::ConstPtr &cloud);
-    void transformCloud (pcl::PointCloud<PointType>::Ptr &cloud);
+    double computeCloudResolution (const cloudType::ConstPtr &cloud);
+    void transformCloud (cloudType::Ptr &cloud);
     void setUpResolutionInvariance();
     void computeModelNormals();
     void computeSceneNormals();
     void downSampleScene();
     void downSampleModel();
-    void downSampleCloud(cloudPtr &cloud,  float sampleSize, cloudPtr &keypoints);
-    void computeDescriptorsForKeypoints(cloudPtr &cloud,  cloudPtr &keypoints, normalsPtr &normals, descriptorsPtr &descriptors);
+    void downSampleCloud(cloudPtrType &cloud,  float sampleSize, cloudPtrType &keypoints);
+    void computeDescriptorsForKeypoints(cloudPtrType &cloud,  cloudPtrType &keypoints, normalsPtr &normals, descriptorsPtr &descriptors);
     void findCorrespondences();
     void recognizeUsingHough();
     void recognizeUsingGeometricConsistency();

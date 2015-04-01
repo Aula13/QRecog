@@ -10,21 +10,22 @@
 
 #include "pcsource.h"
 #include "logger.h"
+#include "defines.h"
 
 class CameraModel : public PCSource
 {
 public:
     static CameraModel* getInstance();
 
-    void cloud_cb_ (const pcl::PointCloud<pcl::PointXYZRGBA>::ConstPtr &cloud);
+    void cloud_cb_ (const cloudType::ConstPtr &cloud);
 
-    void registerCallback(boost::function<void (const pcl::PointCloud<pcl::PointXYZRGBA>::ConstPtr&)> f);
+    void registerCallback(boost::function<void (const cloudType::ConstPtr&)> f);
 
     void run();
 
     void stop();
 
-    pcl::PointCloud<pcl::PointXYZRGBA>::Ptr getLastAcquisition();
+    cloudPtrType getLastAcquisition();
 
     bool isRunning();
 
@@ -37,7 +38,7 @@ public:
 private:
     CameraModel();
 
-    pcl::PointCloud<pcl::PointXYZRGBA>::Ptr trasformedpcd;
+    cloudPtrType trasformedpcd;
     bool onUpdate = false;
 
     bool connected;

@@ -117,22 +117,6 @@
      <number>100</number>
     </property>
    </widget>
-   <widget class="QLabel" name="lblClusteringOptions">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>0</y>
-      <width>221</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Clustering options</string>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignCenter</set>
-    </property>
-   </widget>
    <widget class="QLabel" name="lblMaxClusterSize">
     <property name="geometry">
      <rect>

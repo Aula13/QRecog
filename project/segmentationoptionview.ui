@@ -166,22 +166,6 @@
      </rect>
     </property>
    </widget>
-   <widget class="QLabel" name="lblSegmentationOptions">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>0</y>
-      <width>221</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Segmentation options</string>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignCenter</set>
-    </property>
-   </widget>
    <widget class="QCheckBox" name="chkEnableSegmentation">
     <property name="geometry">
      <rect>
