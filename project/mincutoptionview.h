@@ -27,6 +27,8 @@ public:
 
     bool isMinCutEnabled();
 
+    bool showPreview();
+
 private:
     Ui::MinCutOptionView *ui;
 };

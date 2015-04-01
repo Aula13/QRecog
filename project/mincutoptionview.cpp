@@ -52,3 +52,8 @@ bool MinCutOptionView::isMinCutEnabled()
 {
     return ui->chkEnableMinCut->isChecked();
 }
+
+bool MinCutOptionView::showPreview()
+{
+    return ui->chkEnableShowPreview->isChecked();
+}

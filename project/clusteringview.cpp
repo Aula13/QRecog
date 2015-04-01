@@ -45,9 +45,12 @@ void ClusteringView::on_btnSegment_clicked()
         mincut->numberOfNeighbours = ui->wgtMinCutOptionView->getNrNeighbours();
         mincut->sourceWeight = ui->wgtMinCutOptionView->getSourceWeight();
 
+        mincut->showPreview = ui->wgtMinCutOptionView->showPreview();
+
         if(computedModels.size()==1)
         {
             cloud_f=computedModels[0];
+
             computedModels.pop_back();
             computedModels.push_back(mincut->getForegroundPointCloud(cloud_f));
         } else

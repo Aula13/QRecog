@@ -27,5 +27,11 @@ cloudPtrType PCLMinCutFunction::getForegroundPointCloud(cloudPtrType cloud)
 
   Logger::logInfo("Min cut segmentation - Maximum flow is " + std::to_string(seg.getMaxFlow ()));
 
-  return seg.getColoredCloud();
+  if(showPreview)
+    return seg.getColoredCloud();
+  else {
+    cloudPtrType result (new cloudType);
+    // TODO: trovare un modo per tirare fuori solo i punti in foreground
+    return cloud;
+  }
 }

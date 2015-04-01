@@ -28,6 +28,8 @@ public:
     int numberOfNeighbours;
     float sourceWeight;
 
+    bool showPreview;
+
 };
 
 #endif // PCLMINCUTFUNCTION_H

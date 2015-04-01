@@ -37,7 +37,6 @@ void CorrespondenceView::update(Observable* obs)
             if(ui->wgtFilterOptionView->isFilteringEnabled())
             {
                 PCLFilterFunction* filterf = new PCLFilterFunction();
-
                 filterf->leafSize=ui->wgtFilterOptionView->getLeafSize();
 
                 if(computedModels.size()==1)
