@@ -25,7 +25,7 @@
 
 typedef pcl::Normal NormalType;
 typedef pcl::ReferenceFrame RFType;
-typedef pcl::SHOT352 DescriptorType;
+typedef pcl::SHOT1344 DescriptorType; //352
 typedef boost::signals2::signal<void ()>  signal_t;
 typedef pcl::PointCloud<NormalType>::Ptr normalsPtr;
 typedef pcl::PointCloud<DescriptorType>::Ptr descriptorsPtr;

@@ -3,12 +3,8 @@
 PCLCorrGroupFunction::PCLCorrGroupFunction()
 {
     //setupDefaultValues();
-<<<<<<< HEAD
 
     computationTime = new QElapsedTimer();
-=======
-    //timer = new QTimer(this);
->>>>>>> e3a682bea168919d0a0233d14ae93a0cd1377b5a
 }
 
 void PCLCorrGroupFunction::recognize ()
@@ -26,20 +22,24 @@ void PCLCorrGroupFunction::recognize ()
             Logger::logInfo("Error scene cloud is null.");
             return;
         }
-        if (applyTrasformationToModel)
-            transformCloud(model);
+        // TODO to be removed
+        //if (applyTrasformationToModel)
+        //    transformCloud(model);
 
         if (useCloudResolution)
             setUpResolutionInvariance();
 
-        computeNormals();
-
-        // Extract keypoints
-        downSampleModel();
-        downSampleScene();
-
         // Compute Descriptors
-        computeDescriptorsForKeypoints(model, modelKeypoints, modelNormals, modelDescriptors);
+        if(computeModelKeypoints) {
+            computeModelNormals();
+            downSampleModel();
+            computeDescriptorsForKeypoints(model, modelKeypoints, modelNormals, modelDescriptors);
+            computeModelKeypoints=false;
+        }
+
+
+        computeSceneNormals();
+        downSampleScene();
         computeDescriptorsForKeypoints(scene, sceneKeypoints, sceneNormals, sceneDescriptors);
 
         // For each scene keypoint descriptor,find nearest neighbor into the model
@@ -55,7 +55,7 @@ void PCLCorrGroupFunction::recognize ()
         printResults();
 }
 
-double PCLCorrGroupFunction::computeCloudResolution (const pcl::PointCloud<PointType>::ConstPtr &cloud)
+double PCLCorrGroupFunction::computeCloudResolution (const cloudType::ConstPtr &cloud)
     {
         double res = 0.0;
         int n_points = 0;
@@ -82,8 +82,16 @@ double PCLCorrGroupFunction::computeCloudResolution (const pcl::PointCloud<Point
         return res;
     }
 
+<<<<<<< HEAD
+void PCLCorrGroupFunction::transformCloud(cloudPtrType &cloud){
+=======
+// TODO to be removed
 void PCLCorrGroupFunction::transformCloud(cloudPtr &cloud){
+>>>>>>> 19ef082b4ad65d5581cbfafad148d7f0a1f1884e
 
+    /*  METHOD #2: Using a Affine3f
+     This method is easier and less error prone
+     */
     Eigen::Affine3f transform = Eigen::Affine3f::Identity();
     float theta = M_PI/4; // The angle of rotation in radians
 
@@ -136,11 +144,19 @@ void PCLCorrGroupFunction::setUpResolutionInvariance(){
     Logger::logInfo("Clustering bin size:    "  + std::to_string(cgSize));
 }
 
-void PCLCorrGroupFunction::computeNormals(){
+void PCLCorrGroupFunction::computeModelNormals(){
+
     pcl::NormalEstimationOMP<PointType, NormalType> normEst;
     normEst.setKSearch (10);
+
     normEst.setInputCloud (model);
     normEst.compute (*modelNormals);
+}
+
+void PCLCorrGroupFunction::computeSceneNormals(){
+
+    pcl::NormalEstimationOMP<PointType, NormalType> normEst;
+    normEst.setKSearch (10); //TODO: Verificare se mettere a vista
 
     normEst.setInputCloud (scene);
     normEst.compute (*sceneNormals);
@@ -158,7 +174,7 @@ void PCLCorrGroupFunction::downSampleModel(){
     Logger::logInfo("ModelKeypoints: "    + std::to_string(modelKeypoints->size()));
 }
 
-void PCLCorrGroupFunction::downSampleCloud(cloudPtr &cloud,  float sampleSize, cloudPtr &keypoints){
+void PCLCorrGroupFunction::downSampleCloud(cloudPtrType &cloud,  float sampleSize, cloudPtrType &keypoints){
     pcl::PointCloud<int> sampledIndices;
     pcl::UniformSampling<PointType> uniform_sampling;
     uniform_sampling.setInputCloud (cloud);
@@ -166,18 +182,21 @@ void PCLCorrGroupFunction::downSampleCloud(cloudPtr &cloud,  float sampleSize, c
     uniform_sampling.compute (sampledIndices);
 
     pcl::copyPointCloud (*cloud, sampledIndices.points, *keypoints);
-
 }
 
-void PCLCorrGroupFunction::computeDescriptorsForKeypoints(cloudPtr &cloud,  cloudPtr &keypoints, normalsPtr &normals, descriptorsPtr &descriptors){
+<<<<<<< HEAD
+void PCLCorrGroupFunction::computeDescriptorsForKeypoints(cloudPtrType &cloud,  cloudPtrType &keypoints, normalsPtr &normals, descriptorsPtr &descriptors){
     pcl::SHOTEstimationOMP<PointType, NormalType, DescriptorType> descriptorEst;
+=======
+void PCLCorrGroupFunction::computeDescriptorsForKeypoints(cloudPtr &cloud,  cloudPtr &keypoints, normalsPtr &normals, descriptorsPtr &descriptors){
+    pcl::SHOTColorEstimationOMP<PointType, NormalType, DescriptorType> descriptorEst;
+>>>>>>> 19ef082b4ad65d5581cbfafad148d7f0a1f1884e
     descriptorEst.setRadiusSearch (descriptorsRadius);
 
     descriptorEst.setInputCloud (keypoints);
     descriptorEst.setInputNormals (normals);
     descriptorEst.setSearchSurface (cloud);
     descriptorEst.compute (*descriptors);
-
 }
 
 void PCLCorrGroupFunction::findCorrespondences(){
@@ -274,19 +293,26 @@ void PCLCorrGroupFunction::printResults(){
 }
 
 void PCLCorrGroupFunction::resetValues (){
-    modelKeypoints     = (cloudPtr)new pcl::PointCloud<PointType>();
-    sceneKeypoints     = (cloudPtr)new pcl::PointCloud<PointType> ();
-    modelNormals       = (normalsPtr)new pcl::PointCloud<NormalType> ();
-    sceneNormals       = (normalsPtr)new pcl::PointCloud<NormalType> ();
-    modelDescriptors   = (descriptorsPtr)new pcl::PointCloud<DescriptorType> ();
+
     sceneDescriptors   = (descriptorsPtr)new pcl::PointCloud<DescriptorType> ();
+    sceneKeypoints     = (cloudPtrType)new cloudType ();
+    sceneNormals       = (normalsPtr)new pcl::PointCloud<NormalType> ();
+
+    if(computeModelKeypoints) {
+        modelKeypoints     = (cloudPtrType)new cloudType();
+        modelNormals       = (normalsPtr)new pcl::PointCloud<NormalType> ();
+        modelDescriptors   = (descriptorsPtr)new pcl::PointCloud<DescriptorType> ();
+    }
+
     modelSceneCorrs    = (pcl::CorrespondencesPtr)new pcl::Correspondences ();
+    rototranslations.clear();
+    clusteredCorrs.clear();
 }
 
 void PCLCorrGroupFunction::setUpOffSceneModel()
 {
-    offSceneModelKeypoints  = (cloudPtr)new pcl::PointCloud<PointType> ();
-    offSceneModel           = (cloudPtr)new pcl::PointCloud<PointType> ();
+    offSceneModelKeypoints  = (cloudPtrType)new cloudType ();
+    offSceneModel           = (cloudPtrType)new cloudType ();
     //  We are translating the model so that it doesn't end in the middle of the scene representation
     pcl::transformPointCloud (*model, *offSceneModel, Eigen::Vector3f (-1,0,0), Eigen::Quaternionf (1, 0, 0, 0));
     pcl::transformPointCloud (*modelKeypoints, *offSceneModelKeypoints, Eigen::Vector3f (-1,0,0), Eigen::Quaternionf (1, 0, 0, 0));
@@ -303,9 +329,9 @@ int PCLCorrGroupFunction::getComputationTimems()
     return computationTime->elapsed();
 }
 
-cloudPtr PCLCorrGroupFunction::getCorrespondence()
+cloudPtrType PCLCorrGroupFunction::getCorrespondence()
 {
-    cloudPtr rotated_model (new pcl::PointCloud<PointType> ());
+    cloudPtrType rotated_model (new cloudType ());
     for (size_t i = 0; i < rototranslations.size (); ++i)
         pcl::transformPointCloud (*model, *rotated_model, rototranslations[i]);
 
