@@ -22,8 +22,9 @@ void PCLCorrGroupFunction::recognize ()
             Logger::logInfo("Error scene cloud is null.");
             return;
         }
-//        if (applyTrasformationToModel)
-//            transformCloud(model);
+        // TODO to be removed
+        //if (applyTrasformationToModel)
+        //    transformCloud(model);
 
         if (useCloudResolution)
             setUpResolutionInvariance();
@@ -81,6 +82,7 @@ double PCLCorrGroupFunction::computeCloudResolution (const pcl::PointCloud<Point
         return res;
     }
 
+// TODO to be removed
 void PCLCorrGroupFunction::transformCloud(cloudPtr &cloud){
 
     /*  METHOD #2: Using a Affine3f
@@ -176,18 +178,16 @@ void PCLCorrGroupFunction::downSampleCloud(cloudPtr &cloud,  float sampleSize, c
     uniform_sampling.compute (sampledIndices);
 
     pcl::copyPointCloud (*cloud, sampledIndices.points, *keypoints);
-
 }
 
 void PCLCorrGroupFunction::computeDescriptorsForKeypoints(cloudPtr &cloud,  cloudPtr &keypoints, normalsPtr &normals, descriptorsPtr &descriptors){
-    pcl::SHOTEstimationOMP<PointType, NormalType, DescriptorType> descriptorEst;
+    pcl::SHOTColorEstimationOMP<PointType, NormalType, DescriptorType> descriptorEst;
     descriptorEst.setRadiusSearch (descriptorsRadius);
 
     descriptorEst.setInputCloud (keypoints);
     descriptorEst.setInputNormals (normals);
     descriptorEst.setSearchSurface (cloud);
     descriptorEst.compute (*descriptors);
-
 }
 
 void PCLCorrGroupFunction::findCorrespondences(){
