@@ -15,6 +15,7 @@
 #include "pclsegmentationfunction.h"
 #include "pclclusteringfunction.h"
 #include "pclcorrgroupfunction.h"
+#include "pclmincutfunction.h"
 
 namespace Ui {
 class CorrespondenceView;
@@ -52,11 +53,13 @@ private slots:
 private:
     void launchRecognizer(PCLCorrGroupFunction* cff);
     void visualizeRecognizerOutput(PCLCorrGroupFunction *cff);
+    void setupColorForKeypoints(PCLCorrGroupFunction *cff);
 
     Ui::CorrespondenceView *ui;
 
     std::vector<cloudPtrType> computedModels;
     std::vector<cloudPtrType> searchedModels;
+    std::vector<cloudPtrType> cloudsToShow;
 
     bool viewHasFocus;
 

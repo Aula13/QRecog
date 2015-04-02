@@ -8,6 +8,7 @@
 #include <pcl/visualization/cloud_viewer.h>
 #include <pcl/filters/passthrough.h>
 #include <pcl/segmentation/min_cut_segmentation.h>
+#include <pcl/filters/extract_indices.h>
 
 #include "logger.h"
 #include "defines.h"

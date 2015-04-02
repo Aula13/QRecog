@@ -8,6 +8,8 @@
 #include <pcl/point_types.h>
 #include <pcl/visualization/pcl_visualizer.h>
 
+#include <list>
+
 // Visualization Toolkit (VTK)
 #include <vtkRenderWindow.h>
 
@@ -50,7 +52,7 @@ private:
 
     bool disableUpdate;
 
-    std::vector<std::string> cloud_ids;
+    std::list<std::string> existentClouds;
 
     void addOrUpdateCloud(cloudPtrType cloud, std::string cloud_id);
 };

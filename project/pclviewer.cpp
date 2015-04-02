@@ -49,6 +49,17 @@ void PCLViewer::update(Observable *obs)
 
 void PCLViewer::updateView(std::vector<cloudPtrType> clouds)
 {
+
+    //Remove unused existent clouds
+    if(clouds.size()<existentClouds.size()) {
+        for (unsigned int i=clouds.size()-1; i<existentClouds.size(); i++) {
+            std::string id = "cloud" + boost::lexical_cast<std::string>(i);
+            viewer->removePointCloud(id);
+            existentClouds.remove(id);
+        }
+    }
+
+    //Add or update existent clouds
     int i = 0;
     foreach (cloudPtrType aCloud, clouds) {
 
@@ -76,7 +87,7 @@ void PCLViewer::addOrUpdateCloud(cloudPtrType cloud, std::string cloud_id) {
     cloudPtrType cloud_(new cloudType (*cloud));
 
     bool cloudExist = false;
-    foreach (std::string id, cloud_ids) {
+    foreach (std::string id, existentClouds) {
         if(id.compare(cloud_id)==0)
         {
             cloudExist = true;
@@ -92,7 +103,7 @@ void PCLViewer::addOrUpdateCloud(cloudPtrType cloud, std::string cloud_id) {
     } else {
         Logger::logError("Try add cloud to PLCViewer");
         viewer->addPointCloud (cloud_, cloud_id);
-        cloud_ids.push_back(cloud_id);
+        existentClouds.push_back(cloud_id);
         Logger::logDebug("Add cloud to PLCViewer");
     }
 

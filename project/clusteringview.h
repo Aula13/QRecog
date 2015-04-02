@@ -6,11 +6,13 @@
 #include "defines.h"
 
 #include <QMessageBox>
+#include <QElapsedTimer>
 
 #include "pclfilterfunction.h"
 #include "pclmincutfunction.h"
 #include "pclsegmentationfunction.h"
 #include "pclclusteringfunction.h"
+#include "pclcorrgroupfunction.h"
 
 #include <pcl/point_types.h>
 
@@ -40,10 +42,13 @@ private:
     Ui::ClusteringView *ui;
 
     std::vector<cloudPtrType> computedModels;
+    std::vector<cloudPtrType> computedModelsKeypoints;
 
     unsigned int actualModelViewer;
 
     void changePClViewerModel(unsigned int index);
+
+    QElapsedTimer computationTimer;
 
 };
 

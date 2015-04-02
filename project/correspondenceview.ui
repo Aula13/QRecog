@@ -29,11 +29,11 @@
      <x>10</x>
      <y>10</y>
      <width>241</width>
-     <height>631</height>
+     <height>521</height>
     </rect>
    </property>
    <property name="currentIndex">
-    <number>5</number>
+    <number>3</number>
    </property>
    <property name="tabSpacing">
     <number>0</number>
@@ -44,7 +44,7 @@
       <x>0</x>
       <y>0</y>
       <width>241</width>
-      <height>481</height>
+      <height>396</height>
      </rect>
     </property>
     <attribute name="label">
@@ -57,7 +57,7 @@
       <x>0</x>
       <y>0</y>
       <width>241</width>
-      <height>481</height>
+      <height>396</height>
      </rect>
     </property>
     <attribute name="label">
@@ -70,27 +70,22 @@
       <x>0</x>
       <y>0</y>
       <width>241</width>
-      <height>481</height>
+      <height>396</height>
      </rect>
     </property>
     <attribute name="label">
      <string>Segmentation</string>
     </attribute>
    </widget>
-   <widget class="ClusteringOptionView" name="wgtClusterOptionView">
+   <widget class="QWidget" name="recognition">
     <property name="geometry">
      <rect>
       <x>0</x>
       <y>0</y>
       <width>241</width>
-      <height>481</height>
+      <height>396</height>
      </rect>
     </property>
-    <attribute name="label">
-     <string>Clustering</string>
-    </attribute>
-   </widget>
-   <widget class="QWidget" name="recognition">
     <attribute name="label">
      <string>Object recognition</string>
     </attribute>
@@ -113,7 +108,7 @@
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>20</y>
+        <y>10</y>
         <width>151</width>
         <height>31</height>
        </rect>
@@ -129,7 +124,7 @@
       <property name="geometry">
        <rect>
         <x>160</x>
-        <y>20</y>
+        <y>10</y>
         <width>69</width>
         <height>31</height>
        </rect>
@@ -151,7 +146,7 @@
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>50</y>
+        <y>40</y>
         <width>151</width>
         <height>31</height>
        </rect>
@@ -167,7 +162,7 @@
       <property name="geometry">
        <rect>
         <x>160</x>
-        <y>50</y>
+        <y>40</y>
         <width>69</width>
         <height>31</height>
        </rect>
@@ -189,7 +184,7 @@
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>80</y>
+        <y>70</y>
         <width>151</width>
         <height>31</height>
        </rect>
@@ -205,7 +200,7 @@
       <property name="geometry">
        <rect>
         <x>160</x>
-        <y>80</y>
+        <y>70</y>
         <width>69</width>
         <height>31</height>
        </rect>
@@ -227,7 +222,7 @@
       <property name="geometry">
        <rect>
         <x>160</x>
-        <y>110</y>
+        <y>100</y>
         <width>69</width>
         <height>31</height>
        </rect>
@@ -249,7 +244,7 @@
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>110</y>
+        <y>100</y>
         <width>151</width>
         <height>31</height>
        </rect>
@@ -265,7 +260,7 @@
       <property name="geometry">
        <rect>
         <x>160</x>
-        <y>140</y>
+        <y>130</y>
         <width>69</width>
         <height>31</height>
        </rect>
@@ -287,7 +282,7 @@
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>140</y>
+        <y>130</y>
         <width>151</width>
         <height>31</height>
        </rect>
@@ -303,7 +298,7 @@
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>170</y>
+        <y>160</y>
         <width>151</width>
         <height>31</height>
        </rect>
@@ -319,7 +314,7 @@
       <property name="geometry">
        <rect>
         <x>160</x>
-        <y>170</y>
+        <y>160</y>
         <width>69</width>
         <height>31</height>
        </rect>
@@ -341,7 +336,7 @@
       <property name="geometry">
        <rect>
         <x>100</x>
-        <y>210</y>
+        <y>200</y>
         <width>71</width>
         <height>22</height>
        </rect>
@@ -357,7 +352,7 @@
       <property name="geometry">
        <rect>
         <x>180</x>
-        <y>210</y>
+        <y>200</y>
         <width>51</width>
         <height>22</height>
        </rect>
@@ -370,7 +365,7 @@
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>210</y>
+        <y>200</y>
         <width>71</width>
         <height>21</height>
        </rect>
@@ -389,7 +384,7 @@
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>240</y>
+        <y>220</y>
         <width>221</width>
         <height>22</height>
        </rect>
@@ -405,7 +400,7 @@
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>260</y>
+        <y>240</y>
         <width>221</width>
         <height>22</height>
        </rect>
@@ -421,7 +416,7 @@
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>280</y>
+        <y>260</y>
         <width>221</width>
         <height>22</height>
        </rect>
@@ -440,7 +435,7 @@
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>300</y>
+        <y>280</y>
         <width>221</width>
         <height>21</height>
        </rect>
@@ -456,7 +451,7 @@
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>340</y>
+        <y>320</y>
         <width>221</width>
         <height>31</height>
        </rect>
@@ -466,7 +461,7 @@
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>320</y>
+        <y>300</y>
         <width>221</width>
         <height>21</height>
        </rect>
@@ -482,7 +477,7 @@
       <property name="geometry">
        <rect>
         <x>130</x>
-        <y>370</y>
+        <y>350</y>
         <width>101</width>
         <height>31</height>
        </rect>
@@ -494,6 +489,14 @@
     </widget>
    </widget>
    <widget class="QWidget" name="cameraCtrl">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>241</width>
+      <height>396</height>
+     </rect>
+    </property>
     <attribute name="label">
      <string>Camera control</string>
     </attribute>
@@ -507,113 +510,118 @@
       </rect>
      </property>
     </widget>
-    <widget class="QCheckBox" name="chkDisableUpdate">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>160</y>
-       <width>211</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Disable view updates</string>
-     </property>
-    </widget>
-    <widget class="QFrame" name="frame">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>190</y>
-       <width>211</width>
-       <height>111</height>
-      </rect>
-     </property>
-     <property name="frameShape">
-      <enum>QFrame::StyledPanel</enum>
-     </property>
-     <property name="frameShadow">
-      <enum>QFrame::Raised</enum>
-     </property>
-     <widget class="QLabel" name="labelNrModelRec">
-      <property name="geometry">
-       <rect>
-        <x>0</x>
-        <y>0</y>
-        <width>211</width>
-        <height>20</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>#model recognized</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignCenter</set>
-      </property>
-     </widget>
-     <widget class="QLCDNumber" name="lcdNrModelRec">
-      <property name="geometry">
-       <rect>
-        <x>70</x>
-        <y>20</y>
-        <width>81</width>
-        <height>31</height>
-       </rect>
-      </property>
-     </widget>
-     <widget class="QLCDNumber" name="lcdCompTime">
-      <property name="geometry">
-       <rect>
-        <x>70</x>
-        <y>70</y>
-        <width>81</width>
-        <height>31</height>
-       </rect>
-      </property>
-      <property name="digitCount">
-       <number>8</number>
-      </property>
-      <property name="segmentStyle">
-       <enum>QLCDNumber::Flat</enum>
-      </property>
-     </widget>
-     <widget class="QLabel" name="lblCompTime">
-      <property name="geometry">
-       <rect>
-        <x>0</x>
-        <y>50</y>
-        <width>211</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Computation time</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignCenter</set>
-      </property>
-     </widget>
-     <widget class="QLabel" name="lblms">
-      <property name="geometry">
-       <rect>
-        <x>160</x>
-        <y>70</y>
-        <width>41</width>
-        <height>31</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>ms</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignCenter</set>
-      </property>
-     </widget>
-    </widget>
    </widget>
+  </widget>
+  <widget class="QCheckBox" name="chkDisableUpdate">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>540</y>
+     <width>211</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Disable view updates</string>
+   </property>
+  </widget>
+  <widget class="QCheckBox" name="chkShowTreatedScene">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>560</y>
+     <width>211</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Show treated scene</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lblms">
+   <property name="geometry">
+    <rect>
+     <x>230</x>
+     <y>610</y>
+     <width>31</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>ms</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QLCDNumber" name="lcdCompTime">
+   <property name="geometry">
+    <rect>
+     <x>150</x>
+     <y>610</y>
+     <width>81</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="digitCount">
+    <number>8</number>
+   </property>
+   <property name="segmentStyle">
+    <enum>QLCDNumber::Flat</enum>
+   </property>
+  </widget>
+  <widget class="QLCDNumber" name="lcdNrModelRec">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>610</y>
+     <width>81</width>
+     <height>31</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLabel" name="labelNrModelRec">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>580</y>
+     <width>131</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>#model
+recognized</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lblCompTime">
+   <property name="geometry">
+    <rect>
+     <x>150</x>
+     <y>590</y>
+     <width>81</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Comp. time</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
   </widget>
   <zorder>toolBox</zorder>
   <zorder>wgtPCLViewer</zorder>
+  <zorder>chkDisableUpdate</zorder>
+  <zorder>chkShowTreatedScene</zorder>
+  <zorder>lblms</zorder>
+  <zorder>lcdCompTime</zorder>
+  <zorder>lcdNrModelRec</zorder>
+  <zorder>labelNrModelRec</zorder>
+  <zorder>lblCompTime</zorder>
  </widget>
  <customwidgets>
   <customwidget>
@@ -644,12 +652,6 @@
    <class>SegmentationOptionView</class>
    <extends>QWidget</extends>
    <header location="global">segmentationoptionview.h</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>ClusteringOptionView</class>
-   <extends>QWidget</extends>
-   <header location="global">clusteringoptionview.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>

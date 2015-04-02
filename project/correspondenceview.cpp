@@ -48,6 +48,30 @@ void CorrespondenceView::update(Observable* obs)
                     computedModels.push_back(filterf->filter(sceneCloud));
             }
 
+            if(ui->wgtMinCutOptionView->isMinCutEnabled())
+            {
+                PCLMinCutFunction* mincut = new PCLMinCutFunction();
+
+                mincut->x = ui->wgtMinCutOptionView->getx();
+                mincut->y = ui->wgtMinCutOptionView->gety();
+                mincut->z = ui->wgtMinCutOptionView->getz();
+                mincut->sigma = ui->wgtMinCutOptionView->getSigma();
+                mincut->radius = ui->wgtMinCutOptionView->getRadius();
+                mincut->numberOfNeighbours = ui->wgtMinCutOptionView->getNrNeighbours();
+                mincut->sourceWeight = ui->wgtMinCutOptionView->getSourceWeight();
+
+                mincut->showPreview = ui->wgtMinCutOptionView->showPreview();
+
+                if(computedModels.size()==1)
+                {
+                    sceneCloudFilter=computedModels[0];
+
+                    computedModels.pop_back();
+                    computedModels.push_back(mincut->getForegroundPointCloud(sceneCloudFilter));
+                } else
+                    computedModels.push_back(mincut->getForegroundPointCloud(sceneCloud));
+            }
+
             if(ui->wgtSegOptionView->isSegmentationEnabled())
             {
                 PCLSegmentationFunction* segf = new PCLSegmentationFunction();
@@ -71,8 +95,17 @@ void CorrespondenceView::update(Observable* obs)
 
             if(!ui->chkDisableUpdate->isChecked())
             {
-                ui->wgtPCLViewer->updateView(sceneCloud);
+                cloudsToShow.clear();
+                if(ui->chkShowTreatedScene->isChecked())
+                    cloudsToShow.push_back(computedModels[0]);
+                else
+                    cloudsToShow.push_back(sceneCloud);
+
                 visualizeRecognizerOutput(cff);
+
+                ui->wgtPCLViewer->updateView(cloudsToShow);
+
+                setupColorForKeypoints(cff);
             }
 
             ui->lcdNrModelRec->display(cff->getNrModelFounded());
@@ -98,66 +131,63 @@ void CorrespondenceView::launchRecognizer(PCLCorrGroupFunction *cff){
 }
 
 void CorrespondenceView::visualizeRecognizerOutput(PCLCorrGroupFunction* cff){
+    if(cff->getNrModelFounded()>0) {
+        cloudsToShow.push_back(cff->getCorrespondence());
+    }
 
     // Set up and show offset model
     if ( ui->chkShowUsedkeypoints->isChecked() || ui->chkShowCorr->isChecked()){
         cff->setUpOffSceneModel();
-        pcl::visualization::PointCloudColorHandlerCustom<PointType> offSceneModelColorHandler (cff->offSceneModel, 255, 255, 128);
-        ui->wgtPCLViewer->viewer->addPointCloud (cff->offSceneModel, offSceneModelColorHandler, "off_scene_model");
+        cloudsToShow.push_back(cff->offSceneModel);
     }
+
     // show keypoints
     if ( ui->chkShowUsedkeypoints->isChecked()){
-        pcl::visualization::PointCloudColorHandlerCustom<PointType> sceneKeypointsColorHandler (cff->sceneKeypoints, 0, 0, 255);
-        ui->wgtPCLViewer->viewer->addPointCloud (cff->sceneKeypoints, sceneKeypointsColorHandler, "scene_keypoints");
-        ui->wgtPCLViewer->viewer->setPointCloudRenderingProperties (pcl::visualization::PCL_VISUALIZER_POINT_SIZE, 5, "scene_keypoints");
-
-        pcl::visualization::PointCloudColorHandlerCustom<PointType> offSceneModelKeypointsColorHandler (cff->offSceneModelKeypoints, 0, 0, 255);
-        ui->wgtPCLViewer->viewer->addPointCloud (cff->offSceneModelKeypoints, offSceneModelKeypointsColorHandler, "off_scene_model_keypoints");
-        ui->wgtPCLViewer->viewer->setPointCloudRenderingProperties (pcl::visualization::PCL_VISUALIZER_POINT_SIZE, 5, "off_scene_model_keypoints");
+        cloudsToShow.push_back(cff->sceneKeypoints);
+        cloudsToShow.push_back(cff->offSceneModelKeypoints);
     }
+}
 
+void CorrespondenceView::setupColorForKeypoints(PCLCorrGroupFunction *cff)
+{
+    bool modelAdded;
+    bool correspondenceAdded;
     if(cff->getNrModelFounded()>0) {
-        if(correspondenceCloud) {
-            ui->wgtPCLViewer->viewer->updatePointCloud (cff->getCorrespondence(), "correspondence");
-        } else {
-            ui->wgtPCLViewer->viewer->addPointCloud (cff->getCorrespondence(), "correspondence");
-            correspondenceCloud=true;
-        }
-    } else {
-        ui->wgtPCLViewer->viewer->removePointCloud("correspondence");
-        correspondenceCloud=false;
+        cloudsToShow.push_back(cff->getCorrespondence());
+        correspondenceAdded=true;
     }
 
+    // Set up and show offset model
+    if ( ui->chkShowUsedkeypoints->isChecked() || ui->chkShowCorr->isChecked()){
+        cff->setUpOffSceneModel();
+        cloudsToShow.push_back(cff->offSceneModel);
+        modelAdded=true;
+    }
 
-    // show models correspondences
-    /*for (size_t i = 0; i < cff->rototranslations.size (); ++i)
-    {
-        cloudPtr rotatedModel (new cloudType ());
-        pcl::transformPointCloud(*cff->model, *rotatedModel, cff->rototranslations[i]);
-
-
-        std::stringstream ssCloud;
-        ssCloud << "instance" << i;
-
-        pcl::visualization::PointCloudColorHandlerCustom<PointType> rotatedModelColorHandler (rotatedModel, 255, 0, 0);
-        ui->wgtPCLViewer->viewer->removePointCloud(ssCloud.str());
-        ui->wgtPCLViewer->viewer->addPointCloud (rotatedModel, rotatedModelColorHandler, ssCloud.str ());
-
-        // show point to point correspondences
-        if (ui->chkShowCorr->isChecked())
-        {
-            for (size_t j = 0; j < cff->clusteredCorrs[i].size (); ++j)
-            {
-                std::stringstream ssLine;
-                ssLine << "correspondence_line" << i << "_" << j;
-                PointType& modelPoint = cff->offSceneModelKeypoints->at (cff->clusteredCorrs[i][j].index_query);
-                PointType& scenePoint = cff->sceneKeypoints->at (cff->clusteredCorrs[i][j].index_match);
-
-                //  We are drawing a line for each pair of clustered correspondences found between the model and the scene
-                ui->wgtPCLViewer->viewer->addLine<PointType, PointType> (modelPoint, scenePoint, 0, 255, 0, ssLine.str ());
+    // show keypoints
+    if ( ui->chkShowUsedkeypoints->isChecked()){
+        std::string sceneKeypointsCloud;
+        std::string modelKeypointsCloud;
+        if(!modelAdded & !correspondenceAdded) {
+            sceneKeypointsCloud = "cloud1";
+            modelKeypointsCloud = "cloud2";
+        } else {
+            if(modelAdded & correspondenceAdded) {
+                sceneKeypointsCloud = "cloud3";
+                modelKeypointsCloud = "cloud4";
             }
+
+            sceneKeypointsCloud = "cloud2";
+            modelKeypointsCloud = "cloud3";
+
         }
-    }*/
+
+        ui->wgtPCLViewer->viewer->setPointCloudRenderingProperties (pcl::visualization::PCL_VISUALIZER_POINT_SIZE, 5, sceneKeypointsCloud);
+        ui->wgtPCLViewer->viewer->setPointCloudRenderingProperties(pcl::visualization::PCL_VISUALIZER_COLOR, 0, 0, 255, sceneKeypointsCloud);
+        ui->wgtPCLViewer->viewer->setPointCloudRenderingProperties (pcl::visualization::PCL_VISUALIZER_POINT_SIZE, 5, modelKeypointsCloud);
+        ui->wgtPCLViewer->viewer->setPointCloudRenderingProperties(pcl::visualization::PCL_VISUALIZER_COLOR, 0, 0, 255, modelKeypointsCloud);
+
+    }
 }
 
 CorrespondenceView::~CorrespondenceView()

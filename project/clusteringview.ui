@@ -32,7 +32,7 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>570</y>
+      <y>530</y>
       <width>241</width>
       <height>41</height>
      </rect>
@@ -61,7 +61,7 @@
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>500</y>
+      <y>470</y>
       <width>221</width>
       <height>21</height>
      </rect>
@@ -77,7 +77,7 @@
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>520</y>
+      <y>490</y>
       <width>221</width>
       <height>31</height>
      </rect>
@@ -89,11 +89,11 @@
       <x>10</x>
       <y>20</y>
       <width>241</width>
-      <height>471</height>
+      <height>451</height>
      </rect>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>3</number>
     </property>
     <widget class="FilterOptionView" name="wgtFilterOptionView">
      <property name="geometry">
@@ -101,7 +101,7 @@
        <x>0</x>
        <y>0</y>
        <width>241</width>
-       <height>347</height>
+       <height>327</height>
       </rect>
      </property>
      <attribute name="label">
@@ -109,26 +109,101 @@
      </attribute>
     </widget>
     <widget class="MinCutOptionView" name="wgtMinCutOptionView">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>241</width>
+       <height>327</height>
+      </rect>
+     </property>
      <attribute name="label">
       <string>Min cut segmentation</string>
      </attribute>
     </widget>
     <widget class="SegmentationOptionView" name="wgtSegOptionView">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>241</width>
+       <height>327</height>
+      </rect>
+     </property>
      <attribute name="label">
       <string>Segmentation</string>
      </attribute>
     </widget>
     <widget class="ClusteringOptionView" name="wgtClusterOptionView">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>241</width>
+       <height>327</height>
+      </rect>
+     </property>
      <attribute name="label">
       <string>Clustering</string>
      </attribute>
     </widget>
+   </widget>
+   <widget class="QLabel" name="lblms">
+    <property name="geometry">
+     <rect>
+      <x>180</x>
+      <y>590</y>
+      <width>41</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>ms</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QLCDNumber" name="lcdCompTime">
+    <property name="geometry">
+     <rect>
+      <x>90</x>
+      <y>590</y>
+      <width>81</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="digitCount">
+     <number>8</number>
+    </property>
+    <property name="segmentStyle">
+     <enum>QLCDNumber::Flat</enum>
+    </property>
+   </widget>
+   <widget class="QLabel" name="lblCompTime">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>570</y>
+      <width>211</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Computation time</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
    </widget>
    <zorder>toolBox</zorder>
    <zorder>btnSegment</zorder>
    <zorder>lblClustering</zorder>
    <zorder>lblSegInputFile</zorder>
    <zorder>wgtSegFileChooser</zorder>
+   <zorder>lblms</zorder>
+   <zorder>lcdCompTime</zorder>
+   <zorder>lblCompTime</zorder>
   </widget>
   <widget class="QFrame" name="frmCtrlModel">
    <property name="geometry">
@@ -214,9 +289,9 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>80</y>
+      <y>110</y>
       <width>671</width>
-      <height>541</height>
+      <height>511</height>
      </rect>
     </property>
    </widget>
@@ -231,6 +306,58 @@
     </property>
     <property name="text">
      <string>Extracted models preview</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="labelNrModelPoints">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>69</y>
+      <width>101</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>#cloud points</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QLCDNumber" name="lcdNrCloudsPoints">
+    <property name="geometry">
+     <rect>
+      <x>130</x>
+      <y>70</y>
+      <width>81</width>
+      <height>31</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLCDNumber" name="lcdNrKeyPoints">
+    <property name="geometry">
+     <rect>
+      <x>360</x>
+      <y>71</y>
+      <width>81</width>
+      <height>31</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="labelNrKeypoints">
+    <property name="geometry">
+     <rect>
+      <x>260</x>
+      <y>70</y>
+      <width>101</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>#keypoints</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>

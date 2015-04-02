@@ -25,13 +25,21 @@ cloudPtrType PCLMinCutFunction::getForegroundPointCloud(cloudPtrType cloud)
   std::vector <pcl::PointIndices> clusters;
   seg.extract (clusters);
 
+  Logger::logInfo("Min cut segmentation - clusters size " + std::to_string(clusters.size()));
   Logger::logInfo("Min cut segmentation - Maximum flow is " + std::to_string(seg.getMaxFlow ()));
 
-  if(showPreview)
+  if(showPreview) //Show a complete cloud with the difference between fg e bg
     return seg.getColoredCloud();
-  else {
+  else { //Extract only the foreground
+    pcl::ExtractIndices<PointType> extract;
     cloudPtrType result (new cloudType);
+    pcl::PointIndices::Ptr indicesPointer (new pcl::PointIndices);
+    indicesPointer->indices = clusters[1].indices;
     // TODO: trovare un modo per tirare fuori solo i punti in foreground
-    return cloud;
+    extract.setInputCloud(cloud);
+    extract.setIndices(indicesPointer);
+    extract.filter(*result);
+
+    return result;
   }
 }

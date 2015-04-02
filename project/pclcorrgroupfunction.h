@@ -41,6 +41,8 @@ public:
     void loadModelFromFile(std::string modelFilename);
     void setUpOffSceneModel();
 
+    cloudPtrType computeKeypointsForThisModel(cloudPtrType &model);
+
     int getNrModelFounded();
 
     int getComputationTimems();

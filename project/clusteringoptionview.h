@@ -21,7 +21,15 @@ public:
     int getMinClusterSize();
     int getMaxClusterSize();
 
+    bool showUsedKeypoints();
+
+    float getModelSample();
+    float getDescriptorRadius();
+
     ~ClusteringOptionView();
+
+private slots:
+    void on_chkShowUsedKeypoints_toggled(bool checked);
 
 private:
     Ui::ClusteringOptionView *ui;

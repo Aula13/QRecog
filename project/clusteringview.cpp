@@ -8,6 +8,7 @@ ClusteringView::ClusteringView(QWidget *parent) :
     ui->setupUi(this);
 
     ui->wgtSegFileChooser->asFileOpener();
+    ui->wgtOutFileChooser->asFileSaver();
 }
 
 void ClusteringView::on_btnSegment_clicked()
@@ -23,6 +24,9 @@ void ClusteringView::on_btnSegment_clicked()
     pcl::io::loadPCDFile(filename, *cloud);
 
     computedModels.clear();
+    computedModelsKeypoints.clear();
+
+    computationTimer.restart();
 
     if(ui->wgtFilterOptionView->isFilteringEnabled())
     {
@@ -91,7 +95,20 @@ void ClusteringView::on_btnSegment_clicked()
             computedModels = clusterf->clustering(cloud_f);
         } else
             computedModels = clusterf->clustering(cloud);
+
+        if(ui->wgtClusterOptionView->showUsedKeypoints()) {
+            PCLCorrGroupFunction* cgf = new PCLCorrGroupFunction();
+            cgf->modelSampleSize = ui->wgtClusterOptionView->getModelSample();
+            cgf->descriptorsRadius = ui->wgtClusterOptionView->getDescriptorRadius();
+            foreach (cloudPtrType model, computedModels) {
+                cloudPtrType keypoints = cgf->computeKeypointsForThisModel(model);
+                computedModelsKeypoints.push_back(keypoints);
+            }
+        }
     }
+
+    ui->lcdCompTime->display((int)computationTimer.elapsed());
+
     actualModelViewer=0;
     changePClViewerModel(0);
 }
@@ -105,7 +122,22 @@ void ClusteringView::changePClViewerModel(unsigned int index)
         if(index>=computedModels.size())
             index=computedModels.size()-1;
 
-        ui->wgtPCLViewer->updateView(computedModels[index]);
+        std::vector<cloudPtrType> modelsToShow;
+
+        modelsToShow.push_back(computedModels[index]);
+        ui->lcdNrCloudsPoints->display(static_cast<int>(computedModels[index]->points.size()));
+        if(computedModelsKeypoints.size()>index) {
+            modelsToShow.push_back(computedModelsKeypoints[index]);
+            ui->lcdNrKeyPoints->display(static_cast<int>(computedModelsKeypoints[index]->points.size()));
+        } else
+            ui->lcdNrKeyPoints->display(0);
+        ui->wgtPCLViewer->updateView(modelsToShow);
+
+        if(computedModelsKeypoints.size()>index) {
+            ui->wgtPCLViewer->viewer->setPointCloudRenderingProperties (pcl::visualization::PCL_VISUALIZER_POINT_SIZE, 5, "cloud1");
+            ui->wgtPCLViewer->viewer->setPointCloudRenderingProperties(pcl::visualization::PCL_VISUALIZER_COLOR, 0, 0, 255, "cloud1");
+        } else
+            ui->wgtPCLViewer->viewer->removePointCloud("cloud1");
 
         if(actualModelViewer<=0)
             ui->btnPrevModel->setEnabled(false);
@@ -159,7 +191,7 @@ void ClusteringView::on_btnSaveModel_clicked()
         {
             pcl::io::savePCDFileASCII(filename, *computedModels[actualModelViewer]);
             Logger::logWarning("Clustered PCD saved");
-            QMessageBox::warning(this, "Error", "Clustered PCD saved!", QMessageBox::Ok);
+            QMessageBox::warning(this, "Info", "Clustered PCD saved!", QMessageBox::Ok);
         } else {
             QMessageBox::warning(this, "Error", "Nothing to save!", QMessageBox::Ok);
             Logger::logWarning("Try save Clustered PCD, but array is empty");

@@ -309,6 +309,18 @@ void PCLCorrGroupFunction::setUpOffSceneModel()
 
 }
 
+cloudPtrType PCLCorrGroupFunction::computeKeypointsForThisModel(cloudPtrType &model)
+{
+    this->model = model;
+    modelKeypoints     = (cloudPtrType)new cloudType();
+    modelNormals       = (normalsPtr)new pcl::PointCloud<NormalType> ();
+    modelDescriptors   = (descriptorsPtr)new pcl::PointCloud<DescriptorType> ();
+    computeModelNormals();
+    downSampleModel();
+    computeDescriptorsForKeypoints(model, modelKeypoints, modelNormals, modelDescriptors);
+    return modelKeypoints;
+}
+
 int PCLCorrGroupFunction::getNrModelFounded()
 {
     return rototranslations.size();
