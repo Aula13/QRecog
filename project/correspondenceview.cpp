@@ -9,7 +9,7 @@ CorrespondenceView::CorrespondenceView(QWidget *parent) :
     Models::pcs->attachObserver(this);
 
     ui->wgtCGFileChooser->asFileOpener();
-    ui->wgtCGFileChooser->setSelectedFile(QDir::homePath().toStdString() + "/QRecog/working(old)/cloud_cluster_1.pcd");
+    ui->wgtCGFileChooser->setSelectedFile(QDir::homePath().toStdString() + "/QRecog/mdl.pcd");
     Logger::logInfo("Correspondence view initialized");
 
     computationTimer = new QElapsedTimer();
@@ -108,7 +108,7 @@ void CorrespondenceView::update(Observable* obs)
                 setupColorForKeypoints(cff);
             }
 
-            ui->lcdNrModelRec->display(cff->getNrModelFounded());
+            ui->lcdNrModelRec->display(cff->getNrModelFound());
         } else
             ui->lcdNrModelRec->display(0);
         ui->lcdCompTime->display((int)computationTimer->elapsed());
@@ -131,7 +131,7 @@ void CorrespondenceView::launchRecognizer(PCLCorrGroupFunction *cff){
 }
 
 void CorrespondenceView::visualizeRecognizerOutput(PCLCorrGroupFunction* cff){
-    if(cff->getNrModelFounded()>0) {
+    if(cff->getNrModelFound()>0) {
         cloudsToShow.push_back(cff->getCorrespondence());
     }
 
@@ -152,7 +152,7 @@ void CorrespondenceView::setupColorForKeypoints(PCLCorrGroupFunction *cff)
 {
     bool modelAdded;
     bool correspondenceAdded;
-    if(cff->getNrModelFounded()>0) {
+    if(cff->getNrModelFound()>0) {
         cloudsToShow.push_back(cff->getCorrespondence());
         correspondenceAdded=true;
     }

@@ -30,9 +30,9 @@ A feature of a point is some characteristic that can help us to tell it apart fr
 
 Normals are an example of feature, because they encode information about the vicinity of the point. That is, the neighboring points are taken into account when computing it, giving us an idea of how the surrounding surface is. But this is not enough. For a feature to be optimal, it must meet the following criteria:
 
-- It must be robust to transformations: rigid transformations (the ones that do not change the distance between points) like translations and rotations must not affect the feature. Even if we play with the cloud a bit beforehand, there should be no difference.
-- It must be robust to noise: measurement errors that cause noise should not change the feature estimation much.
-- It must be resolution invariant: if sampled with different density (like after performing downsampling), the result must be identical or similar.
+- **It must be robust to transformations:** rigid transformations (the ones that do not change the distance between points) like translations and rotations must not affect the feature. Even if we play with the cloud a bit beforehand, there should be no difference.
+- **It must be robust to noise:** measurement errors that cause noise should not change the feature estimation much.
+- **It must be resolution invariant:** if sampled with different density (like after performing downsampling), the result must be identical or similar.
 
 This is where descriptors come in. 
 

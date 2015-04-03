@@ -4,13 +4,12 @@ PCLCorrGroupFunction::PCLCorrGroupFunction()
 {
     //setupDefaultValues();
 
-    computationTime = new QElapsedTimer();
+    timer = new QElapsedTimer();
 }
 
 void PCLCorrGroupFunction::recognize ()
     {
-        computationTime->start();
-
+        timer->start();
         resetValues();
         if (!this->model)
         {
@@ -33,14 +32,14 @@ void PCLCorrGroupFunction::recognize ()
         if(computeModelKeypoints) {
             computeModelNormals();
             downSampleModel();
-            computeDescriptorsForKeypoints(model, modelKeypoints, modelNormals, modelDescriptors);
+            computeModelDescriptors();
             computeModelKeypoints=false;
         }
 
 
         computeSceneNormals();
         downSampleScene();
-        computeDescriptorsForKeypoints(scene, sceneKeypoints, sceneNormals, sceneDescriptors);
+        computeSceneDescriptors();
 
         // For each scene keypoint descriptor,find nearest neighbor into the model
         // keypoints descriptor cloud and add it to the correspondences vector.
@@ -140,31 +139,37 @@ void PCLCorrGroupFunction::setUpResolutionInvariance(){
 }
 
 void PCLCorrGroupFunction::computeModelNormals(){
-
+    timer->restart();
     pcl::NormalEstimationOMP<PointType, NormalType> normEst;
     normEst.setKSearch (10);
 
     normEst.setInputCloud (model);
     normEst.compute (*modelNormals);
+    Logger::logInfo("computeModelNormals time: " + std::to_string((int)timer->elapsed()));
 }
 
 void PCLCorrGroupFunction::computeSceneNormals(){
-
+    timer->restart();
     pcl::NormalEstimationOMP<PointType, NormalType> normEst;
     normEst.setKSearch (10); //TODO: Verificare se mettere a vista
 
     normEst.setInputCloud (scene);
     normEst.compute (*sceneNormals);
+    Logger::logInfo("computeSceneNormals time: " + std::to_string((int)timer->elapsed()));
 }
 
 void PCLCorrGroupFunction::downSampleScene(){
+    timer->restart();
     downSampleCloud(scene, sceneSampleSize, sceneKeypoints);
+    Logger::logInfo("downSampleScene time: " + std::to_string((int)timer->elapsed()));
     Logger::logInfo("TotalScenePoints: "    + std::to_string(scene->size()));
     Logger::logInfo("SceneKeypoints: "      + std::to_string(sceneKeypoints->size()));
 }
 
 void PCLCorrGroupFunction::downSampleModel(){
+    timer->restart();
     downSampleCloud(model, modelSampleSize, modelKeypoints);
+    Logger::logInfo("downSampleModel time: " + std::to_string((int)timer->elapsed()));
     Logger::logInfo("TotalModelPoints: "    + std::to_string(model->size()));
     Logger::logInfo("ModelKeypoints: "    + std::to_string(modelKeypoints->size()));
 }
@@ -179,6 +184,18 @@ void PCLCorrGroupFunction::downSampleCloud(cloudPtrType &cloud,  float sampleSiz
     pcl::copyPointCloud (*cloud, sampledIndices.points, *keypoints);
 }
 
+void PCLCorrGroupFunction::computeModelDescriptors(){
+    timer->restart();
+    computeDescriptorsForKeypoints(model, modelKeypoints, modelNormals, modelDescriptors);
+    Logger::logInfo("computeModelDescriptors time: " + std::to_string((int)timer->elapsed()));
+}
+
+void PCLCorrGroupFunction::computeSceneDescriptors(){
+    timer->restart();
+    computeDescriptorsForKeypoints(scene, sceneKeypoints, sceneNormals, sceneDescriptors);
+    Logger::logInfo("computeSceneDescriptors time: " + std::to_string((int)timer->elapsed()));
+}
+
 void PCLCorrGroupFunction::computeDescriptorsForKeypoints(cloudPtrType &cloud,  cloudPtrType &keypoints, normalsPtr &normals, descriptorsPtr &descriptors){
     pcl::SHOTColorEstimationOMP<PointType, NormalType, DescriptorType> descriptorEst;
     descriptorEst.setRadiusSearch (descriptorsRadius);
@@ -190,6 +207,7 @@ void PCLCorrGroupFunction::computeDescriptorsForKeypoints(cloudPtrType &cloud,  
 }
 
 void PCLCorrGroupFunction::findCorrespondences(){
+    timer->restart();
     pcl::KdTreeFLANN<DescriptorType> matchSearch;
     matchSearch.setInputCloud (modelDescriptors);
 
@@ -207,10 +225,12 @@ void PCLCorrGroupFunction::findCorrespondences(){
             modelSceneCorrs->push_back (corr);
         }
     }
+    Logger::logInfo("findCorrespondences time: " + std::to_string((int)timer->elapsed()));
     Logger::logInfo("Correspondences found: " + std::to_string(modelSceneCorrs->size ()));
 }
 
 void PCLCorrGroupFunction::recognizeUsingHough(){
+    timer->restart();
     //
     //  Compute (Keypoints) Reference Frames only for Hough
     //
@@ -246,9 +266,12 @@ void PCLCorrGroupFunction::recognizeUsingHough(){
 
     //clusterer.cluster (clustered_corrs);
     clusterer.recognize (rototranslations, clusteredCorrs);
+    Logger::logInfo("recognizeUsingHough time: " + std::to_string((int)timer->elapsed()));
+
 }
 
 void PCLCorrGroupFunction::recognizeUsingGeometricConsistency(){
+    timer->restart();
     pcl::GeometricConsistencyGrouping<PointType, PointType> gcClusterer;
     gcClusterer.setGCSize (cgSize);
     gcClusterer.setGCThreshold (cgThreshold);
@@ -259,6 +282,8 @@ void PCLCorrGroupFunction::recognizeUsingGeometricConsistency(){
 
     //gc_clusterer.cluster (clusteredCorrs);
     gcClusterer.recognize (rototranslations, clusteredCorrs);
+    Logger::logInfo("recognizeUsingGeometricConsistency time: " + std::to_string((int)timer->elapsed()));
+
 }
 
 void PCLCorrGroupFunction::printResults(){
@@ -306,7 +331,6 @@ void PCLCorrGroupFunction::setUpOffSceneModel()
     //  We are translating the model so that it doesn't end in the middle of the scene representation
     pcl::transformPointCloud (*model, *offSceneModel, Eigen::Vector3f (-1,0,0), Eigen::Quaternionf (1, 0, 0, 0));
     pcl::transformPointCloud (*modelKeypoints, *offSceneModelKeypoints, Eigen::Vector3f (-1,0,0), Eigen::Quaternionf (1, 0, 0, 0));
-
 }
 
 cloudPtrType PCLCorrGroupFunction::computeKeypointsForThisModel(cloudPtrType &model)
@@ -321,14 +345,14 @@ cloudPtrType PCLCorrGroupFunction::computeKeypointsForThisModel(cloudPtrType &mo
     return modelKeypoints;
 }
 
-int PCLCorrGroupFunction::getNrModelFounded()
+int PCLCorrGroupFunction::getNrModelFound()
 {
     return rototranslations.size();
 }
 
 int PCLCorrGroupFunction::getComputationTimems()
 {
-    return computationTime->elapsed();
+    return timer->elapsed();
 }
 
 cloudPtrType PCLCorrGroupFunction::getCorrespondence()

@@ -43,7 +43,7 @@ public:
 
     cloudPtrType computeKeypointsForThisModel(cloudPtrType &model);
 
-    int getNrModelFounded();
+    int getNrModelFound();
 
     int getComputationTimems();
 
@@ -81,7 +81,9 @@ private:
     void transformCloud (cloudType::Ptr &cloud);
     void setUpResolutionInvariance();
     void computeModelNormals();
+    void computeModelDescriptors();
     void computeSceneNormals();
+    void computeSceneDescriptors();
     void downSampleScene();
     void downSampleModel();
     void downSampleCloud(cloudPtrType &cloud,  float sampleSize, cloudPtrType &keypoints);
@@ -91,9 +93,7 @@ private:
     void recognizeUsingGeometricConsistency();
     void printResults();
     void resetValues ();
-
-    QElapsedTimer* computationTime;
-
+    QElapsedTimer* timer;
 };
 
 #endif // PCLCORRGROUPFUNCTION_H
