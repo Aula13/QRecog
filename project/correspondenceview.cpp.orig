@@ -154,8 +154,12 @@ void CorrespondenceView::setupColorForKeypoints(PCLCorrGroupFunction *cff)
 
     bool modelAdded;
     bool correspondenceAdded;
-    if(cff->getNrModelFounded()>0) {
+<<<<<<< HEAD
+    if(cff->getNrModelFound()>0) {
         cloudsToShow.push_back(cff->getCorrespondence());
+=======
+    if(cff->getNrModelFounded()>0)
+>>>>>>> 1472c655a3085ca6268862f7c98c8a9b97a19916
         correspondenceAdded=true;
 
     if ( ui->chkShowUsedkeypoints->isChecked() || ui->chkShowCorr->isChecked())
