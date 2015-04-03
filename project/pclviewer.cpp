@@ -49,13 +49,16 @@ void PCLViewer::update(Observable *obs)
 
 void PCLViewer::updateView(std::vector<cloudPtrType> clouds)
 {
+    Logger::logDebug("PLCViewer - update view with cloudsToShow size: " + std::to_string(clouds.size()));
+    Logger::logDebug("PLCViewer - update view previus clouds size: " + std::to_string(existentClouds.size()));
 
     //Remove unused existent clouds
     if(clouds.size()<existentClouds.size()) {
-        for (unsigned int i=clouds.size()-1; i<existentClouds.size(); i++) {
+        for (unsigned int i=existentClouds.size()-1; i>clouds.size()-1; i--) {
             std::string id = "cloud" + boost::lexical_cast<std::string>(i);
             viewer->removePointCloud(id);
             existentClouds.remove(id);
+            Logger::logDebug("PLCViewer - Cloud " + id + " removed");
         }
     }
 
@@ -80,7 +83,7 @@ void PCLViewer::updateView(cloudPtrType cloud)
 
     addOrUpdateCloud(cloud, id);
 
-    Logger::logInfo("PCLViewer update");
+    Logger::logInfo("PCLViewer - Single cloud update cloud0");
 }
 
 void PCLViewer::addOrUpdateCloud(cloudPtrType cloud, std::string cloud_id) {
@@ -91,20 +94,19 @@ void PCLViewer::addOrUpdateCloud(cloudPtrType cloud, std::string cloud_id) {
         if(id.compare(cloud_id)==0)
         {
             cloudExist = true;
+            Logger::logInfo("PLCViewer - addorupdatecloud name: " + id + " already exist");
             break;
         }
     }
 
     if (cloudExist)
     {
-        Logger::logDebug("Try update cloud to PLCViewer");
         viewer->updatePointCloud (cloud_, cloud_id);
-        Logger::logDebug("Update cloud to PLCViewer");
+        Logger::logDebug("Update cloud to PLCViewer name: " + cloud_id);
     } else {
-        Logger::logError("Try add cloud to PLCViewer");
         viewer->addPointCloud (cloud_, cloud_id);
         existentClouds.push_back(cloud_id);
-        Logger::logDebug("Add cloud to PLCViewer");
+        Logger::logDebug("Add cloud to PLCViewer name: " + cloud_id);
     }
 
     ui->qvtkWidget->update();

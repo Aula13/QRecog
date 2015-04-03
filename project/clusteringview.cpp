@@ -119,8 +119,6 @@ void ClusteringView::changePClViewerModel(unsigned int index)
 {
     if(computedModels.size()!=0)
     {
-        if(index<0)
-            index=0;
         if(index>=computedModels.size())
             index=computedModels.size()-1;
 
@@ -128,19 +126,26 @@ void ClusteringView::changePClViewerModel(unsigned int index)
 
         modelsToShow.push_back(computedModels[index]);
         ui->lcdNrCloudsPoints->display(static_cast<int>(computedModels[index]->points.size()));
-        if(computedModelsKeypoints.size()>index) {
+
+        //Show used key points
+        if(ui->wgtClusterOptionView->showUsedKeypoints()) {
+            Logger::logDebug("Clustering view - Add keypoint to clustered model");
             modelsToShow.push_back(computedModelsKeypoints[index]);
             ui->lcdNrKeyPoints->display(static_cast<int>(computedModelsKeypoints[index]->points.size()));
             ui->lcdNrDescriptors->display(descriptors[index]);
-        } else
+        } else {
+            Logger::logDebug("Clustering view - Not show keypoints for clustered model");
             ui->lcdNrKeyPoints->display(0);
+            ui->lcdNrDescriptors->display(0);
+        }
+
         ui->wgtPCLViewer->updateView(modelsToShow);
 
-        if(computedModelsKeypoints.size()>index) {
+        if(ui->wgtClusterOptionView->showUsedKeypoints()) {
+            Logger::logDebug("Clustering view - Setting up colors for clusted model keypoints");
             ui->wgtPCLViewer->viewer->setPointCloudRenderingProperties (pcl::visualization::PCL_VISUALIZER_POINT_SIZE, 5, "cloud1");
             ui->wgtPCLViewer->viewer->setPointCloudRenderingProperties(pcl::visualization::PCL_VISUALIZER_COLOR, 0, 0, 255, "cloud1");
-        } else
-            ui->wgtPCLViewer->viewer->removePointCloud("cloud1");
+        }
 
         if(actualModelViewer<=0)
             ui->btnPrevModel->setEnabled(false);
@@ -151,6 +156,11 @@ void ClusteringView::changePClViewerModel(unsigned int index)
             ui->btnNextModel->setEnabled(false);
         else
             ui->btnNextModel->setEnabled(true);
+
+
+        Logger::logDebug("Clustering view - modelsSize: " + std::to_string(modelsToShow.size())
+                         + "; Show? " + std::to_string(ui->wgtClusterOptionView->showUsedKeypoints()));
+
     }
 }
 

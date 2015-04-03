@@ -150,19 +150,15 @@ void CorrespondenceView::visualizeRecognizerOutput(PCLCorrGroupFunction* cff){
 
 void CorrespondenceView::setupColorForKeypoints(PCLCorrGroupFunction *cff)
 {
+    cloudPtrType emptyCloud (new cloudType);
+
     bool modelAdded;
     bool correspondenceAdded;
-    if(cff->getNrModelFounded()>0) {
-        cloudsToShow.push_back(cff->getCorrespondence());
+    if(cff->getNrModelFounded()>0)
         correspondenceAdded=true;
-    }
 
-    // Set up and show offset model
-    if ( ui->chkShowUsedkeypoints->isChecked() || ui->chkShowCorr->isChecked()){
-        cff->setUpOffSceneModel();
-        cloudsToShow.push_back(cff->offSceneModel);
+    if ( ui->chkShowUsedkeypoints->isChecked() || ui->chkShowCorr->isChecked())
         modelAdded=true;
-    }
 
     // show keypoints
     if ( ui->chkShowUsedkeypoints->isChecked()){
@@ -186,7 +182,6 @@ void CorrespondenceView::setupColorForKeypoints(PCLCorrGroupFunction *cff)
         ui->wgtPCLViewer->viewer->setPointCloudRenderingProperties(pcl::visualization::PCL_VISUALIZER_COLOR, 0, 0, 255, sceneKeypointsCloud);
         ui->wgtPCLViewer->viewer->setPointCloudRenderingProperties (pcl::visualization::PCL_VISUALIZER_POINT_SIZE, 5, modelKeypointsCloud);
         ui->wgtPCLViewer->viewer->setPointCloudRenderingProperties(pcl::visualization::PCL_VISUALIZER_COLOR, 0, 0, 255, modelKeypointsCloud);
-
     }
 }
 
