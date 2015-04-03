@@ -25,6 +25,7 @@ void ClusteringView::on_btnSegment_clicked()
 
     computedModels.clear();
     computedModelsKeypoints.clear();
+    descriptors.clear();
 
     computationTimer.restart();
 
@@ -103,6 +104,7 @@ void ClusteringView::on_btnSegment_clicked()
             foreach (cloudPtrType model, computedModels) {
                 cloudPtrType keypoints = cgf->computeKeypointsForThisModel(model);
                 computedModelsKeypoints.push_back(keypoints);
+                descriptors.push_back(static_cast<int>(cgf->modelDescriptors->size()));
             }
         }
     }
@@ -129,6 +131,7 @@ void ClusteringView::changePClViewerModel(unsigned int index)
         if(computedModelsKeypoints.size()>index) {
             modelsToShow.push_back(computedModelsKeypoints[index]);
             ui->lcdNrKeyPoints->display(static_cast<int>(computedModelsKeypoints[index]->points.size()));
+            ui->lcdNrDescriptors->display(descriptors[index]);
         } else
             ui->lcdNrKeyPoints->display(0);
         ui->wgtPCLViewer->updateView(modelsToShow);

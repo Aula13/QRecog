@@ -43,6 +43,7 @@ private:
 
     std::vector<cloudPtrType> computedModels;
     std::vector<cloudPtrType> computedModelsKeypoints;
+    std::vector<int> descriptors;
 
     unsigned int actualModelViewer;
 

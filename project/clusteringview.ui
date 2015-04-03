@@ -363,6 +363,32 @@
      <set>Qt::AlignCenter</set>
     </property>
    </widget>
+   <widget class="QLCDNumber" name="lcdNrDescriptors">
+    <property name="geometry">
+     <rect>
+      <x>600</x>
+      <y>71</y>
+      <width>81</width>
+      <height>31</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="labelNrDescriptor">
+    <property name="geometry">
+     <rect>
+      <x>500</x>
+      <y>70</y>
+      <width>101</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>#descriptors</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
   </widget>
  </widget>
  <customwidgets>
