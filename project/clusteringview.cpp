@@ -128,23 +128,25 @@ void ClusteringView::changePClViewerModel(unsigned int index)
         ui->lcdNrCloudsPoints->display(static_cast<int>(computedModels[index]->points.size()));
 
         //Show used key points
-        if(ui->wgtClusterOptionView->showUsedKeypoints()) {
-            Logger::logDebug("Clustering view - Add keypoint to clustered model");
-            modelsToShow.push_back(computedModelsKeypoints[index]);
-            ui->lcdNrKeyPoints->display(static_cast<int>(computedModelsKeypoints[index]->points.size()));
-            ui->lcdNrDescriptors->display(descriptors[index]);
-        } else {
-            Logger::logDebug("Clustering view - Not show keypoints for clustered model");
-            ui->lcdNrKeyPoints->display(0);
-            ui->lcdNrDescriptors->display(0);
-        }
+        if(ui->wgtClusterOptionView->isClusteringEnabled()) {
+            if(ui->wgtClusterOptionView->showUsedKeypoints()) {
+                Logger::logDebug("Clustering view - Add keypoint to clustered model");
+                modelsToShow.push_back(computedModelsKeypoints[index]);
+                ui->lcdNrKeyPoints->display(static_cast<int>(computedModelsKeypoints[index]->points.size()));
+                ui->lcdNrDescriptors->display(descriptors[index]);
+            } else {
+                Logger::logDebug("Clustering view - Not show keypoints for clustered model");
+                ui->lcdNrKeyPoints->display(0);
+                ui->lcdNrDescriptors->display(0);
+            }
 
-        ui->wgtPCLViewer->updateView(modelsToShow);
+            ui->wgtPCLViewer->updateView(modelsToShow);
 
-        if(ui->wgtClusterOptionView->showUsedKeypoints()) {
-            Logger::logDebug("Clustering view - Setting up colors for clusted model keypoints");
-            ui->wgtPCLViewer->viewer->setPointCloudRenderingProperties (pcl::visualization::PCL_VISUALIZER_POINT_SIZE, 5, "cloud1");
-            ui->wgtPCLViewer->viewer->setPointCloudRenderingProperties(pcl::visualization::PCL_VISUALIZER_COLOR, 0, 0, 255, "cloud1");
+            if(ui->wgtClusterOptionView->showUsedKeypoints()) {
+                Logger::logDebug("Clustering view - Setting up colors for clusted model keypoints");
+                ui->wgtPCLViewer->viewer->setPointCloudRenderingProperties (pcl::visualization::PCL_VISUALIZER_POINT_SIZE, 5, "cloud1");
+                ui->wgtPCLViewer->viewer->setPointCloudRenderingProperties(pcl::visualization::PCL_VISUALIZER_COLOR, 0, 0, 255, "cloud1");
+            }
         }
 
         if(actualModelViewer<=0)

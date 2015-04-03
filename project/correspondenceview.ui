@@ -43,8 +43,8 @@
      <rect>
       <x>0</x>
       <y>0</y>
-      <width>241</width>
-      <height>396</height>
+      <width>100</width>
+      <height>30</height>
      </rect>
     </property>
     <attribute name="label">
@@ -56,8 +56,8 @@
      <rect>
       <x>0</x>
       <y>0</y>
-      <width>241</width>
-      <height>396</height>
+      <width>100</width>
+      <height>30</height>
      </rect>
     </property>
     <attribute name="label">
@@ -69,8 +69,8 @@
      <rect>
       <x>0</x>
       <y>0</y>
-      <width>241</width>
-      <height>396</height>
+      <width>100</width>
+      <height>30</height>
      </rect>
     </property>
     <attribute name="label">
@@ -493,8 +493,8 @@
      <rect>
       <x>0</x>
       <y>0</y>
-      <width>241</width>
-      <height>396</height>
+      <width>100</width>
+      <height>30</height>
      </rect>
     </property>
     <attribute name="label">
@@ -541,7 +541,7 @@
   <widget class="QLabel" name="lblms">
    <property name="geometry">
     <rect>
-     <x>230</x>
+     <x>150</x>
      <y>610</y>
      <width>31</width>
      <height>31</height>
@@ -557,14 +557,14 @@
   <widget class="QLCDNumber" name="lcdCompTime">
    <property name="geometry">
     <rect>
-     <x>150</x>
+     <x>100</x>
      <y>610</y>
-     <width>81</width>
+     <width>51</width>
      <height>31</height>
     </rect>
    </property>
    <property name="digitCount">
-    <number>8</number>
+    <number>5</number>
    </property>
    <property name="segmentStyle">
     <enum>QLCDNumber::Flat</enum>
@@ -573,19 +573,22 @@
   <widget class="QLCDNumber" name="lcdNrModelRec">
    <property name="geometry">
     <rect>
-     <x>30</x>
+     <x>20</x>
      <y>610</y>
-     <width>81</width>
+     <width>31</width>
      <height>31</height>
     </rect>
+   </property>
+   <property name="digitCount">
+    <number>2</number>
    </property>
   </widget>
   <widget class="QLabel" name="labelNrModelRec">
    <property name="geometry">
     <rect>
-     <x>10</x>
+     <x>0</x>
      <y>580</y>
-     <width>131</width>
+     <width>81</width>
      <height>31</height>
     </rect>
    </property>
@@ -600,7 +603,7 @@ recognized</string>
   <widget class="QLabel" name="lblCompTime">
    <property name="geometry">
     <rect>
-     <x>150</x>
+     <x>90</x>
      <y>590</y>
      <width>81</width>
      <height>21</height>
@@ -613,6 +616,38 @@ recognized</string>
     <set>Qt::AlignCenter</set>
    </property>
   </widget>
+  <widget class="QLabel" name="lblNrCorr">
+   <property name="geometry">
+    <rect>
+     <x>180</x>
+     <y>590</y>
+     <width>81</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Corr.</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QLCDNumber" name="lcdNrCorrespondence">
+   <property name="geometry">
+    <rect>
+     <x>200</x>
+     <y>610</y>
+     <width>51</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="digitCount">
+    <number>5</number>
+   </property>
+   <property name="segmentStyle">
+    <enum>QLCDNumber::Flat</enum>
+   </property>
+  </widget>
   <zorder>toolBox</zorder>
   <zorder>wgtPCLViewer</zorder>
   <zorder>chkDisableUpdate</zorder>
@@ -622,18 +657,14 @@ recognized</string>
   <zorder>lcdNrModelRec</zorder>
   <zorder>labelNrModelRec</zorder>
   <zorder>lblCompTime</zorder>
+  <zorder>lblNrCorr</zorder>
+  <zorder>lcdNrCorrespondence</zorder>
  </widget>
  <customwidgets>
   <customwidget>
    <class>PCLViewer</class>
    <extends>QWidget</extends>
    <header location="global">pclviewer.h</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>CameraCtrlView</class>
-   <extends>QWidget</extends>
-   <header location="global">cameractrlview.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>
@@ -658,6 +689,12 @@ recognized</string>
    <class>MinCutOptionView</class>
    <extends>QWidget</extends>
    <header location="global">mincutoptionview.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>CameraCtrlView</class>
+   <extends>QWidget</extends>
+   <header location="global">cameractrlview.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

@@ -109,8 +109,11 @@ void CorrespondenceView::update(Observable* obs)
             }
 
             ui->lcdNrModelRec->display(cff->getNrModelFound());
-        } else
+            ui->lcdNrCorrespondence->display(static_cast<int>(cff->modelSceneCorrs->size ()));
+        } else {
             ui->lcdNrModelRec->display(0);
+            ui->lcdNrCorrespondence->display(0);
+        }
         ui->lcdCompTime->display((int)computationTimer->elapsed());
     }
 }
