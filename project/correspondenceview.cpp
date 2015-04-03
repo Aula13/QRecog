@@ -105,7 +105,7 @@ void CorrespondenceView::update(Observable* obs)
 
                 ui->wgtPCLViewer->updateView(cloudsToShow);
 
-                setupColorForKeypoints(cff);
+                setupColorForClouds(cff);
             }
 
             ui->lcdNrModelRec->display(cff->getNrModelFound());
@@ -131,14 +131,18 @@ void CorrespondenceView::launchRecognizer(PCLCorrGroupFunction *cff){
 }
 
 void CorrespondenceView::visualizeRecognizerOutput(PCLCorrGroupFunction* cff){
+    modelAdded=false;
+    correspondenceAdded=false;
     if(cff->getNrModelFound()>0) {
         cloudsToShow.push_back(cff->getCorrespondence());
+        correspondenceAdded=true;
     }
 
     // Set up and show offset model
     if ( ui->chkShowUsedkeypoints->isChecked() || ui->chkShowCorr->isChecked()){
         cff->setUpOffSceneModel();
         cloudsToShow.push_back(cff->offSceneModel);
+        modelAdded=true;
     }
 
     // show keypoints
@@ -148,35 +152,26 @@ void CorrespondenceView::visualizeRecognizerOutput(PCLCorrGroupFunction* cff){
     }
 }
 
-void CorrespondenceView::setupColorForKeypoints(PCLCorrGroupFunction *cff)
+void CorrespondenceView::setupColorForClouds(PCLCorrGroupFunction *cff)
 {
-    cloudPtrType emptyCloud (new cloudType);
-
-    bool modelAdded;
-    bool correspondenceAdded;
-    if(cff->getNrModelFounded()>0) {
-        cloudsToShow.push_back(cff->getCorrespondence());
-        correspondenceAdded=true;
-
-    if ( ui->chkShowUsedkeypoints->isChecked() || ui->chkShowCorr->isChecked())
-        modelAdded=true;
+    if(correspondenceAdded)
+        ui->wgtPCLViewer->viewer->setPointCloudRenderingProperties (pcl::visualization::PCL_VISUALIZER_POINT_SIZE, 5, "cloud1");
 
     // show keypoints
     if ( ui->chkShowUsedkeypoints->isChecked()){
         std::string sceneKeypointsCloud;
         std::string modelKeypointsCloud;
-        if(!modelAdded & !correspondenceAdded) {
+        if(!modelAdded && !correspondenceAdded) {
             sceneKeypointsCloud = "cloud1";
             modelKeypointsCloud = "cloud2";
         } else {
-            if(modelAdded & correspondenceAdded) {
+            if(modelAdded && correspondenceAdded) {
                 sceneKeypointsCloud = "cloud3";
                 modelKeypointsCloud = "cloud4";
+            } else {
+                sceneKeypointsCloud = "cloud2";
+                modelKeypointsCloud = "cloud3";
             }
-
-            sceneKeypointsCloud = "cloud2";
-            modelKeypointsCloud = "cloud3";
-
         }
 
         ui->wgtPCLViewer->viewer->setPointCloudRenderingProperties (pcl::visualization::PCL_VISUALIZER_POINT_SIZE, 5, sceneKeypointsCloud);

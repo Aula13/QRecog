@@ -53,7 +53,7 @@ private slots:
 private:
     void launchRecognizer(PCLCorrGroupFunction* cff);
     void visualizeRecognizerOutput(PCLCorrGroupFunction *cff);
-    void setupColorForKeypoints(PCLCorrGroupFunction *cff);
+    void setupColorForClouds(PCLCorrGroupFunction *cff);
 
     Ui::CorrespondenceView *ui;
 
@@ -68,6 +68,9 @@ private:
     PCLCorrGroupFunction* cff  = new PCLCorrGroupFunction();
 
     bool correspondenceCloud;
+
+    bool modelAdded;
+    bool correspondenceAdded;
 };
 
 #endif // CORRESPONDENCEVIEW_H
