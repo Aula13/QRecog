@@ -29,13 +29,22 @@ void ClusteringView::on_btnSegment_clicked()
 
     computationTimer.restart();
 
+    computedModels.push_back(cloud);
+
     if(ui->wgtFilterOptionView->isFilteringEnabled())
     {
         PCLFilterFunction* filterf = new PCLFilterFunction();
 
         filterf->leafSize=ui->wgtFilterOptionView->getLeafSize();
 
-        computedModels.push_back(filterf->filter(cloud));
+        if(computedModels.size()==1)
+        {
+            cloud_f=computedModels[0];
+
+            computedModels.pop_back();
+            computedModels.push_back(filterf->filter(cloud_f));
+        } else
+            computedModels.push_back(filterf->filter(cloud));
     }
 
     if(ui->wgtMinCutOptionView->isMinCutEnabled())
@@ -140,14 +149,14 @@ void ClusteringView::changePClViewerModel(unsigned int index)
                 ui->lcdNrDescriptors->display(0);
             }
 
-            ui->wgtPCLViewer->updateView(modelsToShow);
-
             if(ui->wgtClusterOptionView->showUsedKeypoints()) {
                 Logger::logDebug("Clustering view - Setting up colors for clusted model keypoints");
                 ui->wgtPCLViewer->viewer->setPointCloudRenderingProperties (pcl::visualization::PCL_VISUALIZER_POINT_SIZE, 5, "cloud1");
                 ui->wgtPCLViewer->viewer->setPointCloudRenderingProperties(pcl::visualization::PCL_VISUALIZER_COLOR, 0, 0, 255, "cloud1");
             }
         }
+
+        ui->wgtPCLViewer->updateView(modelsToShow);
 
         if(actualModelViewer<=0)
             ui->btnPrevModel->setEnabled(false);

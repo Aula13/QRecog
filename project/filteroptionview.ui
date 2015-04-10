@@ -31,7 +31,7 @@
    <widget class="QDoubleSpinBox" name="spnLeafSize">
     <property name="geometry">
      <rect>
-      <x>160</x>
+      <x>150</x>
       <y>40</y>
       <width>69</width>
       <height>31</height>
@@ -77,6 +77,22 @@
     </property>
     <property name="checked">
      <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QLabel" name="lblLeafSize_2">
+    <property name="geometry">
+     <rect>
+      <x>220</x>
+      <y>40</y>
+      <width>16</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>m</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
     </property>
    </widget>
   </widget>

@@ -31,7 +31,7 @@
    <widget class="QSpinBox" name="spnMaxClusterSize">
     <property name="geometry">
      <rect>
-      <x>140</x>
+      <x>130</x>
       <y>106</y>
       <width>91</width>
       <height>31</height>
@@ -66,7 +66,7 @@
    <widget class="QDoubleSpinBox" name="spnClusterTolerance">
     <property name="geometry">
      <rect>
-      <x>160</x>
+      <x>150</x>
       <y>50</y>
       <width>71</width>
       <height>31</height>
@@ -101,7 +101,7 @@
    <widget class="QSpinBox" name="spnMinClusterSize">
     <property name="geometry">
      <rect>
-      <x>140</x>
+      <x>130</x>
       <y>76</y>
       <width>91</width>
       <height>31</height>
@@ -168,7 +168,7 @@
    <widget class="QDoubleSpinBox" name="spnModelSample">
     <property name="geometry">
      <rect>
-      <x>160</x>
+      <x>150</x>
       <y>170</y>
       <width>71</width>
       <height>31</height>
@@ -203,7 +203,7 @@
    <widget class="QDoubleSpinBox" name="spnDescriptorRadius">
     <property name="geometry">
      <rect>
-      <x>160</x>
+      <x>150</x>
       <y>200</y>
       <width>71</width>
       <height>31</height>
@@ -230,6 +230,22 @@
     </property>
     <property name="text">
      <string>Descriptor radius</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="lblUDMmeters_3">
+    <property name="geometry">
+     <rect>
+      <x>220</x>
+      <y>50</y>
+      <width>16</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>m</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>

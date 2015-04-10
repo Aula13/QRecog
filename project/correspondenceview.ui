@@ -43,8 +43,8 @@
      <rect>
       <x>0</x>
       <y>0</y>
-      <width>100</width>
-      <height>30</height>
+      <width>98</width>
+      <height>28</height>
      </rect>
     </property>
     <attribute name="label">
@@ -56,8 +56,8 @@
      <rect>
       <x>0</x>
       <y>0</y>
-      <width>100</width>
-      <height>30</height>
+      <width>98</width>
+      <height>28</height>
      </rect>
     </property>
     <attribute name="label">
@@ -69,8 +69,8 @@
      <rect>
       <x>0</x>
       <y>0</y>
-      <width>100</width>
-      <height>30</height>
+      <width>98</width>
+      <height>28</height>
      </rect>
     </property>
     <attribute name="label">
@@ -114,7 +114,7 @@
        </rect>
       </property>
       <property name="text">
-       <string>Model downsampling</string>
+       <string>Model downsamp.</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -123,7 +123,7 @@
      <widget class="QDoubleSpinBox" name="spnModelss">
       <property name="geometry">
        <rect>
-        <x>160</x>
+        <x>150</x>
         <y>10</y>
         <width>69</width>
         <height>31</height>
@@ -152,7 +152,7 @@
        </rect>
       </property>
       <property name="text">
-       <string>Scene downsampling</string>
+       <string>Scene downsamp.</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -161,7 +161,7 @@
      <widget class="QDoubleSpinBox" name="spnSceness">
       <property name="geometry">
        <rect>
-        <x>160</x>
+        <x>150</x>
         <y>40</y>
         <width>69</width>
         <height>31</height>
@@ -199,7 +199,7 @@
      <widget class="QDoubleSpinBox" name="spnDescRad">
       <property name="geometry">
        <rect>
-        <x>160</x>
+        <x>150</x>
         <y>70</y>
         <width>69</width>
         <height>31</height>
@@ -221,7 +221,7 @@
      <widget class="QDoubleSpinBox" name="spnRFRad">
       <property name="geometry">
        <rect>
-        <x>160</x>
+        <x>150</x>
         <y>100</y>
         <width>69</width>
         <height>31</height>
@@ -259,7 +259,7 @@
      <widget class="QDoubleSpinBox" name="spnCGSize">
       <property name="geometry">
        <rect>
-        <x>160</x>
+        <x>150</x>
         <y>130</y>
         <width>69</width>
         <height>31</height>
@@ -313,7 +313,7 @@
      <widget class="QDoubleSpinBox" name="spnCGThres">
       <property name="geometry">
        <rect>
-        <x>160</x>
+        <x>150</x>
         <y>160</y>
         <width>69</width>
         <height>31</height>
@@ -486,6 +486,22 @@
        <string>Set model</string>
       </property>
      </widget>
+     <widget class="QLabel" name="lblUDMmeters_3">
+      <property name="geometry">
+       <rect>
+        <x>220</x>
+        <y>70</y>
+        <width>16</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>m</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+      </property>
+     </widget>
     </widget>
    </widget>
    <widget class="QWidget" name="cameraCtrl">
@@ -493,8 +509,8 @@
      <rect>
       <x>0</x>
       <y>0</y>
-      <width>100</width>
-      <height>30</height>
+      <width>98</width>
+      <height>28</height>
      </rect>
     </property>
     <attribute name="label">
