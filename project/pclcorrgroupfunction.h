@@ -6,7 +6,16 @@
 #include <pcl/features/normal_3d_omp.h>
 #include <pcl/features/shot_omp.h>
 #include <pcl/features/board.h>
-#include <pcl/keypoints/uniform_sampling.h>
+
+#include "logger.h"
+#include "defines.h"
+
+#ifndef PCL_1_8
+    #include <pcl/keypoints/uniform_sampling.h>
+#else
+    #include <pcl/filters/uniform_sampling.h>
+#endif
+
 #include <pcl/recognition/cg/hough_3d.h>
 #include <pcl/recognition/cg/geometric_consistency.h>
 #include <pcl/visualization/pcl_visualizer.h>
@@ -16,9 +25,6 @@
 #include <pcl/console/parse.h>
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include <boost/thread/thread.hpp>
-
-#include "logger.h"
-#include "defines.h"
 
 #include <QElapsedTimer>
 

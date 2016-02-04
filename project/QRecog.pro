@@ -5,6 +5,7 @@
 #-------------------------------------------------
 
 QT       += core gui
+QT       += network
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -15,6 +16,7 @@ SOURCES += main.cpp\
         mainwindow.cpp \
         viewermodel.cpp \
         cameramodel.cpp \
+        cameramodelopengev.cpp \
         observer.cpp \
         observable.cpp \
         pclviewer.cpp \
@@ -43,6 +45,7 @@ HEADERS  += mainwindow.h \
             defines.h \
             viewermodel.h \
             cameramodel.h \
+            cameramodelopengev.h \
             observer.h \
             observable.h \
             pclviewer.h \
@@ -79,6 +82,18 @@ FORMS    += mainwindow.ui \
             correspondenceview.ui \
     mincutoptionview.ui
 
+#OpenGEV Dependencies
+INCLUDEPATH += $$PWD/../../OpenGEV/src
+DEPENDPATH += $$PWD/../../OpenGEV/src
+
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../OpenGEV/build/build-opengev-qt.3GCC-64bit-debug/release/ -lOpenGEV
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../OpenGEV/build/build-opengev-qt.3GCC-64bit-debug/debug/ -lOpenGEV
+else:unix {
+    CONFIG(debug, debug|release): LIBS += -L$$PWD/../../OpenGEV/build/build-opengev-qt4.8GCC-64bit-debug -lOpenGEV
+    CONFIG(release, release|debug): LIBS += -L$$PWD/../../OpenGEV/build/build-opengev-qt4.8GCC-64bit-release -lOpenGEV
+}
+
+#Other dependecies
 macx {
     INCLUDEPATH += /usr/local/include/ \
                    /usr/include/ \
@@ -97,15 +112,16 @@ macx {
 }
 
 unix {
-    INCLUDEPATH += /usr/include/pcl-1.7 \
+    INCLUDEPATH += /usr/local/include/pcl-1.8 \
                    /usr/include/eigen3 \
                    /usr/include/openni2 \
                    /usr/include/vtk-5.8 \
                    /usr/include/boost \
                    /usr/include/flann
 
+    LIBS += "-L/usr/local/lib"
     LIBS += "-L/usr/lib"
-    LIBS += -lboost_system \
+    LIBS += -lboost_system
 
     LIBS += -lpcl_apps \
             -lpcl_common \

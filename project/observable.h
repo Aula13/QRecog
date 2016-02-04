@@ -2,6 +2,7 @@
 #define OBSERVABLE_H
 
 #include <vector>
+
 #include "observer.h"
 
 class Observable

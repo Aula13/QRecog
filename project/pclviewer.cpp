@@ -73,43 +73,27 @@ void PCLViewer::updateView(std::vector<cloudPtrType> clouds)
         i++;
     }
 
+    updateView();
     Logger::logInfo("PCLViewer update");
 }
 
 void PCLViewer::updateView(cloudPtrType cloud)
 {
-
     std::string id = "cloud0";
 
     addOrUpdateCloud(cloud, id);
 
+    updateView();
     Logger::logInfo("PCLViewer - Single cloud update cloud0");
 }
 
 void PCLViewer::addOrUpdateCloud(cloudPtrType cloud, std::string cloud_id) {
-    cloudPtrType cloud_(new cloudType (*cloud));
-
-    bool cloudExist = false;
-    foreach (std::string id, existentClouds) {
-        if(id.compare(cloud_id)==0)
-        {
-            cloudExist = true;
-            Logger::logInfo("PLCViewer - addorupdatecloud name: " + id + " already exist");
-            break;
-        }
-    }
-
-    if (cloudExist)
-    {
-        viewer->updatePointCloud (cloud_, cloud_id);
-        Logger::logDebug("Update cloud to PLCViewer name: " + cloud_id);
-    } else {
-        viewer->addPointCloud (cloud_, cloud_id);
+    if(!viewer->updatePointCloud(cloud, cloud_id)) {
+        viewer->addPointCloud (cloud, cloud_id);
         existentClouds.push_back(cloud_id);
         Logger::logDebug("Add cloud to PLCViewer name: " + cloud_id);
-    }
-
-    ui->qvtkWidget->update();
+    } else
+        Logger::logDebug("Update cloud to PLCViewer name: " + cloud_id);
 }
 
 void PCLViewer::updateView(){

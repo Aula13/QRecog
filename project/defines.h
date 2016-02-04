@@ -20,10 +20,37 @@
 //    #define GL_CLAMP_TO_EDGE      0x812F
 //#endif
 
+/*****************************************************************
+ * Compatibility for pcl version
+ *      define PCL_1_8 to compile with 1.8 pcl version
+ *      undefine PCL_1_8 to compile with 1.7/.2 pcl version
+ */
+#define PCL_1_8 0
+
+//****************************************************************
+
 #include <pcl/point_types.h>
 #include <pcl/point_cloud.h>
 
-typedef pcl::PointXYZRGB PointType;
+/******************************************************************
+ * Compatibility with RGB/RGBA function:
+ *      define ENABLE_ONLY_RGB_FUNC:
+ *          - enable mincut segmentation preview
+ *          - disable opengev lib (can't work with RGB points at now)
+ *      define ENABLE_ONLY_RGB_FUNC:
+ *          - disable mincut segmentation preview
+ *          - enable opengev lib
+ */
+//#define ENABLE_ONLY_RGB_FUNC 0
+
+//******************************************************************
+
+#ifndef ENABLE_ONLY_RBG_FUNC
+    typedef pcl::PointXYZRGBA PointType;
+#else
+    typedef pcl::PointXYZRGB PointType;
+#endif
+
 typedef pcl::PointCloud<PointType> cloudType;
 typedef cloudType::Ptr cloudPtrType;
 

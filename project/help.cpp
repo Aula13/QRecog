@@ -24,7 +24,9 @@ void Help::showHelp()
     std::cout<<std::endl;
     std::cout<<"         Options:"<<std::endl;
     std::cout<<"             -h: Show this help"<<std::endl;
-    std::cout<<"             -s: Enable simulation"<<std::endl;
+    std::cout<<"             -s: Use simulation"<<std::endl;
+    std::cout<<"             -usb: Use usb device"<<std::endl;
+    std::cout<<"             -gv: Use GigE Vision device"<<std::endl;
     std::cout<<std::endl;
     std::cout<<std::endl;
     std::cout<<"**********************************************************************"<<std::endl;

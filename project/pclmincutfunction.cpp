@@ -28,9 +28,11 @@ cloudPtrType PCLMinCutFunction::getForegroundPointCloud(cloudPtrType cloud)
   Logger::logInfo("Min cut segmentation - clusters size " + std::to_string(clusters.size()));
   Logger::logInfo("Min cut segmentation - Maximum flow is " + std::to_string(seg.getMaxFlow ()));
 
+#ifdef ENABLE_ONLY_RGB_FUNC
   if(showPreview) //Show a complete cloud with the difference between fg e bg
     return seg.getColoredCloud();
   else { //Extract only the foreground
+#endif
     pcl::ExtractIndices<PointType> extract;
     cloudPtrType result (new cloudType);
     pcl::PointIndices::Ptr indicesPointer (new pcl::PointIndices);
@@ -41,5 +43,7 @@ cloudPtrType PCLMinCutFunction::getForegroundPointCloud(cloudPtrType cloud)
     extract.filter(*result);
 
     return result;
+#ifdef ENABLE_ONLY_RGB_FUNC
   }
+#endif
 }

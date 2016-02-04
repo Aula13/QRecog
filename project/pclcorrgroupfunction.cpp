@@ -174,14 +174,18 @@ void PCLCorrGroupFunction::downSampleModel(){
     Logger::logInfo("ModelKeypoints: "    + std::to_string(modelKeypoints->size()));
 }
 
-void PCLCorrGroupFunction::downSampleCloud(cloudPtrType &cloud,  float sampleSize, cloudPtrType &keypoints){
-    pcl::PointCloud<int> sampledIndices;
+void PCLCorrGroupFunction::downSampleCloud(cloudPtrType &cloud,  float sampleSize, cloudPtrType &keypoints){    
     pcl::UniformSampling<PointType> uniform_sampling;
     uniform_sampling.setInputCloud (cloud);
     uniform_sampling.setRadiusSearch (sampleSize);
-    uniform_sampling.compute (sampledIndices);
 
+#ifndef PCL_1_8
+    pcl::PointCloud<int> sampledIndices;
+    uniform_sampling.compute (sampledIndices);
     pcl::copyPointCloud (*cloud, sampledIndices.points, *keypoints);
+#else
+    uniform_sampling.filter(*cloud);
+#endif
 }
 
 void PCLCorrGroupFunction::computeModelDescriptors(){
