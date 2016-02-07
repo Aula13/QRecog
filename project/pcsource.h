@@ -14,7 +14,7 @@ public:
 
     virtual void stop() = 0;
 
-    virtual cloudPtrType getLastAcquisition() = 0;
+    virtual const cloudPtrType getLastAcquisition() = 0;
 
     virtual bool isRunning() = 0;
 };

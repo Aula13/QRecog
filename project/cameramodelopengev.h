@@ -29,14 +29,14 @@ public:
 
     void stop();
 
-    cloudPtrType getLastAcquisition();
+    const cloudPtrType getLastAcquisition();
 
     bool isRunning();
 
     ~CameraModelOpenGEV();
 
 public slots:
-    void update(const pcl::PointCloud<pcl::PointXYZRGBA>::Ptr &cloud);
+    void update();
 
     void sendPeriodicUpdate();
 

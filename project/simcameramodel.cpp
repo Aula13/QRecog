@@ -14,7 +14,7 @@ void SimCameraModel::stop()
 {
 }
 
-cloudPtrType SimCameraModel::getLastAcquisition()
+const cloudPtrType SimCameraModel::getLastAcquisition()
 {
     cloudPtrType cloud (new cloudType), cloud_f (new cloudType);
     std::string path = QDir::homePath().toStdString() + "/QRecog/scene.pcd";

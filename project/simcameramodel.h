@@ -14,7 +14,7 @@ public:
 
     void stop();
 
-    cloudPtrType getLastAcquisition();
+    const cloudPtrType getLastAcquisition();
 
     bool isRunning();
 };

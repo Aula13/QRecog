@@ -101,7 +101,7 @@ void CameraModel::stop()
 
 }
 
-cloudPtrType CameraModel::getLastAcquisition()
+const cloudPtrType CameraModel::getLastAcquisition()
 {
     Logger::logInfo("Last acquisition requested from CameraModel");
     return trasformedpcd;
