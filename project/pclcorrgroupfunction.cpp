@@ -184,7 +184,7 @@ void PCLCorrGroupFunction::downSampleCloud(cloudPtrType &cloud,  float sampleSiz
     uniform_sampling.compute (sampledIndices);
     pcl::copyPointCloud (*cloud, sampledIndices.points, *keypoints);
 #else
-    uniform_sampling.filter(*cloud);
+    uniform_sampling.filter(*keypoints);
 #endif
 }
 
@@ -212,9 +212,18 @@ void PCLCorrGroupFunction::computeDescriptorsForKeypoints(cloudPtrType &cloud,  
 
 void PCLCorrGroupFunction::findCorrespondences(){
     timer->restart();
-    pcl::KdTreeFLANN<DescriptorType> matchSearch;
+    parallelCorrProcessingIndex=0;
     matchSearch.setInputCloud (modelDescriptors);
 
+    QVector<DescriptorType> sequence;
+    for (size_t i = 0; i < sceneDescriptors->size (); ++i)
+        sequence.push_back(sceneDescriptors->at(i));
+
+    QFuture<void>future = QtConcurrent::map(sequence,
+                      [&](DescriptorType i){parallelFindCorrespondence(i);});
+    future.waitForFinished();
+
+    /*
     for (size_t i = 0; i < sceneDescriptors->size (); ++i)
     {
         std::vector<int> neighIndices (1);
@@ -229,8 +238,28 @@ void PCLCorrGroupFunction::findCorrespondences(){
             modelSceneCorrs->push_back (corr);
         }
     }
+    */
+
     Logger::logInfo("findCorrespondences time: " + std::to_string((int)timer->elapsed()));
     Logger::logInfo("Correspondences found: " + std::to_string(modelSceneCorrs->size ()));
+}
+
+void PCLCorrGroupFunction::parallelFindCorrespondence(DescriptorType &aDescriptor)
+{
+    std::vector<int> neighIndices (1);
+    std::vector<float> neighSqrDists (1);
+    if (!pcl_isfinite (aDescriptor.descriptor[0])) //skipping NaNs
+        return;
+    int foundNeighs = matchSearch.nearestKSearch (aDescriptor, 1, neighIndices, neighSqrDists);
+    //  add match only if the squared descriptor distance is less than 0.25 (SHOT descriptor distances are between 0 and 1 by design)
+    if(foundNeighs == 1 && neighSqrDists[0] < 0.25f)
+    {
+        parallelCorrProcessingMutex.lock();
+        pcl::Correspondence corr (neighIndices[0], static_cast<int> (parallelCorrProcessingIndex), neighSqrDists[0]);
+        parallelCorrProcessingIndex++;
+        modelSceneCorrs->push_back (corr);
+        parallelCorrProcessingMutex.unlock();
+    }
 }
 
 void PCLCorrGroupFunction::recognizeUsingHough(){
@@ -321,6 +350,7 @@ void PCLCorrGroupFunction::resetValues (){
         modelKeypoints     = (cloudPtrType)new cloudType();
         modelNormals       = (normalsPtr)new pcl::PointCloud<NormalType> ();
         modelDescriptors   = (descriptorsPtr)new pcl::PointCloud<DescriptorType> ();
+        parallelCorrProcessingIndex=0;
     }
 
     modelSceneCorrs    = (pcl::CorrespondencesPtr)new pcl::Correspondences ();

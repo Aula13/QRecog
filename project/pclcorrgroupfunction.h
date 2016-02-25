@@ -1,6 +1,10 @@
 #ifndef PCLCORRGROUPFUNCTION_H
 #define PCLCORRGROUPFUNCTION_H
 
+#include <QtConcurrentMap>
+#include <QVector>
+#include <QMutex>
+
 #include <pcl/io/pcd_io.h>
 #include <pcl/correspondence.h>
 #include <pcl/features/normal_3d_omp.h>
@@ -41,6 +45,8 @@ class PCLCorrGroupFunction
 public:
     PCLCorrGroupFunction();
     cloudPtrType getCorrespondence();
+
+
     void recognize ();
     void loadCloudsFromDefaultFile();
     void loadSceneFromFile(std::string sceneFilename);
@@ -77,6 +83,7 @@ public:
     descriptorsPtr  modelDescriptors;
     descriptorsPtr  sceneDescriptors;
 
+    pcl::KdTreeFLANN<DescriptorType> matchSearch;
     pcl::CorrespondencesPtr modelSceneCorrs;
     std::vector<Eigen::Matrix4f, Eigen::aligned_allocator<Eigen::Matrix4f> > rototranslations;
     std::vector<pcl::Correspondences> clusteredCorrs;
@@ -95,11 +102,18 @@ private:
     void downSampleCloud(cloudPtrType &cloud,  float sampleSize, cloudPtrType &keypoints);
     void computeDescriptorsForKeypoints(cloudPtrType &cloud,  cloudPtrType &keypoints, normalsPtr &normals, descriptorsPtr &descriptors);
     void findCorrespondences();
+    void parallelFindCorrespondence(DescriptorType &aDescriptor);
+
     void recognizeUsingHough();
     void recognizeUsingGeometricConsistency();
     void printResults();
     void resetValues ();
     QElapsedTimer* timer;
+
+
+    QMutex parallelCorrProcessingMutex;
+    int parallelCorrProcessingIndex;
 };
+
 
 #endif // PCLCORRGROUPFUNCTION_H
