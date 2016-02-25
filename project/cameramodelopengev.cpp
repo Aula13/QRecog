@@ -45,7 +45,8 @@ CameraModelOpenGEV::CameraModelOpenGEV()
 
     //Configure thread for consumer/view separation
     connect(&updateObserversTimer, SIGNAL(timeout()),
-            this, SLOT(sendPeriodicUpdate()));
+            this, SLOT(sendPeriodicUpdate()),
+            Qt::DirectConnection);
     updateObserversTimer.setInterval(33);
 
     this->moveToThread(&updateReceiverThread);
@@ -65,8 +66,8 @@ void CameraModelOpenGEV::run()
             device.openControlChannel(5001);
             if(device.getStreamingChannelNumber()>0) {
                 if(device.openStreamChannel(2)==GEV_STATUS_SUCCESS) {
-                    device.setStreamChannelPacketLength(2,65000);
-                    device.setStreamChannelDelay(2,10000);
+                    device.setStreamChannelPacketLength(2,10000);
+                    device.setStreamChannelDelay(2,40000);
                     StreamDataReceiver *channel = device.getStreamChannel(2);
                     observer = new DepthColorStreamDataObserver(*channel,
                                                                 device.getHorizontalFieldOfView(),
@@ -125,7 +126,9 @@ void CameraModelOpenGEV::stop()
 
 const cloudPtrType CameraModelOpenGEV::getLastAcquisition()
 {
+    semaphore.lock();
     Logger::logInfo("Last acquisition requested from CameraModel");
+    semaphore.unlock();
     return trasformedpcd;
 }
 
@@ -148,8 +151,7 @@ CameraModelOpenGEV::~CameraModelOpenGEV()
 
 void CameraModelOpenGEV::update()
 {
-    if(!semaphore.tryLock())
-        return;
+    semaphore.lock();
 
     cloudPtrType workingCloud(new cloudType);
 
@@ -173,7 +175,7 @@ void CameraModelOpenGEV::update()
 
 void CameraModelOpenGEV::sendPeriodicUpdate()
 {
-    Logger::logInfo("Observers update: " + QThread::currentThreadId());
+    //Logger::logInfo("Observers update: " + QThread::currentThreadId());
     setChanged();
     notifyObservers();
 }
