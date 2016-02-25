@@ -21,6 +21,33 @@ CameraModel* CameraModel::getInstance()
 
 CameraModel::CameraModel()
 {
+    cloudPtrType emptyCloud(new cloudType);
+    trasformedpcd = emptyCloud;
+
+    //Init matrix for 180° rotation on Z axis
+    TransMatZ = Eigen::Matrix4f::Identity();
+    float theta = M_PI; // The angle of rotation in radians
+    TransMatZ(0,0) = cos(theta);
+    TransMatZ(0,1) = -sin(theta);
+    TransMatZ(1,0) = sin(theta);
+    TransMatZ(1,1) = cos(theta);
+
+    //Init matrix for 180° rotation on X axis
+    TransMatY=Eigen::Matrix4f::Identity();
+
+    theta = M_PI; // The angle of rotation in radians
+    TransMatY(0,0) = cos(theta);
+    TransMatY(0,2) = sin(theta);
+    TransMatY(2,0) = -sin(theta);
+    TransMatY(2,2) = cos(theta);
+
+    //Configure thread for consumer/view separation
+    connect(&updateObserversTimer, SIGNAL(timeout()),
+            this, SLOT(sendPeriodicUpdate()),
+            Qt::DirectConnection);
+    updateObserversTimer.setInterval(33);
+
+    this->moveToThread(&updateReceiverThread);
 }
 
 void CameraModel::registerCallback(boost::function<void (const cloudType::ConstPtr&)> f)
@@ -31,44 +58,20 @@ void CameraModel::registerCallback(boost::function<void (const cloudType::ConstP
 
 void CameraModel::cloud_cb_ (const cloudType::ConstPtr &cloud)
 {
-    cloudPtrType cloud0(new cloudType (*cloud));
-    std::vector<int> mapping;
-    pcl::removeNaNFromPointCloud(*cloud, *cloud0, mapping);
+    semaphore.lock();
 
-    Eigen::Matrix4f TransMat=Eigen::Matrix4f::Identity();
+    cloudPtrType workingCloud(new cloudType);
 
-    //Rotazione della point cloud attorno all'asse Z di 180 gradi
-    float theta = M_PI; // The angle of rotation in radians
-    TransMat(0,0) = cos(theta);
-    TransMat(0,1) = -sin(theta);
-    TransMat(1,0) = sin(theta);
-    TransMat(1,1) = cos(theta);
+    //180° rotation around Z axe
+    pcl::transformPointCloud(*cloud,*workingCloud,TransMatZ);
 
-    cloudPtrType cloud1(new cloudType (*cloud0));
+    //180° rotation around Y axe
+    pcl::transformPointCloud(*workingCloud,*workingCloud,TransMatY);
 
+    Logger::logInfo("CameraModelOpenGEV data received and trasformed: ");
+    trasformedpcd = workingCloud;
 
-    //trasformedpcd = new cloudPtr (*cloud);
-    pcl::transformPointCloud(*cloud1,*cloud1,TransMat);
-
-    //Rotazione della point cloud attorno all'asse Y di 180 gradi
-    TransMat=Eigen::Matrix4f::Identity();
-
-    theta = M_PI; // The angle of rotation in radians
-    TransMat(0,0) = cos(theta);
-    TransMat(0,2) = sin(theta);
-    TransMat(2,0) = -sin(theta);
-    TransMat(2,2) = cos(theta);
-
-    pcl::transformPointCloud(*cloud1,*cloud1,TransMat);
-
-    trasformedpcd = cloud1;
-
-    Logger::logInfo("Update cloud is coming");
-
-    setChanged();
-    notifyObservers();
-
-    std::this_thread::sleep_for(std::chrono::milliseconds(60));
+    semaphore.unlock();
 }
 
 void CameraModel::run()
@@ -81,6 +84,13 @@ void CameraModel::run()
         interface->registerCallback(f);
 
         interface->start ();
+
+        //Receiver for updates
+        updateReceiverThread.start();
+
+        //Start update observers
+        updateObserversTimer.start();
+
         Logger::logInfo("Camera interface is started");
     } else
         Logger::logError("CameraModel is not instanced");
@@ -92,6 +102,11 @@ void CameraModel::stop()
     {
         if(interface->isRunning())
         {
+            updateObserversTimer.stop();
+
+            updateReceiverThread.quit();
+            updateReceiverThread.wait();
+
             interface->stop();
             Logger::logInfo("Camera interface is stopped");
         } else
@@ -103,7 +118,9 @@ void CameraModel::stop()
 
 const cloudPtrType CameraModel::getLastAcquisition()
 {
+    semaphore.lock();
     Logger::logInfo("Last acquisition requested from CameraModel");
+    semaphore.unlock();
     return trasformedpcd;
 }
 
@@ -133,4 +150,11 @@ CameraModel::~CameraModel()
     }
     delete interface;
     Logger::logInfo("CameraModel was deleted");
+}
+
+void CameraModel::sendPeriodicUpdate()
+{
+    //Logger::logInfo("Observers update: " + QThread::currentThreadId());
+    setChanged();
+    notifyObservers();
 }

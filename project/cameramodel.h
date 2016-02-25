@@ -3,6 +3,10 @@
 
 #include <thread>
 #include <chrono>
+#include <QMutex>
+#include <QObject>
+#include <QTimer>
+#include <QThread>
 
 #include <pcl/io/openni2_grabber.h>
 #include <pcl/common/transforms.h>
@@ -12,8 +16,9 @@
 #include "logger.h"
 #include "defines.h"
 
-class CameraModel : public PCSource
+class CameraModel : public QObject, public PCSource
 {
+    Q_OBJECT
 public:
     static CameraModel* getInstance();
 
@@ -34,6 +39,8 @@ public:
 
     ~CameraModel();
 
+public slots:
+    void sendPeriodicUpdate();
 
 private:
     CameraModel();
@@ -49,6 +56,18 @@ private:
 
     static bool instanceFlag;
     static CameraModel* single;
+
+    cloudPtrType workingCloud;
+
+    QMutex semaphore;
+
+    QTimer updateObserversTimer;
+    QThread updateObserversManager;
+
+    QThread updateReceiverThread;
+
+    /*Trasformation*/
+    Eigen::Matrix4f TransMatZ, TransMatY;
 };
 
 #endif // CAMERAMODEL_H
