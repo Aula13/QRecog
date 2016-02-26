@@ -19,5 +19,5 @@ cloudPtrType PCLFilterFunction::filter(cloudPtrType cloud)
 
 void PCLFilterFunction::reset()
 {
-    cloud_filtered.reset();
+    //cloud_filtered.reset();
 }

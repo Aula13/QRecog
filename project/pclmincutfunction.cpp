@@ -50,8 +50,8 @@ cloudPtrType PCLMinCutFunction::getForegroundPointCloud(cloudPtrType cloud)
 
 void PCLMinCutFunction::reset()
 {
-    foreground_points.reset();
+    //foreground_points.reset();
     clusters.clear();
-    result.reset();
-    indicesPointer.reset();
+    //result.reset();
+    //indicesPointer.reset();
 }

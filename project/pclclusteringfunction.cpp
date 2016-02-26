@@ -51,7 +51,7 @@ void PCLClusteringFunction::reset()
 {
     cloud_clustered.clear();
     cluster_indices.clear();
-    tree.reset();
+    //tree.reset();
 }
 
 void PCLClusteringFunction::parallelClustering(pcl::PointIndices &aIndices)
