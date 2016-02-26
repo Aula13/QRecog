@@ -1,15 +1,18 @@
 #include "pclmincutfunction.h"
 
 PCLMinCutFunction::PCLMinCutFunction()
+    : foreground_points(new cloudType),
+      result (new cloudType),
+      indicesPointer (new pcl::PointIndices)
 {
 }
 
 cloudPtrType PCLMinCutFunction::getForegroundPointCloud(cloudPtrType cloud)
 {
-  pcl::MinCutSegmentation<PointType> seg;
+  reset();
+
   seg.setInputCloud (cloud);
 
-  cloudPtrType foreground_points(new cloudType);
   PointType point;
   point.x = x;
   point.y = y;
@@ -22,7 +25,6 @@ cloudPtrType PCLMinCutFunction::getForegroundPointCloud(cloudPtrType cloud)
   seg.setNumberOfNeighbours (numberOfNeighbours);
   seg.setSourceWeight (sourceWeight);
 
-  std::vector <pcl::PointIndices> clusters;
   seg.extract (clusters);
 
   Logger::logInfo("Min cut segmentation - clusters size " + std::to_string(clusters.size()));
@@ -33,9 +35,7 @@ cloudPtrType PCLMinCutFunction::getForegroundPointCloud(cloudPtrType cloud)
     return seg.getColoredCloud();
   else { //Extract only the foreground
 #endif
-    pcl::ExtractIndices<PointType> extract;
-    cloudPtrType result (new cloudType);
-    pcl::PointIndices::Ptr indicesPointer (new pcl::PointIndices);
+
     indicesPointer->indices = clusters[1].indices;
     // TODO: trovare un modo per tirare fuori solo i punti in foreground
     extract.setInputCloud(cloud);
@@ -46,4 +46,12 @@ cloudPtrType PCLMinCutFunction::getForegroundPointCloud(cloudPtrType cloud)
 #ifdef ENABLE_ONLY_RGB_FUNC
   }
 #endif
+}
+
+void PCLMinCutFunction::reset()
+{
+    foreground_points.reset();
+    clusters.clear();
+    result.reset();
+    indicesPointer.reset();
 }

@@ -20,6 +20,8 @@ public:
 
     cloudPtrType getForegroundPointCloud(cloudPtrType cloud);
 
+    void reset();
+
     float x;
     float y;
     float z;
@@ -30,6 +32,14 @@ public:
     float sourceWeight;
 
     bool showPreview;
+
+private:
+    pcl::MinCutSegmentation<PointType> seg;
+    cloudPtrType foreground_points;
+    std::vector <pcl::PointIndices> clusters;
+    pcl::ExtractIndices<PointType> extract;
+    cloudPtrType result;
+    pcl::PointIndices::Ptr indicesPointer;
 
 };
 

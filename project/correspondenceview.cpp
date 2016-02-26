@@ -36,62 +36,62 @@ void CorrespondenceView::update(Observable* obs)
 
             if(ui->wgtFilterOptionView->isFilteringEnabled())
             {
-                PCLFilterFunction* filterf = new PCLFilterFunction();
-                filterf->leafSize=ui->wgtFilterOptionView->getLeafSize();
+                //PCLFilterFunction* filterf = new PCLFilterFunction();
+                filterf.leafSize=ui->wgtFilterOptionView->getLeafSize();
 
                 if(computedModels.size()==1)
                 {
                     sceneCloudFilter=computedModels[0];
                     computedModels.pop_back();
-                    computedModels.push_back(filterf->filter(sceneCloudFilter));
+                    computedModels.push_back(filterf.filter(sceneCloudFilter));
                 } else
-                    computedModels.push_back(filterf->filter(sceneCloud));
+                    computedModels.push_back(filterf.filter(sceneCloud));
             }
 
             if(ui->wgtMinCutOptionView->isMinCutEnabled())
             {
-                PCLMinCutFunction* mincut = new PCLMinCutFunction();
+                //PCLMinCutFunction* mincut = new PCLMinCutFunction();
 
-                mincut->x = ui->wgtMinCutOptionView->getx();
-                mincut->y = ui->wgtMinCutOptionView->gety();
-                mincut->z = ui->wgtMinCutOptionView->getz();
-                mincut->sigma = ui->wgtMinCutOptionView->getSigma();
-                mincut->radius = ui->wgtMinCutOptionView->getRadius();
-                mincut->numberOfNeighbours = ui->wgtMinCutOptionView->getNrNeighbours();
-                mincut->sourceWeight = ui->wgtMinCutOptionView->getSourceWeight();
+                mincut.x = ui->wgtMinCutOptionView->getx();
+                mincut.y = ui->wgtMinCutOptionView->gety();
+                mincut.z = ui->wgtMinCutOptionView->getz();
+                mincut.sigma = ui->wgtMinCutOptionView->getSigma();
+                mincut.radius = ui->wgtMinCutOptionView->getRadius();
+                mincut.numberOfNeighbours = ui->wgtMinCutOptionView->getNrNeighbours();
+                mincut.sourceWeight = ui->wgtMinCutOptionView->getSourceWeight();
 
-                mincut->showPreview = ui->wgtMinCutOptionView->showPreview();
+                mincut.showPreview = ui->wgtMinCutOptionView->showPreview();
 
                 if(computedModels.size()==1)
                 {
                     sceneCloudFilter=computedModels[0];
 
                     computedModels.pop_back();
-                    computedModels.push_back(mincut->getForegroundPointCloud(sceneCloudFilter));
+                    computedModels.push_back(mincut.getForegroundPointCloud(sceneCloudFilter));
                 } else
-                    computedModels.push_back(mincut->getForegroundPointCloud(sceneCloud));
+                    computedModels.push_back(mincut.getForegroundPointCloud(sceneCloud));
             }
 
             if(ui->wgtSegOptionView->isSegmentationEnabled())
             {
-                PCLSegmentationFunction* segf = new PCLSegmentationFunction();
+                //PCLSegmentationFunction* segf = new PCLSegmentationFunction();
 
-                segf->optimazeCoeff = ui->wgtSegOptionView->getOptimizeCoeff();
-                segf->modelType = ui->wgtSegOptionView->getModelType();
-                segf->methodType = ui->wgtSegOptionView->getMethodType();
-                segf->maxIterations = ui->wgtSegOptionView->getMaxIterations();
-                segf->distanceThreashold = ui->wgtSegOptionView->getDistanceThreshold();
+                segf.optimazeCoeff = ui->wgtSegOptionView->getOptimizeCoeff();
+                segf.modelType = ui->wgtSegOptionView->getModelType();
+                segf.methodType = ui->wgtSegOptionView->getMethodType();
+                segf.maxIterations = ui->wgtSegOptionView->getMaxIterations();
+                segf.distanceThreashold = ui->wgtSegOptionView->getDistanceThreshold();
 
                 if(computedModels.size()==1)
                 {
                     sceneCloudFilter=computedModels[0];
                     computedModels.pop_back();
-                    computedModels.push_back(segf->segment(sceneCloudFilter));
+                    computedModels.push_back(segf.segment(sceneCloudFilter));
                 } else
-                    computedModels.push_back(segf->segment(sceneCloud));
+                    computedModels.push_back(segf.segment(sceneCloud));
             }
 
-            launchRecognizer(cff);
+            launchRecognizer();
 
             if(!ui->chkDisableUpdate->isChecked())
             {
@@ -101,15 +101,15 @@ void CorrespondenceView::update(Observable* obs)
                 else
                     cloudsToShow.push_back(sceneCloud);
 
-                visualizeRecognizerOutput(cff);
+                visualizeRecognizerOutput();
 
                 ui->wgtPCLViewer->updateView(cloudsToShow);
 
-                setupColorForClouds(cff);
+                setupColorForClouds();
             }
 
-            ui->lcdNrModelRec->display(cff->getNrModelFound());
-            ui->lcdNrCorrespondence->display(static_cast<int>(cff->modelSceneCorrs->size ()));
+            ui->lcdNrModelRec->display(cff.getNrModelFound());
+            ui->lcdNrCorrespondence->display(static_cast<int>(cff.modelSceneCorrs->size ()));
         } else {
             ui->lcdNrModelRec->display(0);
             ui->lcdNrCorrespondence->display(0);
@@ -118,44 +118,44 @@ void CorrespondenceView::update(Observable* obs)
     }
 }
 
-void CorrespondenceView::launchRecognizer(PCLCorrGroupFunction *cff){
-    cff->modelSampleSize            = ui->spnModelss->value();
-    cff->sceneSampleSize            = ui->spnSceness->value();
-    cff->descriptorsRadius          = ui->spnDescRad->value();
-    cff->referenceFrameRadius       = ui->spnRFRad->value();
-    cff->cgSize                     = ui->spnCGSize->value();
-    cff->cgThreshold                = ui->spnCGThres->value();
-    cff->useHough                   = ui->rdbHough->isChecked();
-    cff->applyTrasformationToModel  = ui->chkApplyTrasformModel->isChecked();
-    cff->useCloudResolution         = ui->chkComputeModelRes->isChecked();
-    cff->model                      = searchedModels[0];
-    cff->scene                      = computedModels[0];
-    cff->recognize();
+void CorrespondenceView::launchRecognizer(){
+    cff.modelSampleSize            = ui->spnModelss->value();
+    cff.sceneSampleSize            = ui->spnSceness->value();
+    cff.descriptorsRadius          = ui->spnDescRad->value();
+    cff.referenceFrameRadius       = ui->spnRFRad->value();
+    cff.cgSize                     = ui->spnCGSize->value();
+    cff.cgThreshold                = ui->spnCGThres->value();
+    cff.useHough                   = ui->rdbHough->isChecked();
+    cff.applyTrasformationToModel  = ui->chkApplyTrasformModel->isChecked();
+    cff.useCloudResolution         = ui->chkComputeModelRes->isChecked();
+    cff.model                      = searchedModels[0];
+    cff.scene                      = computedModels[0];
+    cff.recognize();
 }
 
-void CorrespondenceView::visualizeRecognizerOutput(PCLCorrGroupFunction* cff){
+void CorrespondenceView::visualizeRecognizerOutput(){
     modelAdded=false;
     correspondenceAdded=false;
-    if(cff->getNrModelFound()>0) {
-        cloudsToShow.push_back(cff->getCorrespondence());
+    if(cff.getNrModelFound()>0) {
+        cloudsToShow.push_back(cff.getCorrespondence());
         correspondenceAdded=true;
     }
 
     // Set up and show offset model
     if ( ui->chkShowUsedkeypoints->isChecked() || ui->chkShowCorr->isChecked()){
-        cff->setUpOffSceneModel();
-        cloudsToShow.push_back(cff->offSceneModel);
+        cff.setUpOffSceneModel();
+        cloudsToShow.push_back(cff.offSceneModel);
         modelAdded=true;
     }
 
     // show keypoints
     if ( ui->chkShowUsedkeypoints->isChecked()){
-        cloudsToShow.push_back(cff->sceneKeypoints);
-        cloudsToShow.push_back(cff->offSceneModelKeypoints);
+        cloudsToShow.push_back(cff.sceneKeypoints);
+        cloudsToShow.push_back(cff.offSceneModelKeypoints);
     }
 }
 
-void CorrespondenceView::setupColorForClouds(PCLCorrGroupFunction *cff)
+void CorrespondenceView::setupColorForClouds()
 {
     if(correspondenceAdded)
         ui->wgtPCLViewer->viewer->setPointCloudRenderingProperties (pcl::visualization::PCL_VISUALIZER_POINT_SIZE, 5, "cloud1");
@@ -217,37 +217,37 @@ void CorrespondenceView::on_btnSetModel_clicked()
     QMessageBox::information(this, "Information", "Model set correctly", QMessageBox::Ok);
     Logger::logInfo("Model for correspondence grouping loaded");
 
-    cff->computeModelKeypoints=true;
+    cff.computeModelKeypoints=true;
     ui->wgtPCLViewer->viewer->removePointCloud("correspondence");
     correspondenceCloud=false;
 }
 
 void CorrespondenceView::on_spnModelss_valueChanged(double arg1)
 {
-    cff->computeModelKeypoints=true;
+    cff.computeModelKeypoints=true;
 }
 
 void CorrespondenceView::on_spnSceness_valueChanged(double arg1)
 {
-    cff->computeModelKeypoints=true;
+    cff.computeModelKeypoints=true;
 }
 
 void CorrespondenceView::on_spnDescRad_valueChanged(double arg1)
 {
-    cff->computeModelKeypoints=true;
+    cff.computeModelKeypoints=true;
 }
 
 void CorrespondenceView::on_spnRFRad_valueChanged(double arg1)
 {
-    cff->computeModelKeypoints=true;
+    cff.computeModelKeypoints=true;
 }
 
 void CorrespondenceView::on_spnCGSize_valueChanged(double arg1)
 {
-    cff->computeModelKeypoints=true;
+    cff.computeModelKeypoints=true;
 }
 
 void CorrespondenceView::on_spnCGThres_valueChanged(double arg1)
 {
-    cff->computeModelKeypoints=true;
+    cff.computeModelKeypoints=true;
 }

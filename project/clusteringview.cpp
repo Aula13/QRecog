@@ -33,87 +33,87 @@ void ClusteringView::on_btnSegment_clicked()
 
     if(ui->wgtFilterOptionView->isFilteringEnabled())
     {
-        PCLFilterFunction* filterf = new PCLFilterFunction();
+        //PCLFilterFunction* filterf = new PCLFilterFunction();
 
-        filterf->leafSize=ui->wgtFilterOptionView->getLeafSize();
+        filterf.leafSize=ui->wgtFilterOptionView->getLeafSize();
 
         if(computedModels.size()==1)
         {
             cloud_f=computedModels[0];
 
             computedModels.pop_back();
-            computedModels.push_back(filterf->filter(cloud_f));
+            computedModels.push_back(filterf.filter(cloud_f));
         } else
-            computedModels.push_back(filterf->filter(cloud));
+            computedModels.push_back(filterf.filter(cloud));
     }
 
     if(ui->wgtMinCutOptionView->isMinCutEnabled())
     {
-        PCLMinCutFunction* mincut = new PCLMinCutFunction();
+        //PCLMinCutFunction* mincut = new PCLMinCutFunction();
 
-        mincut->x = ui->wgtMinCutOptionView->getx();
-        mincut->y = ui->wgtMinCutOptionView->gety();
-        mincut->z = ui->wgtMinCutOptionView->getz();
-        mincut->sigma = ui->wgtMinCutOptionView->getSigma();
-        mincut->radius = ui->wgtMinCutOptionView->getRadius();
-        mincut->numberOfNeighbours = ui->wgtMinCutOptionView->getNrNeighbours();
-        mincut->sourceWeight = ui->wgtMinCutOptionView->getSourceWeight();
+        mincut.x = ui->wgtMinCutOptionView->getx();
+        mincut.y = ui->wgtMinCutOptionView->gety();
+        mincut.z = ui->wgtMinCutOptionView->getz();
+        mincut.sigma = ui->wgtMinCutOptionView->getSigma();
+        mincut.radius = ui->wgtMinCutOptionView->getRadius();
+        mincut.numberOfNeighbours = ui->wgtMinCutOptionView->getNrNeighbours();
+        mincut.sourceWeight = ui->wgtMinCutOptionView->getSourceWeight();
 
-        mincut->showPreview = ui->wgtMinCutOptionView->showPreview();
+        mincut.showPreview = ui->wgtMinCutOptionView->showPreview();
 
         if(computedModels.size()==1)
         {
             cloud_f=computedModels[0];
 
             computedModels.pop_back();
-            computedModels.push_back(mincut->getForegroundPointCloud(cloud_f));
+            computedModels.push_back(mincut.getForegroundPointCloud(cloud_f));
         } else
-            computedModels.push_back(mincut->getForegroundPointCloud(cloud));
+            computedModels.push_back(mincut.getForegroundPointCloud(cloud));
     }
 
     if(ui->wgtSegOptionView->isSegmentationEnabled())
     {
-        PCLSegmentationFunction* segf = new PCLSegmentationFunction();
+        //PCLSegmentationFunction* segf = new PCLSegmentationFunction();
 
-        segf->optimazeCoeff = ui->wgtSegOptionView->getOptimizeCoeff();
-        segf->modelType = ui->wgtSegOptionView->getModelType();
-        segf->methodType = ui->wgtSegOptionView->getMethodType();
-        segf->maxIterations = ui->wgtSegOptionView->getMaxIterations();
-        segf->distanceThreashold = ui->wgtSegOptionView->getDistanceThreshold();
+        segf.optimazeCoeff = ui->wgtSegOptionView->getOptimizeCoeff();
+        segf.modelType = ui->wgtSegOptionView->getModelType();
+        segf.methodType = ui->wgtSegOptionView->getMethodType();
+        segf.maxIterations = ui->wgtSegOptionView->getMaxIterations();
+        segf.distanceThreashold = ui->wgtSegOptionView->getDistanceThreshold();
 
         if(computedModels.size()==1)
         {
             cloud_f=computedModels[0];
             computedModels.pop_back();
-            computedModels.push_back(segf->segment(cloud_f));
+            computedModels.push_back(segf.segment(cloud_f));
         } else
-            computedModels.push_back(segf->segment(cloud));
+            computedModels.push_back(segf.segment(cloud));
     }
 
     if(ui->wgtClusterOptionView->isClusteringEnabled())
     {
-        PCLClusteringFunction* clusterf = new PCLClusteringFunction();
+        //PCLClusteringFunction* clusterf = new PCLClusteringFunction();
 
-        clusterf->clusterTolerance = ui->wgtClusterOptionView->getClusterTolerance();
-        clusterf->minClusterSize = ui->wgtClusterOptionView->getMinClusterSize();
-        clusterf->maxClusterSize = ui->wgtClusterOptionView->getMaxClusterSize();
+        clusterf.clusterTolerance = ui->wgtClusterOptionView->getClusterTolerance();
+        clusterf.minClusterSize = ui->wgtClusterOptionView->getMinClusterSize();
+        clusterf.maxClusterSize = ui->wgtClusterOptionView->getMaxClusterSize();
 
         if(computedModels.size()==1)
         {
             cloud_f=computedModels[0];
             computedModels.pop_back();
-            computedModels = clusterf->clustering(cloud_f);
+            computedModels = clusterf.clustering(cloud_f);
         } else
-            computedModels = clusterf->clustering(cloud);
+            computedModels = clusterf.clustering(cloud);
 
         if(ui->wgtClusterOptionView->showUsedKeypoints()) {
-            PCLCorrGroupFunction* cgf = new PCLCorrGroupFunction();
-            cgf->modelSampleSize = ui->wgtClusterOptionView->getModelSample();
-            cgf->descriptorsRadius = ui->wgtClusterOptionView->getDescriptorRadius();
+            //PCLCorrGroupFunction* cgf = new PCLCorrGroupFunction();
+            cgf.modelSampleSize = ui->wgtClusterOptionView->getModelSample();
+            cgf.descriptorsRadius = ui->wgtClusterOptionView->getDescriptorRadius();
             foreach (cloudPtrType model, computedModels) {
-                cloudPtrType keypoints = cgf->computeKeypointsForThisModel(model);
+                cloudPtrType keypoints = cgf.computeKeypointsForThisModel(model);
                 computedModelsKeypoints.push_back(keypoints);
-                descriptors.push_back(static_cast<int>(cgf->modelDescriptors->size()));
+                descriptors.push_back(static_cast<int>(cgf.modelDescriptors->size()));
             }
         }
     }

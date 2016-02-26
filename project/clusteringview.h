@@ -51,6 +51,12 @@ private:
 
     QElapsedTimer computationTimer;
 
+    PCLFilterFunction filterf;
+    PCLMinCutFunction mincut;
+    PCLSegmentationFunction segf;
+    PCLClusteringFunction clusterf;
+    PCLCorrGroupFunction cgf;
+
 };
 
 #endif // SEGMENTATIONVIEW_H

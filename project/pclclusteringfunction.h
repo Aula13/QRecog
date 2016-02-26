@@ -1,6 +1,9 @@
 #ifndef PCLCLUSTERINGFUNCTION_H
 #define PCLCLUSTERINGFUNCTION_H
 
+#include <QtConcurrentMap>
+#include <QMutex>
+
 #include <pcl/ModelCoefficients.h>
 #include <pcl/io/pcd_io.h>
 #include <pcl/io/file_io.h>
@@ -25,6 +28,22 @@ public:
     float clusterTolerance;
     int minClusterSize;
     int maxClusterSize;
+
+    void reset();
+
+private:
+    pcl::search::KdTree<PointType>::Ptr tree;
+
+    QMutex clusteringParallelMuting;
+    std::vector<cloudPtrType> cloud_clustered;
+
+    cloudPtrType workingCloud;
+
+
+    std::vector<pcl::PointIndices> cluster_indices;
+    pcl::EuclideanClusterExtraction<PointType> ec;
+
+    void parallelClustering(pcl::PointIndices &aIndices);
 
 };
 

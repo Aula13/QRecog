@@ -17,6 +17,13 @@ public:
 
     float leafSize;
 
+    void reset();
+
+private:
+    pcl::VoxelGrid<PointType> vg;
+    cloudPtrType cloud_filtered;
+
+
 };
 
 #endif // PCLFILTERFUNCTION_H

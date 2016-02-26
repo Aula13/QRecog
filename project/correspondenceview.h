@@ -51,9 +51,9 @@ private slots:
     void on_spnCGThres_valueChanged(double arg1);
 
 private:
-    void launchRecognizer(PCLCorrGroupFunction* cff);
-    void visualizeRecognizerOutput(PCLCorrGroupFunction *cff);
-    void setupColorForClouds(PCLCorrGroupFunction *cff);
+    void launchRecognizer();
+    void visualizeRecognizerOutput();
+    void setupColorForClouds();
 
     Ui::CorrespondenceView *ui;
 
@@ -65,12 +65,17 @@ private:
 
     QElapsedTimer* computationTimer;
 
-    PCLCorrGroupFunction* cff  = new PCLCorrGroupFunction();
+
 
     bool correspondenceCloud;
 
     bool modelAdded;
     bool correspondenceAdded;
+
+    PCLFilterFunction filterf;
+    PCLMinCutFunction mincut;
+    PCLSegmentationFunction segf;
+    PCLCorrGroupFunction cff;
 };
 
 #endif // CORRESPONDENCEVIEW_H
