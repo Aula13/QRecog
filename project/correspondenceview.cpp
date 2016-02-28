@@ -11,7 +11,8 @@ CorrespondenceView::CorrespondenceView(QWidget *parent) :
     ui->wgtCGFileChooser->asFileOpener();
     ui->wgtCGFileChooser->setSelectedFile(QDir::homePath().toStdString() + "/QRecog/mdl.pcd");
 
-    ui->wgtStatCsvFileChooser->asFileOpener();
+    ui->wgtStatCsvFileChooser->asFileSaver();
+    ui->wgtStatCsvFileChooser->setFileType("CSV files (*.csv)");
     ui->wgtStatCsvFileChooser->setSelectedFile(QDir::homePath().toStdString() + "/QRecog/export.csv");
     Logger::logInfo("Correspondence view initialized");
 
@@ -193,7 +194,8 @@ void CorrespondenceView::setupColorForClouds()
 void CorrespondenceView::exportResultOnCSV()
 {
     std::ofstream fwrite;
-    fwrite.open(ui->wgtStatCsvFileChooser->getSelectedFile());
+    fwrite.open(ui->wgtStatCsvFileChooser->getSelectedFile(),
+                ios::out | ios::app);
     fwrite
             /********* GENERAL PARAMETER **************/
             <<ui->lcdNrModelRec->value()<<";"
@@ -204,7 +206,6 @@ void CorrespondenceView::exportResultOnCSV()
        <<cff.modelNormals->size()<<";"
       <<cff.sceneNormals->size()<<";"
      <<cff.modelDescriptors->size()<<";"
-    <<cff.sceneDescriptors->size()<<";"
     <<cff.sceneDescriptors->size()<<";"
     <<ui->chkDisableUpdate->isChecked()<<";"
     <<ui->chkShowUsedkeypoints->isChecked()<<";"
