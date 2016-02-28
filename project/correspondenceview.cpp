@@ -10,6 +10,9 @@ CorrespondenceView::CorrespondenceView(QWidget *parent) :
 
     ui->wgtCGFileChooser->asFileOpener();
     ui->wgtCGFileChooser->setSelectedFile(QDir::homePath().toStdString() + "/QRecog/mdl.pcd");
+
+    ui->wgtStatCsvFileChooser->asFileOpener();
+    ui->wgtStatCsvFileChooser->setSelectedFile(QDir::homePath().toStdString() + "/QRecog/export.csv");
     Logger::logInfo("Correspondence view initialized");
 
     computationTimer = new QElapsedTimer();
@@ -115,6 +118,9 @@ void CorrespondenceView::update(Observable* obs)
             ui->lcdNrCorrespondence->display(0);
         }
         ui->lcdCompTime->display((int)computationTimer->elapsed());
+
+        if(ui->chkEnableStatToCsv->isChecked())
+            exportResultOnCSV();
     }
 }
 
@@ -184,6 +190,64 @@ void CorrespondenceView::setupColorForClouds()
     }
 }
 
+void CorrespondenceView::exportResultOnCSV()
+{
+    std::ofstream fwrite;
+    fwrite.open(ui->wgtStatCsvFileChooser->getSelectedFile());
+    fwrite
+            /********* GENERAL PARAMETER **************/
+            <<ui->lcdNrModelRec->value()<<";"
+           <<ui->lcdNrCorrespondence->value()<<";"
+          <<ui->lcdCompTime->value()<<";"
+         <<cff.modelKeypoints->size()<<";"
+        <<cff.sceneKeypoints->size()<<";"
+       <<cff.modelNormals->size()<<";"
+      <<cff.sceneNormals->size()<<";"
+     <<cff.modelDescriptors->size()<<";"
+    <<cff.sceneDescriptors->size()<<";"
+    <<cff.sceneDescriptors->size()<<";"
+    <<ui->chkDisableUpdate->isChecked()<<";"
+    <<ui->chkShowUsedkeypoints->isChecked()<<";"
+
+
+      /********* FILTER PARAMETERS *************/
+    <<ui->wgtFilterOptionView->isFilteringEnabled()<<";"
+    <<filterf.leafSize<<";"
+
+      /********* MIN CUT PARAMETER *************/
+    <<ui->wgtMinCutOptionView->isMinCutEnabled()<<";"
+    <<mincut.x<<";"
+    <<mincut.y<<";"
+    <<mincut.z<<";"
+    <<mincut.sigma<<";"
+    <<mincut.radius<<";"
+    <<mincut.numberOfNeighbours<<";"
+    <<mincut.sourceWeight<<";"
+
+      /********* RANSAC PARAMETER **************/
+    <<ui->wgtSegOptionView->isSegmentationEnabled()<<";"
+    <<segf.optimazeCoeff<<";"
+    <<segf.modelType<<";"
+    <<segf.methodType<<";"
+    <<segf.maxIterations<<";"
+    <<segf.distanceThreashold<<";"
+
+      /*** RECOGNITION PARAMETERS *******/
+    <<cff.modelSampleSize<<";"
+    <<cff.sceneSampleSize<<";"
+    <<cff.descriptorsRadius<<";"
+    <<cff.referenceFrameRadius<<";"
+    <<cff.cgSize<<";"
+    <<cff.cgThreshold<<";"
+    <<cff.useHough<<";"
+    <<cff.applyTrasformationToModel<<";"
+    <<cff.useCloudResolution<<";"
+
+    <<std::endl;
+
+    fwrite.close();
+}
+
 CorrespondenceView::~CorrespondenceView()
 {
     delete ui;
@@ -250,4 +314,63 @@ void CorrespondenceView::on_spnCGSize_valueChanged(double arg1)
 void CorrespondenceView::on_spnCGThres_valueChanged(double arg1)
 {
     cff.computeModelKeypoints=true;
+}
+
+void CorrespondenceView::on_chkEnableStatToCsv_toggled(bool checked)
+{
+    if(checked) {
+
+        std::ofstream fwrite;
+        fwrite.open(ui->wgtStatCsvFileChooser->getSelectedFile());
+        fwrite
+                /********* GENERAL PARAMETER **************/
+                <<"#ModelFound;"
+               <<"#Correspondence;"
+              <<"#ComputationTime;"
+             <<"#ModelKeypoints;"
+            <<"#SceneKeypoints;"
+           <<"#ModelNormals;"
+          <<"#SceneNormals;"
+         <<"#ModelDescriptors;"
+        <<"#SceneDescriptors;"
+        <<"UpdateUI?;"
+        <<"ShowKeypoints?;"
+
+          /********* FILTER PARAMETERS *************/
+        <<"FilterEn?;"
+        <<"FilterLeafSize;"
+
+          /********* MIN CUT PARAMETER *************/
+        <<"MinCutEn?;"
+        <<"MinCutX;"
+        <<"MinCutY;"
+        <<"MinCutZ;"
+        <<"MinCutSigma;"
+        <<"MinCutRadius;"
+        <<"MinCut#Neighboors;"
+        <<"MinCutSourceWeight;"
+
+          /********* RANSAC PARAMETER **************/
+        <<"SACEn?;"
+        <<"SACOptimazeCoef;"
+        <<"SACModelType;"
+        <<"SACMethodType;"
+        <<"SACMaxIteration;"
+        <<"SACDistanceThreashold;"
+
+          /*** RECOGNITION PARAMETERS *******/
+        <<"CFFModelDownsample;"
+        <<"CFFSceneDownsample;"
+        <<"CFFDescrRadius;"
+        <<"CFFRefFrameRadius;"
+        <<"CFFCGSize;"
+        <<"CFFCGThreashold;"
+        <<"CFFUseHough;"
+        <<"CFFApplyTrasf;"
+        <<"CFFUseCloudRes;"
+
+        <<std::endl;
+
+        fwrite.close();
+    }
 }

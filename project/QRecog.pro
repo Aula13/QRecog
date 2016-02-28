@@ -39,7 +39,8 @@ SOURCES += main.cpp\
     pclcorrgroupfunction.cpp \
     help.cpp \
     pclmincutfunction.cpp \
-    mincutoptionview.cpp
+    mincutoptionview.cpp \
+    statexport.cpp
 
 HEADERS  += mainwindow.h \
             defines.h \
@@ -68,7 +69,8 @@ HEADERS  += mainwindow.h \
     pclcorrgroupfunction.h \
     help.h \
     pclmincutfunction.h \
-    mincutoptionview.h
+    mincutoptionview.h \
+    statexport.h
 
 FORMS    += mainwindow.ui \
             pclviewer.ui \

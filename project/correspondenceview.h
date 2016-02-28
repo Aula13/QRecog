@@ -50,10 +50,14 @@ private slots:
 
     void on_spnCGThres_valueChanged(double arg1);
 
+    void on_chkEnableStatToCsv_toggled(bool checked);
+
 private:
     void launchRecognizer();
     void visualizeRecognizerOutput();
     void setupColorForClouds();
+
+    void exportResultOnCSV();
 
     Ui::CorrespondenceView *ui;
 
