@@ -20,6 +20,7 @@ class FileChooser : public QWidget
 public:
     explicit FileChooser(QWidget *parent = 0);
 
+    void setFileType(std::string fileType);
     void asFileSaver();
     void asFileOpener();
     void setSelectedFile(const std::string &s);
@@ -34,6 +35,8 @@ private:
     Ui::FileChooser *ui;
 
     bool saver;
+
+    std::string fileType;
 };
 
 #endif // FILECHOOSER_H

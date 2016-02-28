@@ -3,9 +3,15 @@
 
 FileChooser::FileChooser(QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::FileChooser)
+    ui(new Ui::FileChooser),
+    fileType("PCD files (*.pcd)")
 {
     ui->setupUi(this);
+}
+
+void FileChooser::setFileType(string fileType)
+{
+    this->fileType = fileType;
 }
 
 void FileChooser::asFileSaver()
@@ -41,14 +47,14 @@ void FileChooser::on_btnChoose_clicked()
                 this,
                 "Save file",
                 "",
-                "PCD files (*.pcd)"
+                QString::fromStdString(fileType)
                 );
     else
         filename= QFileDialog::getOpenFileName(
                 this,
                 "Open file",
                 "",
-                "PCD files (*.pcd)"
+                QString::fromStdString(fileType)
                 );
     ui->txtPath->setText(filename);
     Logger::logInfo("File choosed: " + filename.toStdString());
