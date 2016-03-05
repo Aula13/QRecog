@@ -20,11 +20,13 @@ CameraModelOpenGEV* CameraModelOpenGEV::getInstance()
 }
 
 CameraModelOpenGEV::CameraModelOpenGEV()
+    :   trasformedpcd(new cloudType),
+      workingCloud(new cloudType)
 {
     app = new GVApplication();
 
-    cloudPtrType emptyCloud(new cloudType);
-    trasformedpcd = emptyCloud;
+    //cloudPtrType emptyCloud(new cloudType);
+    //trasformedpcd = emptyCloud;
 
     //Init matrix for 180° rotation on Z axis
     TransMatZ = Eigen::Matrix4f::Identity();
@@ -104,16 +106,16 @@ void CameraModelOpenGEV::stop()
             //Stop update observers
             updateObserversTimer.stop();
 
-            device.closeStreamChannel(2);
-            device.closeControlChannel();
-
             disconnect(observer, SIGNAL(pointCloudUpdate()),
                        this, SLOT(update()));
 
             updateReceiverThread.quit();
             updateReceiverThread.wait();
 
-            delete observer;
+            device.closeStreamChannel(2);
+            device.closeControlChannel();
+
+
             app->clearDevices();
             connected=false;
             Logger::logInfo("Camera interface is stopped");
@@ -126,9 +128,9 @@ void CameraModelOpenGEV::stop()
 
 const cloudPtrType CameraModelOpenGEV::getLastAcquisition()
 {
-    semaphore.lock();
+    //semaphore.lock();
     Logger::logInfo("Last acquisition requested from CameraModel");
-    semaphore.unlock();
+    //semaphore.unlock();
     return trasformedpcd;
 }
 
@@ -151,31 +153,39 @@ CameraModelOpenGEV::~CameraModelOpenGEV()
 
 void CameraModelOpenGEV::update()
 {
-    semaphore.lock();
 
-    cloudPtrType workingCloud(new cloudType);
+    semaphore.lock();
+    //cloudPtrType workingCloud(observer->ptrCloud);
 
     //180° rotation around Z axe
     pcl::transformPointCloud(*(observer->ptrCloud),*workingCloud,TransMatZ);
 
+
     //180° rotation around Y axe
     pcl::transformPointCloud(*workingCloud,*workingCloud,TransMatY);
 
-    Logger::logInfo("CameraModelOpenGEV data received and trasformed: ");
-    trasformedpcd = workingCloud;
 
-    /*
+    Logger::logInfo("CameraModelOpenGEV data received and trasformed: ");
+    //trasformedpcd = workingCloud;
+    semaphore.unlock();
+
+
+    trasformedpcd = workingCloud;
     setChanged();
     notifyObservers();
-    */
 
     //std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-    semaphore.unlock();
+
 }
 
 void CameraModelOpenGEV::sendPeriodicUpdate()
 {
+    /*
+    semaphore.lock();
+    trasformedpcd = workingCloud;
+    semaphore.unlock();
     //Logger::logInfo("Observers update: " + QThread::currentThreadId());
     setChanged();
     notifyObservers();
+    */
 }

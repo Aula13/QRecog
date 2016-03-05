@@ -118,9 +118,7 @@ void CameraModel::stop()
 
 const cloudPtrType CameraModel::getLastAcquisition()
 {
-    semaphore.lock();
     Logger::logInfo("Last acquisition requested from CameraModel");
-    semaphore.unlock();
     return trasformedpcd;
 }
 
