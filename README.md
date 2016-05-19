@@ -1,9 +1,6 @@
 QRecog
 ======
 
-THIS IS A WORK IN PROGRESS, STAY TUNED
-
-# Screenshots
 
 ![Acquisition View](https://raw.githubusercontent.com/danieleciriello/QRecog/master/documentation/acquisition.png)
 
